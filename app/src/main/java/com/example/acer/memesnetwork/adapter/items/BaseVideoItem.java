@@ -58,7 +58,7 @@ public abstract class BaseVideoItem implements VideoItem, ListItem{
         stopPlayback(mVideoPlayerManager);
     }
 
-    public View createView(ViewGroup parent, int screenWidth) {
+    public View createView(final ViewGroup parent, int screenWidth) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_meme, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = screenWidth;
@@ -75,6 +75,15 @@ public abstract class BaseVideoItem implements VideoItem, ListItem{
             public void onVideoPreparedMainThread() {
                 // When video is prepared it's about to start playback. So we hide the cover
                 videoViewHolder.mCover.setVisibility(View.INVISIBLE);
+
+                if(videoViewHolder.mPlayer.isAllVideoMute()){
+                    // sound is muted
+                    videoViewHolder.tvIconSound.setText(parent.getContext().getResources().getText(R.string.fa_volume_mute));
+                }else{
+                    // sound is on
+                    videoViewHolder.tvIconSound.setText(parent.getContext().getResources().getText(R.string.fa_volume_up));
+                }
+                videoViewHolder.tvIconSound.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -93,6 +102,7 @@ public abstract class BaseVideoItem implements VideoItem, ListItem{
             public void onVideoStoppedMainThread() {
                 // Show the cover when video stopped
                 videoViewHolder.mCover.setVisibility(View.VISIBLE);
+                videoViewHolder.tvIconSound.setVisibility(View.GONE);
             }
         });
         return view;

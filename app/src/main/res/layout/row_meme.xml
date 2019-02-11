@@ -54,5 +54,15 @@
                 android:scaleType="centerCrop" />
         </LinearLayout>
 
+        <com.example.acer.memesnetwork.components.TextViewFaSolid
+            android:id="@+id/tvIconSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            android:text="@string/fa_volume_mute"/>
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

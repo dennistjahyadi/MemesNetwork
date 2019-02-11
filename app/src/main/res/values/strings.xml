@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MemesNetwork</string>
+    <string name="fa_volume_mute">&#xf6a9;</string>
+    <string name="fa_volume_up">&#xf028;</string>
+
 </resources>

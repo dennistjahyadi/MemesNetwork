@@ -156,7 +156,7 @@ public class VideoPlayerView extends ScalableTextureView
         synchronized (mReadyForPlaybackIndicator){
 
             mMediaPlayer = new MediaPlayerWrapperImpl();
-
+            mMediaPlayer.setLooping(true);
             mReadyForPlaybackIndicator.setVideoSize(null, null);
             mReadyForPlaybackIndicator.setFailedToPrepareUiForPlayback(false);
 
@@ -489,6 +489,9 @@ public class VideoPlayerView extends ScalableTextureView
         if (SHOW_LOGS) Logger.v(TAG, "<< onVideoSizeAvailable");
     }
 
+    public void setLooping(boolean val){
+        mMediaPlayer.setLooping(val);
+    }
 
     public void muteVideo() {
         synchronized (mReadyForPlaybackIndicator) {
