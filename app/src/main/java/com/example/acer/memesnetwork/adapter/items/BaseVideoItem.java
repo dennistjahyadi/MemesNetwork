@@ -102,7 +102,7 @@ public abstract class BaseVideoItem implements VideoItem, ListItem{
             public void onVideoStoppedMainThread() {
                 // Show the cover when video stopped
                 videoViewHolder.mCover.setVisibility(View.VISIBLE);
-                videoViewHolder.tvIconSound.setVisibility(View.GONE);
+                //videoViewHolder.tvIconSound.setVisibility(View.GONE);
             }
         });
         return view;
