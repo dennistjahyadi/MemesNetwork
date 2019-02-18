@@ -11,15 +11,13 @@
         android:id="@+id/linTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="header" />
+            android:text="header"/>
 
     </FrameLayout>
 
@@ -27,14 +25,12 @@
         android:id="@+id/linMiddle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/linBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linTop">
-
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
@@ -76,11 +72,11 @@
                 android:id="@+id/tvIconSound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="20dp"
-                android:text="@string/fa_volume_mute"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:text="@string/fa_volume_mute"/>
 
         </RelativeLayout>
     </FrameLayout>
@@ -89,16 +85,14 @@
         android:id="@+id/linBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Footer" />
+            android:text="Footer"/>
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>
