@@ -15,12 +15,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="header" />
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v4.widget.CircleImageView
+                android:id="@+id/ivPicture"
+                android:layout_marginLeft="20dp"
+                android:layout_width="35dp"
+                android:layout_centerVertical="true"
+                android:layout_height="35dp" />
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/ivPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="header" />
+        </RelativeLayout>
     </FrameLayout>
 
     <FrameLayout
@@ -38,11 +50,7 @@
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toTopOf="@+id/tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,8 +62,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.8" />
-
-
             </LinearLayout>
 
             <LinearLayout
