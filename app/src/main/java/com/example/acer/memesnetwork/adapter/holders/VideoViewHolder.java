@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.acer.memesnetwork.R;
 import com.example.acer.memesnetwork.components.TextViewFaSolid;
 import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
+import com.volokh.danylo.visibility_utils.items.ListItemData;
 
 
 public class VideoViewHolder extends RecyclerView.ViewHolder{

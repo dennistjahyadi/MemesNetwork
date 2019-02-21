@@ -14,7 +14,6 @@ import com.example.acer.memesnetwork.adapter.VideoRecyclerViewAdapter;
 import com.example.acer.memesnetwork.adapter.items.BaseVideoItem;
 import com.example.acer.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.example.acer.memesnetwork.utils.Utils;
-import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
 import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
@@ -100,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (!mList.isEmpty()) {
+
                     mVideoVisibilityCalculator.onScroll(
                             mItemsPositionGetter,
                             mLayoutManager.findFirstVisibleItemPosition(),
@@ -136,8 +136,20 @@ public class MainActivity extends AppCompatActivity {
                                 String videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
                                 mList.add(new DirectLinkVideoItem(title, Utils.SOURCE_URL + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.SOURCE_URL + coverUrl));
                             }
-                            videoRecyclerViewAdapter.notifyDataSetChanged();
 
+                            videoRecyclerViewAdapter.notifyDataSetChanged();
+                            if (!mList.isEmpty()) {
+                                rvMemes.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mVideoVisibilityCalculator.onScrollStateIdle(
+                                                mItemsPositionGetter,
+                                                mLayoutManager.findFirstVisibleItemPosition(),
+                                                mLayoutManager.findLastVisibleItemPosition());
+
+                                    }
+                                });
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -186,21 +198,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (!mList.isEmpty()) {
-            // need to call this method from list view handler in order to have filled list
 
-            rvMemes.post(new Runnable() {
-                @Override
-                public void run() {
-
-                    mVideoVisibilityCalculator.onScrollStateIdle(
-                            mItemsPositionGetter,
-                            mLayoutManager.findFirstVisibleItemPosition(),
-                            mLayoutManager.findLastVisibleItemPosition());
-
-                }
-            });
-        }
     }
 
     @Override
