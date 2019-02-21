@@ -15,24 +15,45 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <android.support.v4.widget.CircleImageView
-                android:id="@+id/ivPicture"
-                android:layout_marginLeft="20dp"
-                android:layout_width="35dp"
-                android:layout_centerVertical="true"
-                android:layout_height="35dp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivPicture"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/ivPicture"
+                    android:text="name" />
+
+            </RelativeLayout>
+
             <TextView
-                android:id="@+id/tvName"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/ivPicture"
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="header" />
-        </RelativeLayout>
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="title" />
+        </LinearLayout>
+
     </FrameLayout>
 
     <FrameLayout
@@ -101,10 +122,70 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Footer" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.example.acer.memesnetwork.components.TextViewFaSolid
+                android:id="@+id/tvBtnLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="32dp"
+                android:text="@string/fa_thumbs_up"
+                android:textSize="22dp" />
+
+            <TextView
+                android:id="@+id/tvTotalLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/tvBtnLike"
+                android:text="0"
+                android:textSize="20dp" />
+
+
+            <com.example.acer.memesnetwork.components.TextViewFaSolid
+                android:id="@+id/tvBtnDislike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:layout_toRightOf="@id/tvBtnLike"
+                android:text="@string/fa_thumbs_down"
+                android:textSize="26dp" />
+
+            <TextView
+                android:id="@+id/tvTotalDislike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/tvBtnDislike"
+                android:text="0"
+                android:textSize="20dp" />
+
+            <com.example.acer.memesnetwork.components.TextViewFaSolid
+                android:id="@+id/tvBtnComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="100dp"
+                android:layout_toRightOf="@+id/tvBtnDislike"
+                android:text="@string/fa_comment"
+                android:textSize="26dp" />
+
+            <TextView
+                android:id="@+id/tvTotalComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/tvBtnComment"
+                android:text="0"
+                android:textSize="20dp" />
+
+        </RelativeLayout>
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

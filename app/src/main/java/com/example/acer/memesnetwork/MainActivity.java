@@ -6,9 +6,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.AbsListView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.example.acer.memesnetwork.adapter.VideoRecyclerViewAdapter;
 import com.example.acer.memesnetwork.adapter.items.BaseVideoItem;
 import com.example.acer.memesnetwork.adapter.items.DirectLinkVideoItem;
+import com.example.acer.memesnetwork.utils.Utils;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
 import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
@@ -19,6 +25,10 @@ import com.volokh.danylo.visibility_utils.calculator.ListItemsVisibilityCalculat
 import com.volokh.danylo.visibility_utils.calculator.SingleListViewItemActiveCalculator;
 import com.volokh.danylo.visibility_utils.scroll_utils.ItemsPositionGetter;
 import com.volokh.danylo.visibility_utils.scroll_utils.RecyclerViewItemPositionGetter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -104,10 +114,72 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchData() {
 
-        for (int i = 0; i < 100; i++) {
-            mList.add(new DirectLinkVideoItem("","https://img-9gag-fun.9cache.com/photo/aA3yqzp_460sv.mp4",mVideoPlayerManager,Picasso.get(),"https://img-9gag-fun.9cache.com/photo/aA3yqzp_460s.jpg"));
-        }
-        videoRecyclerViewAdapter.notifyDataSetChanged();
+//        for (int i = 0; i < 100; i++) {
+//         //   mList.add(new DirectLinkVideoItem("asddas", "https://img-9gag-fun.9cache.com/photo/aA3yqzp_460sv.mp4", mVideoPlayerManager, Picasso.get(), "https://img-9gag-fun.9cache.com/photo/aA3yqzp_460s.jpg"));
+//            mList.add(new DirectLinkVideoItem("asddas", "http://192.168.1.8:8000/sources/apm9AD8_460sv.mp4", mVideoPlayerManager, Picasso.get(), "http://192.168.1.8:8000/sources/apm9AD8_460s.jpg"));
+//
+//        }
+        AndroidNetworking.get(Utils.API_URL + "index")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // do anything with response
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject result = response.getJSONObject(i);
+                                String title = result.getString("title");
+
+                                JSONObject imagesObject = new JSONObject(result.getString("images"));
+                                String coverUrl = imagesObject.getJSONObject("image700").getString("url");
+                                String videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
+                                mList.add(new DirectLinkVideoItem(title, Utils.SOURCE_URL + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.SOURCE_URL + coverUrl));
+                            }
+                            videoRecyclerViewAdapter.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
+    }
+
+
+    private void fetchData2() {
+        AndroidNetworking.get(Utils.API_URL + "index")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // do anything with response
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject result = response.getJSONObject(i);
+                                String title = result.getString("title");
+
+                                JSONObject imagesObject = new JSONObject(result.getString("images"));
+                                String coverUrl = imagesObject.getJSONObject("image700").getString("url");
+                                String videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
+                                mList.add(new DirectLinkVideoItem(title, Utils.API_URL + "sources/" + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.API_URL + "sources/" + coverUrl));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
     }
 
 

@@ -31,9 +31,9 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         BaseVideoItem videoItem = mList.get(position);
         View resultView = videoItem.createView(viewGroup, mContext.getResources().getDisplayMetrics().widthPixels);
 
-        ViewGroup.LayoutParams layoutParams = resultView.getLayoutParams();
-        layoutParams.height = (int) (viewGroup.getHeight() * 0.75);
-        resultView.setLayoutParams(layoutParams);
+//        ViewGroup.LayoutParams layoutParams = resultView.getLayoutParams();
+//        layoutParams.height = (int) (viewGroup.getHeight() * 0.75);
+//        resultView.setLayoutParams(layoutParams);
         return new VideoViewHolder(resultView);
     }
 

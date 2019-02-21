@@ -59,7 +59,7 @@ public abstract class BaseVideoItem implements VideoItem, ListItem{
     }
 
     public View createView(final ViewGroup parent, int screenWidth) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.test, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_meme, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = screenWidth;
 

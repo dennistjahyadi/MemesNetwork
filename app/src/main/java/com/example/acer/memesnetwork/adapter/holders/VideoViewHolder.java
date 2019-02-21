@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.acer.memesnetwork.R;
 import com.example.acer.memesnetwork.components.TextViewFaSolid;
@@ -15,9 +16,11 @@ public class VideoViewHolder extends RecyclerView.ViewHolder{
     public final VideoPlayerView mPlayer;
     public final ImageView mCover;
     public final TextViewFaSolid tvIconSound;
+    public final TextView tvTitle;
 
     public VideoViewHolder(View view) {
         super(view);
+        tvTitle = view.findViewById(R.id.tvTitle);
         mPlayer =  view.findViewById(R.id.player);
         mCover =  view.findViewById(R.id.cover);
         tvIconSound = view.findViewById(R.id.tvIconSound);
