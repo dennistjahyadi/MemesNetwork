@@ -239,7 +239,8 @@ public class VideoPlayerView extends ScalableTextureView
 
             if (SHOW_LOGS) Logger.v(TAG, "initView");
 
-            setScaleType(ScalableTextureView.ScaleType.CENTER_CROP);
+            setScaleType(ScaleType.FILL);
+
             super.setSurfaceTextureListener(this);
         }
     }

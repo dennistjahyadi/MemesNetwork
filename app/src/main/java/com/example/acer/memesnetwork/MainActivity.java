@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         rvMemes.setHasFixedSize(true);
-
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         rvMemes.setLayoutManager(mLayoutManager);
@@ -134,7 +133,9 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject imagesObject = new JSONObject(result.getString("images"));
                                 String coverUrl = imagesObject.getJSONObject("image700").getString("url");
                                 String videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
-                                mList.add(new DirectLinkVideoItem(title, Utils.SOURCE_URL + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.SOURCE_URL + coverUrl));
+                                int width = imagesObject.getJSONObject("image700").getInt("width");
+                                int height = imagesObject.getJSONObject("image700").getInt("height");
+                                mList.add(new DirectLinkVideoItem(title, Utils.SOURCE_URL + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.SOURCE_URL + coverUrl, width, height));
                             }
 
                             videoRecyclerViewAdapter.notifyDataSetChanged();
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject imagesObject = new JSONObject(result.getString("images"));
                                 String coverUrl = imagesObject.getJSONObject("image700").getString("url");
                                 String videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
-                                mList.add(new DirectLinkVideoItem(title, Utils.API_URL + "sources/" + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.API_URL + "sources/" + coverUrl));
+                                //    mList.add(new DirectLinkVideoItem(title, Utils.API_URL + "sources/" + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.API_URL + "sources/" + coverUrl));
                             }
 
                         } catch (JSONException e) {
