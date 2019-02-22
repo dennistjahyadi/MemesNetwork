@@ -496,15 +496,19 @@ public class VideoPlayerView extends ScalableTextureView
 
     public void muteVideo() {
         synchronized (mReadyForPlaybackIndicator) {
-            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putBoolean(IS_VIDEO_MUTED, true).commit();
-            mMediaPlayer.setVolume(0, 0);
+            if(mMediaPlayer!=null) {
+                PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putBoolean(IS_VIDEO_MUTED, true).commit();
+                mMediaPlayer.setVolume(0, 0);
+            }
         }
     }
 
     public void unMuteVideo() {
         synchronized (mReadyForPlaybackIndicator) {
-            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putBoolean(IS_VIDEO_MUTED, false).commit();
-            mMediaPlayer.setVolume(1, 1);
+            if(mMediaPlayer!=null) {
+                PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putBoolean(IS_VIDEO_MUTED, false).commit();
+                mMediaPlayer.setVolume(1, 1);
+            }
         }
     }
 
@@ -515,7 +519,9 @@ public class VideoPlayerView extends ScalableTextureView
     public void pause() {
         if (SHOW_LOGS) Logger.d(TAG, ">> pause ");
         synchronized (mReadyForPlaybackIndicator) {
-            mMediaPlayer.pause();
+            if(mMediaPlayer!=null) {
+                mMediaPlayer.pause();
+            }
         }
         if (SHOW_LOGS) Logger.d(TAG, "<< pause");
     }

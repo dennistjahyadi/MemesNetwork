@@ -19,11 +19,18 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     private final VideoPlayerManager mVideoPlayerManager;
     private final List<BaseVideoItem> mList;
     private final Context mContext;
+    float finalWidth;
+    float finalHeight;
+
+    float maxHeightVideo;
 
     public VideoRecyclerViewAdapter(VideoPlayerManager videoPlayerManager, Context context, List<BaseVideoItem> list) {
         mVideoPlayerManager = videoPlayerManager;
         mContext = context;
         mList = list;
+        finalWidth = mContext.getResources().getDisplayMetrics().widthPixels;  // default phone width
+        finalHeight = mContext.getResources().getDisplayMetrics().heightPixels; // default phone heights
+        maxHeightVideo = (float) mContext.getResources().getDisplayMetrics().heightPixels * 0.8f; // set default maximum video size in phone
     }
 
     @Override
@@ -37,21 +44,21 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     public void onBindViewHolder(VideoViewHolder viewHolder, int position) {
         BaseVideoItem videoItem = mList.get(position);
 
-        float finalWidth = mContext.getResources().getDisplayMetrics().widthPixels;
-        float finalHeight = mContext.getResources().getDisplayMetrics().heightPixels;
-
-
         if (videoItem.getContentHeight() > videoItem.getContentWidth()) {
             // if video is potrait
-            float ratio = videoItem.getContentHeight() / videoItem.getContentWidth();
+            float ratio = (float) videoItem.getContentHeight() / videoItem.getContentWidth();
 
-            finalHeight = finalWidth*ratio;
+            finalHeight = finalWidth * ratio;
+            // if final height higher or same with phone height, we have to decrease it to make the video fit in phone. It will show around 3/4 phone screen
+            if (finalHeight >= maxHeightVideo) {
+                finalHeight = maxHeightVideo * 0.7f;
+            }
 
         } else if (videoItem.getContentHeight() < videoItem.getContentWidth()) {
             // if video is landscape
-            float ratio = videoItem.getContentWidth() / videoItem.getContentHeight();
+            float ratio = (float) videoItem.getContentWidth() / videoItem.getContentHeight();
 
-            finalHeight = finalWidth/ratio;
+            finalHeight = finalWidth / ratio;
         } else {
             // if video is square
             finalHeight = finalWidth;
