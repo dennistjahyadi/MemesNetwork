@@ -1,6 +1,8 @@
 package com.example.acer.memesnetwork.adapter.items;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.acer.memesnetwork.adapter.holders.VideoViewHolder;
 import com.squareup.picasso.Picasso;
@@ -15,23 +17,25 @@ public class DirectLinkVideoItem extends BaseVideoItem {
 
     private final String mDirectUrl;
     private final String mTitle;
-
     private final Picasso mImageLoader;
     private final String mCoverUrl;
 
-    public DirectLinkVideoItem(String title, String directUr, VideoPlayerManager videoPlayerManager, Picasso imageLoader, String coverUrl) {
-        super(videoPlayerManager);
+
+    public DirectLinkVideoItem(String title, String directUr, VideoPlayerManager videoPlayerManager, Picasso imageLoader, String coverUrl, Integer width, Integer height) {
+        super(videoPlayerManager, width, height);
         mDirectUrl = directUr;
         mTitle = title;
         mImageLoader = imageLoader;
         mCoverUrl = coverUrl;
-
     }
 
     @Override
     public void update(int position, VideoViewHolder viewHolder, VideoPlayerManager videoPlayerManager) {
+        viewHolder.tvTitle.setText(mTitle);
         viewHolder.mCover.setVisibility(View.VISIBLE);
         mImageLoader.load(mCoverUrl).into(viewHolder.mCover);
+
+
     }
 
     @Override

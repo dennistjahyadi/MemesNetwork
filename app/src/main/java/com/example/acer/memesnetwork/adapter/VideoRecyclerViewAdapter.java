@@ -20,7 +20,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     private final List<BaseVideoItem> mList;
     private final Context mContext;
 
-    public VideoRecyclerViewAdapter(VideoPlayerManager videoPlayerManager, Context context, List<BaseVideoItem> list){
+    public VideoRecyclerViewAdapter(VideoPlayerManager videoPlayerManager, Context context, List<BaseVideoItem> list) {
         mVideoPlayerManager = videoPlayerManager;
         mContext = context;
         mList = list;
@@ -29,17 +29,42 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         BaseVideoItem videoItem = mList.get(position);
-        View resultView = videoItem.createView(viewGroup, mContext.getResources().getDisplayMetrics().widthPixels);
-
-        ViewGroup.LayoutParams layoutParams = resultView.getLayoutParams();
-        layoutParams.height = (int) (viewGroup.getHeight() * 0.75);
-        resultView.setLayoutParams(layoutParams);
+        View resultView = videoItem.createView(viewGroup, mContext.getResources().getDisplayMetrics().widthPixels, mContext.getResources().getDisplayMetrics().heightPixels);
         return new VideoViewHolder(resultView);
     }
 
     @Override
     public void onBindViewHolder(VideoViewHolder viewHolder, int position) {
         BaseVideoItem videoItem = mList.get(position);
+
+        float finalWidth = mContext.getResources().getDisplayMetrics().widthPixels;
+        float finalHeight = mContext.getResources().getDisplayMetrics().heightPixels;
+
+
+        if (videoItem.getContentHeight() > videoItem.getContentWidth()) {
+            // if video is potrait
+            float ratio = videoItem.getContentHeight() / videoItem.getContentWidth();
+
+            finalHeight = finalWidth*ratio;
+
+        } else if (videoItem.getContentHeight() < videoItem.getContentWidth()) {
+            // if video is landscape
+            float ratio = videoItem.getContentWidth() / videoItem.getContentHeight();
+
+            finalHeight = finalWidth/ratio;
+        } else {
+            // if video is square
+            finalHeight = finalWidth;
+        }
+
+        ViewGroup.LayoutParams layoutParams = viewHolder.relativeLayout.getLayoutParams();
+        layoutParams.width = (int) finalWidth;
+        layoutParams.height = (int) finalHeight;
+        viewHolder.relativeLayout.setLayoutParams(layoutParams);
+//        ViewGroup.LayoutParams layoutParams2 = viewHolder.mCover.getLayoutParams();
+//        layoutParams2.width = (int) finalWidth;
+//        layoutParams2.height = (int) finalHeight;
+//        viewHolder.mCover.setLayoutParams(layoutParams2);
         videoItem.update(position, viewHolder, mVideoPlayerManager);
     }
 

@@ -11,7 +11,7 @@ import com.volokh.danylo.video_player_manager.utils.Logger;
 /**
  * This extension of {@link TextureView} is created to isolate scaling of this view.
  */
-public abstract class ScalableTextureView extends TextureView{
+public abstract class ScalableTextureView extends TextureView {
 
     private static final boolean SHOW_LOGS = false;
     private static final String TAG = ScalableTextureView.class.getSimpleName();
@@ -63,7 +63,8 @@ public abstract class ScalableTextureView extends TextureView{
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (SHOW_LOGS) Logger.v(TAG, "onMeasure, mContentoWidth " + mContentWidth + ", mContentHeight " + mContentHeight);
+        if (SHOW_LOGS)
+            Logger.v(TAG, "onMeasure, mContentoWidth " + mContentWidth + ", mContentHeight " + mContentHeight);
 
         if (mContentWidth != null && mContentHeight != null) {
             updateTextureViewSize();
@@ -137,8 +138,8 @@ public abstract class ScalableTextureView extends TextureView{
                 pivotPointY = viewHeight / 2;
                 break;
             case FILL:
-                pivotPointX = mPivotPointX;
-                pivotPointY = mPivotPointY;
+                pivotPointX = viewWidth / 2;
+                pivotPointY = viewHeight / 2;
                 break;
             default:
                 throw new IllegalStateException("pivotPointX, pivotPointY for ScaleType " + mScaleType + " are not defined");
@@ -173,13 +174,15 @@ public abstract class ScalableTextureView extends TextureView{
     }
 
     private void updateMatrixScaleRotate() {
-        if (SHOW_LOGS) Logger.d(TAG, ">> updateMatrixScaleRotate, mContentRotation " + mContentRotation + ", mContentScaleMultiplier " + mContentScaleMultiplier + ", mPivotPointX " + mPivotPointX + ", mPivotPointY " + mPivotPointY);
+        if (SHOW_LOGS)
+            Logger.d(TAG, ">> updateMatrixScaleRotate, mContentRotation " + mContentRotation + ", mContentScaleMultiplier " + mContentScaleMultiplier + ", mPivotPointX " + mPivotPointX + ", mPivotPointY " + mPivotPointY);
 
         mTransformMatrix.reset();
         mTransformMatrix.setScale(mContentScaleX * mContentScaleMultiplier, mContentScaleY * mContentScaleMultiplier, mPivotPointX, mPivotPointY);
         mTransformMatrix.postRotate(mContentRotation, mPivotPointX, mPivotPointY);
         setTransform(mTransformMatrix);
-        if (SHOW_LOGS) Logger.d(TAG, "<< updateMatrixScaleRotate, mContentRotation " + mContentRotation + ", mContentScaleMultiplier " + mContentScaleMultiplier + ", mPivotPointX " + mPivotPointX + ", mPivotPointY " + mPivotPointY);
+        if (SHOW_LOGS)
+            Logger.d(TAG, "<< updateMatrixScaleRotate, mContentRotation " + mContentRotation + ", mContentScaleMultiplier " + mContentScaleMultiplier + ", mPivotPointX " + mPivotPointX + ", mPivotPointY " + mPivotPointY);
     }
 
     private void updateMatrixTranslate() {
@@ -243,6 +246,7 @@ public abstract class ScalableTextureView extends TextureView{
 
     /**
      * Use it to animate TextureView content x position
+     *
      * @param x
      */
     public final void setContentX(float x) {
@@ -252,6 +256,7 @@ public abstract class ScalableTextureView extends TextureView{
 
     /**
      * Use it to animate TextureView content x position
+     *
      * @param y
      */
     public final void setContentY(float y) {
@@ -276,12 +281,14 @@ public abstract class ScalableTextureView extends TextureView{
         int scaledContentWidth = getScaledContentWidth();
         int scaledContentHeight = getScaledContentHeight();
 
-        if (SHOW_LOGS) Logger.d(TAG, "centralizeContent, measuredWidth " + measuredWidth + ", measuredHeight " + measuredHeight + ", scaledContentWidth " + scaledContentWidth + ", scaledContentHeight " + scaledContentHeight);
+        if (SHOW_LOGS)
+            Logger.d(TAG, "centralizeContent, measuredWidth " + measuredWidth + ", measuredHeight " + measuredHeight + ", scaledContentWidth " + scaledContentWidth + ", scaledContentHeight " + scaledContentHeight);
 
         mContentX = 0;
         mContentY = 0;
 
-        if (SHOW_LOGS) Logger.d(TAG, "centerVideo, mContentX " + mContentX + ", mContentY " + mContentY);
+        if (SHOW_LOGS)
+            Logger.d(TAG, "centerVideo, mContentX " + mContentX + ", mContentY " + mContentY);
 
         updateMatrixScaleRotate();
     }
