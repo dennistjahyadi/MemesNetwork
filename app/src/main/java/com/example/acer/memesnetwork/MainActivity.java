@@ -21,6 +21,8 @@ import com.volokh.danylo.visibility_utils.scroll_utils.ItemsPositionGetter;
 import com.volokh.danylo.visibility_utils.scroll_utils.RecyclerViewItemPositionGetter;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -104,10 +106,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchData() {
 
-        for (int i = 0; i < 100; i++) {
-            mList.add(new DirectLinkVideoItem("","https://img-9gag-fun.9cache.com/photo/aA3yqzp_460sv.mp4",mVideoPlayerManager,Picasso.get(),"https://img-9gag-fun.9cache.com/photo/aA3yqzp_460s.jpg"));
-        }
-        videoRecyclerViewAdapter.notifyDataSetChanged();
+
+
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        // Stuff that updates the UI
+                        for (int i = 0; i < 100; i++) {
+                            mList.add(new DirectLinkVideoItem("","https://img-9gag-fun.9cache.com/photo/aA3yqzp_460sv.mp4",mVideoPlayerManager,Picasso.get(),"https://img-9gag-fun.9cache.com/photo/aA3yqzp_460s.jpg"));
+                        }
+                        videoRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        },5000);
+
     }
 
 
