@@ -1,7 +1,7 @@
 package com.example.acer.memesnetwork;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.AbsListView;
@@ -30,8 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -132,13 +130,23 @@ public class MainActivity extends AppCompatActivity {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject result = response.getJSONObject(i);
                                 String title = result.getString("title");
-
+                                String type =  result.getString("type");
                                 JSONObject imagesObject = new JSONObject(result.getString("images"));
                                 String coverUrl = imagesObject.getJSONObject("image700").getString("url");
-                                String videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
+
+                                String videoUrl = null;
+                                boolean isVideo = false;
+                                boolean hasAudio = false;
+                                if(type.equalsIgnoreCase("animated")){
+                                    isVideo = true;
+                                    videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
+                                    hasAudio = (imagesObject.getJSONObject("image460sv").getInt("hasAudio")==1 ? true : false);
+                                }
+
                                 int width = imagesObject.getJSONObject("image700").getInt("width");
                                 int height = imagesObject.getJSONObject("image700").getInt("height");
-                                mList.add(new DirectLinkVideoItem(title, Utils.SOURCE_URL + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.SOURCE_URL + coverUrl, width, height));
+
+                                mList.add(new DirectLinkVideoItem(title, Utils.SOURCE_URL + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.SOURCE_URL + coverUrl, width, height,hasAudio,isVideo));
                             }
 
                             videoRecyclerViewAdapter.notifyDataSetChanged();

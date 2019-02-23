@@ -43,7 +43,6 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     @Override
     public void onBindViewHolder(VideoViewHolder viewHolder, int position) {
         BaseVideoItem videoItem = mList.get(position);
-
         if (videoItem.getContentHeight() > videoItem.getContentWidth()) {
             // if video is potrait
             float ratio = (float) videoItem.getContentHeight() / videoItem.getContentWidth();
@@ -68,10 +67,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         layoutParams.width = (int) finalWidth;
         layoutParams.height = (int) finalHeight;
         viewHolder.relativeLayout.setLayoutParams(layoutParams);
-//        ViewGroup.LayoutParams layoutParams2 = viewHolder.mCover.getLayoutParams();
-//        layoutParams2.width = (int) finalWidth;
-//        layoutParams2.height = (int) finalHeight;
-//        viewHolder.mCover.setLayoutParams(layoutParams2);
+
         videoItem.update(position, viewHolder, mVideoPlayerManager);
     }
 

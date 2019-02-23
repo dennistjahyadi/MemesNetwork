@@ -21,18 +21,22 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
     public final VideoPlayerView mPlayer;
     public final ImageView mCover;
     public final TextViewFaSolid tvIconSound;
-    public final TextView tvTitle;
+    public final TextView tvTitle,tvLabelNoAudio;
 
     public VideoViewHolder(View view) {
         super(view);
         relativeLayout = view.findViewById(R.id.relativeLayout);
         tvTitle = view.findViewById(R.id.tvTitle);
+        tvLabelNoAudio = view.findViewById(R.id.tvLabelNoAudio);
         mPlayer = view.findViewById(R.id.player);
         mCover = view.findViewById(R.id.cover);
         tvIconSound = view.findViewById(R.id.tvIconSound);
         mPlayer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if(!mPlayer.hasAudio()){
+                    return false;
+                }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (mPlayer.isAllVideoMute()) {
                         mPlayer.unMuteVideo();
@@ -41,10 +45,10 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
                         mPlayer.muteVideo();
                         tvIconSound.setText(v.getContext().getResources().getText(R.string.fa_volume_mute));
                     }
-
                 }
                 return true;
             }
         });
+
     }
 }

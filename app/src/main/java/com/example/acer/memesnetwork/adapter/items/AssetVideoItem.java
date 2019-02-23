@@ -39,9 +39,15 @@ public class AssetVideoItem extends BaseVideoItem{
     }
 
 
+//    @Override
+//    public void playNewVideo(MetaData currentItemMetaData, VideoPlayerView player, VideoPlayerManager<MetaData> videoPlayerManager) {
+//        videoPlayerManager.playNewVideo(currentItemMetaData, player, mAssetFileDescriptor);
+//    }
+
     @Override
-    public void playNewVideo(MetaData currentItemMetaData, VideoPlayerView player, VideoPlayerManager<MetaData> videoPlayerManager) {
-        videoPlayerManager.playNewVideo(currentItemMetaData, player, mAssetFileDescriptor);
+    public void playNewVideo(MetaData currentItemMetaData, View view, VideoPlayerManager<MetaData> videoPlayerManager) {
+        videoPlayerManager.playNewVideo(currentItemMetaData, ((VideoViewHolder)view.getTag()).mPlayer, mAssetFileDescriptor);
+
     }
 
     @Override

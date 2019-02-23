@@ -66,7 +66,7 @@ public class VideoPlayerView extends ScalableTextureView
     private final ReadyForPlaybackIndicator mReadyForPlaybackIndicator = new ReadyForPlaybackIndicator();
 
     private final Set<MediaPlayerWrapper.MainThreadMediaPlayerListener> mMediaPlayerMainThreadListeners = new HashSet<>();
-
+    private boolean hasAudio = false;
     public MediaPlayerWrapper.State getCurrentState() {
         synchronized (mReadyForPlaybackIndicator) {
             return mMediaPlayer.getCurrentState();
@@ -130,6 +130,14 @@ public class VideoPlayerView extends ScalableTextureView
         synchronized (mReadyForPlaybackIndicator) {
             mMediaPlayer.release();
         }
+    }
+
+    public boolean hasAudio() {
+        return hasAudio;
+    }
+
+    public void setHasAudio(boolean hasAudio) {
+        this.hasAudio = hasAudio;
     }
 
     public void clearPlayerInstance() {
@@ -205,6 +213,11 @@ public class VideoPlayerView extends ScalableTextureView
     }
 
     public void start(){
+        if(isAllVideoMute()){
+            muteVideo();
+        }else{
+            unMuteVideo();
+        }
         if (SHOW_LOGS) Logger.v(TAG, ">> start");
         synchronized (mReadyForPlaybackIndicator){
             if(mReadyForPlaybackIndicator.isReadyForPlayback()){
@@ -231,6 +244,7 @@ public class VideoPlayerView extends ScalableTextureView
             }
         }
         if (SHOW_LOGS) Logger.v(TAG, "<< start");
+
     }
 
     private void initView() {

@@ -31,13 +31,13 @@ public abstract class BaseVideoItem implements VideoItem, ListItem {
     private Integer mWidth;
     private Integer mHeight;
     protected BaseVideoItem(VideoPlayerManager<MetaData> videoPlayerManager) {
-        mVideoPlayerManager = videoPlayerManager;
+        this.mVideoPlayerManager = videoPlayerManager;
 
     }
     protected BaseVideoItem(VideoPlayerManager<MetaData> videoPlayerManager, Integer width, Integer height) {
-        mVideoPlayerManager = videoPlayerManager;
-        mWidth = width;
-        mHeight = height;
+        this.mVideoPlayerManager = videoPlayerManager;
+        this.mWidth = width;
+        this.mHeight = height;
     }
 
     public Integer getContentWidth() {
@@ -46,6 +46,14 @@ public abstract class BaseVideoItem implements VideoItem, ListItem {
 
     public Integer getContentHeight() {
         return mHeight;
+    }
+
+    public void setContentWidth(Integer width){
+        this.mWidth = width;
+    }
+
+    public void setContentHeight(Integer height){
+        this.mHeight = height;
     }
 
     /**
@@ -62,7 +70,7 @@ public abstract class BaseVideoItem implements VideoItem, ListItem {
     @Override
     public void setActive(View newActiveView, int newActiveViewPosition) {
         VideoViewHolder viewHolder = (VideoViewHolder) newActiveView.getTag();
-        playNewVideo(new CurrentItemMetaData(newActiveViewPosition, newActiveView), viewHolder.mPlayer, mVideoPlayerManager);
+        playNewVideo(new CurrentItemMetaData(newActiveViewPosition, newActiveView), newActiveView, mVideoPlayerManager);
     }
 
     /**
@@ -98,7 +106,6 @@ public abstract class BaseVideoItem implements VideoItem, ListItem {
                     // sound is on
                     videoViewHolder.tvIconSound.setText(parent.getContext().getResources().getText(R.string.fa_volume_up));
                 }
-                videoViewHolder.tvIconSound.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -117,7 +124,6 @@ public abstract class BaseVideoItem implements VideoItem, ListItem {
             public void onVideoStoppedMainThread() {
                 // Show the cover when video stopped
                 videoViewHolder.mCover.setVisibility(View.VISIBLE);
-                //videoViewHolder.tvIconSound.setVisibility(View.GONE);
             }
         });
         return view;

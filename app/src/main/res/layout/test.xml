@@ -107,6 +107,16 @@
                 android:text="@string/fa_volume_mute"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
+            <TextView
+                android:id="@+id/tvLabelNoAudio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="25dp"
+                android:text="No Sound"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:textSize="11sp" />
 
         </RelativeLayout>
     </FrameLayout>
