@@ -3,6 +3,7 @@ package com.volokh.danylo.video_player_manager.manager;
 import android.content.res.AssetFileDescriptor;
 
 import com.volokh.danylo.video_player_manager.Config;
+import com.volokh.danylo.video_player_manager.Helper;
 import com.volokh.danylo.video_player_manager.meta.MetaData;
 import com.volokh.danylo.video_player_manager.player_messages.ClearPlayerInstance;
 import com.volokh.danylo.video_player_manager.player_messages.CreateNewPlayerInstance;
@@ -20,6 +21,7 @@ import com.volokh.danylo.video_player_manager.ui.MediaPlayerWrapper;
 import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
 import com.volokh.danylo.video_player_manager.utils.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -251,13 +253,24 @@ public class SingleVideoPlayerManager implements VideoPlayerManager<MetaData>, V
      */
     private void startPlayback(VideoPlayerView videoPlayerView, String videoUrl) {
         if(SHOW_LOGS) Logger.v(TAG, "startPlayback");
-
+//        if(Helper.videoCache==null){
+//            Helper.videoCache = new ArrayList<>();
+//        }
+//        if(Helper.videoCache.contains(videoPlayerView.getAssetFileDescriptorDataSource()))
+//        {
+//            startPlayback(videoPlayerView,videoPlayerView.get());
+//        }
         mPlayerHandler.addMessages(Arrays.asList(
                 new CreateNewPlayerInstance(videoPlayerView, this),
                 new SetUrlDataSourceMessage(videoPlayerView, videoUrl, this),
                 new Prepare(videoPlayerView, this),
                 new Start(videoPlayerView, this)
         ));
+
+//        if(!Helper.videoCache.contains(videoPlayerView.getAssetFileDescriptorDataSource()))
+//        {
+//            Helper.videoCache.add(videoPlayerView.getAssetFileDescriptorDataSource());
+//        }
     }
 
     private void startPlayback(VideoPlayerView videoPlayerView, AssetFileDescriptor assetFileDescriptor) {
