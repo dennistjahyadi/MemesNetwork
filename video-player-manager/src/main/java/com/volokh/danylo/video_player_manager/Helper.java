@@ -6,5 +6,4 @@ import java.util.List;
 
 public class Helper {
     public static List<AssetFileDescriptor> videoCache;
-
 }
