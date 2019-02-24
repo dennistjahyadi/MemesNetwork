@@ -61,14 +61,13 @@ public class DirectLinkVideoItem extends BaseVideoItem {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void update(int position, VideoViewHolder viewHolder, VideoPlayerManager videoPlayerManager) {
-        viewHolder.tvTitle.setText(mTitle);
-        viewHolder.mCover.setVisibility(View.VISIBLE);
-        mImageLoader.load(mCoverUrl).into(viewHolder.mCover);
+//        viewHolder.tvTitle.setText(mTitle);
+//        viewHolder.mCover.setVisibility(View.VISIBLE);
+//        mImageLoader.load(mCoverUrl).into(viewHolder.mCover);
         if (isVideo && mDirectUrl != null) {
             // if video = set audio visibility true
             if (hasAudio) {
@@ -100,11 +99,61 @@ public class DirectLinkVideoItem extends BaseVideoItem {
             VideoViewHolder viewHolder = (VideoViewHolder) view.getTag();
             VideoPlayerView player = viewHolder.mPlayer;
             videoPlayerManager.playNewVideo(currentItemMetaData, player, mDirectUrl);
+        }else{
+            videoPlayerManager.resetMediaPlayer();
         }
     }
 
     @Override
     public void stopPlayback(VideoPlayerManager videoPlayerManager) {
         videoPlayerManager.stopAnyPlayback();
+    }
+
+    public String getmDirectUrl() {
+        return mDirectUrl;
+    }
+
+    public void setmDirectUrl(String mDirectUrl) {
+        this.mDirectUrl = mDirectUrl;
+    }
+
+    public String getmTitle() {
+        return mTitle;
+    }
+
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public Picasso getmImageLoader() {
+        return mImageLoader;
+    }
+
+    public void setmImageLoader(Picasso mImageLoader) {
+        this.mImageLoader = mImageLoader;
+    }
+
+    public String getmCoverUrl() {
+        return mCoverUrl;
+    }
+
+    public void setmCoverUrl(String mCoverUrl) {
+        this.mCoverUrl = mCoverUrl;
+    }
+
+    public boolean isHasAudio() {
+        return hasAudio;
+    }
+
+    public void setHasAudio(boolean hasAudio) {
+        this.hasAudio = hasAudio;
+    }
+
+    public boolean isVideo() {
+        return isVideo;
+    }
+
+    public void setVideo(boolean video) {
+        isVideo = video;
     }
 }

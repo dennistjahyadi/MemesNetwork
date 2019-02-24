@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.acer.memesnetwork.adapter.holders.VideoViewHolder;
 import com.example.acer.memesnetwork.adapter.items.BaseVideoItem;
+import com.example.acer.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
 
 import java.util.List;
@@ -67,6 +68,12 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         layoutParams.width = (int) finalWidth;
         layoutParams.height = (int) finalHeight;
         viewHolder.relativeLayout.setLayoutParams(layoutParams);
+
+        DirectLinkVideoItem directLinkVideoItem = (DirectLinkVideoItem) videoItem;
+
+        viewHolder.tvTitle.setText(directLinkVideoItem.getmTitle());
+        viewHolder.mCover.setVisibility(View.VISIBLE);
+        directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl()).into(viewHolder.mCover);
 
         videoItem.update(position, viewHolder, mVideoPlayerManager);
     }

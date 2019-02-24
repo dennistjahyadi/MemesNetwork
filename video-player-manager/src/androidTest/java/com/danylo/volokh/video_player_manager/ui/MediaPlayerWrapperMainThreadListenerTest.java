@@ -1,6 +1,8 @@
 package com.danylo.volokh.video_player_manager.ui;
 
 
+import android.util.Log;
+
 import com.volokh.danylo.video_player_manager.Config;
 import com.volokh.danylo.video_player_manager.ui.MediaPlayerWrapper;
 import com.volokh.danylo.video_player_manager.utils.Logger;
@@ -50,6 +52,7 @@ public class MediaPlayerWrapperMainThreadListenerTest {
 
         @Override
         public void onErrorMainThread(int what, int extra) {
+
         }
 
         @Override

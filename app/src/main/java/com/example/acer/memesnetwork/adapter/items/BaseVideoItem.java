@@ -2,6 +2,7 @@ package com.example.acer.memesnetwork.adapter.items;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,6 +115,8 @@ public abstract class BaseVideoItem implements VideoItem, ListItem {
 
             @Override
             public void onErrorMainThread(int what, int extra) {
+                Log.v("Error State","errorr");
+                mVideoPlayerManager.resetMediaPlayer();
             }
 
             @Override

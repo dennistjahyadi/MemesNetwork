@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.AbsListView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -19,6 +20,7 @@ import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
 import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
 import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
 import com.volokh.danylo.video_player_manager.meta.MetaData;
+import com.volokh.danylo.video_player_manager.ui.SimpleMainThreadMediaPlayerListener;
 import com.volokh.danylo.visibility_utils.calculator.DefaultSingleItemCalculatorCallback;
 import com.volokh.danylo.visibility_utils.calculator.ListItemsVisibilityCalculator;
 import com.volokh.danylo.visibility_utils.calculator.SingleListViewItemActiveCalculator;
@@ -81,33 +83,69 @@ public class MainActivity extends AppCompatActivity {
         videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(mVideoPlayerManager, MainActivity.this, mList);
 
         rvMemes.setAdapter(videoRecyclerViewAdapter);
-        rvMemes.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
+        rvMemes.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
-                mScrollState = scrollState;
-                if (scrollState == RecyclerView.SCROLL_STATE_IDLE && !mList.isEmpty()) {
+                if(!mList.isEmpty()){
+                    // need to call this method from list view handler in order to have filled list
+                    rvMemes.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                mVideoVisibilityCalculator.onScrollStateIdle(
+                                        mItemsPositionGetter,
+                                        mLayoutManager.findFirstVisibleItemPosition(),
+                                        mLayoutManager.findLastVisibleItemPosition());
+                            } catch (ArrayIndexOutOfBoundsException e) {
 
-                    mVideoVisibilityCalculator.onScrollStateIdle(
-                            mItemsPositionGetter,
-                            mLayoutManager.findFirstVisibleItemPosition(),
-                            mLayoutManager.findLastVisibleItemPosition());
+                            }
+                        }
+                    });
+
+                    mScrollState = scrollState;
+                    try {
+                        mVideoVisibilityCalculator.onScrollStateIdle(
+                                mItemsPositionGetter,
+                                mLayoutManager.findFirstVisibleItemPosition(),
+                                mLayoutManager.findLastVisibleItemPosition());
+                    } catch (ArrayIndexOutOfBoundsException e) {
+
+                    }
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (!mList.isEmpty()) {
+                if(!mList.isEmpty()){
+                    // need to call this method from list view handler in order to have filled list
+                    rvMemes.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                mVideoVisibilityCalculator.onScrollStateIdle(
+                                        mItemsPositionGetter,
+                                        mLayoutManager.findFirstVisibleItemPosition(),
+                                        mLayoutManager.findLastVisibleItemPosition());
+                            } catch (ArrayIndexOutOfBoundsException e) {
 
-                    mVideoVisibilityCalculator.onScroll(
-                            mItemsPositionGetter,
-                            mLayoutManager.findFirstVisibleItemPosition(),
-                            mLayoutManager.findLastVisibleItemPosition() - mLayoutManager.findFirstVisibleItemPosition() + 1,
-                            mScrollState);
+                            }
+                        }
+                    });
+
+                    try {
+                        mVideoVisibilityCalculator.onScrollStateIdle(
+                                mItemsPositionGetter,
+                                mLayoutManager.findFirstVisibleItemPosition(),
+                                mLayoutManager.findLastVisibleItemPosition());
+                    } catch (ArrayIndexOutOfBoundsException e) {
+
+                    }
                 }
             }
         });
         mItemsPositionGetter = new RecyclerViewItemPositionGetter(mLayoutManager, rvMemes);
+
         fetchData();
     }
 
