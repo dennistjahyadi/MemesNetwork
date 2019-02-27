@@ -225,6 +225,15 @@ public class SingleVideoPlayerManager implements VideoPlayerManager<MetaData>, V
         if(SHOW_LOGS) Logger.v(TAG, "<< stopAnyPlayback, mCurrentPlayerState " + mCurrentPlayerState);
     }
 
+
+    @Override
+    public void resume() {
+        if(mCurrentPlayer!=null){
+            mCurrentPlayer.resume();
+        }
+    }
+
+
     /**
      * This method stops current playback and resets MediaPlayer.
      * Call it when you no longer need it.

@@ -42,4 +42,7 @@ public interface VideoPlayerManager<T extends MetaData> {
      * Call it if you no longer need the player
      */
     void resetMediaPlayer();
+
+    void resume();
+
 }

@@ -545,6 +545,15 @@ public class VideoPlayerView extends ScalableTextureView
         if (SHOW_LOGS) Logger.d(TAG, "<< pause");
     }
 
+    public void resume(){
+        synchronized (mReadyForPlaybackIndicator){
+            // have to notify worker thread in case we exited this screen without getting ready for playback
+            mReadyForPlaybackIndicator.notifyAll();
+        }
+    }
+
+
+
     /**
      * @see MediaPlayer#getDuration()
      */

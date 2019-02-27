@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.acer.memesnetwork.R;
 import com.example.acer.memesnetwork.components.TextViewFaSolid;
+import com.volokh.danylo.video_player_manager.ui.MediaPlayerWrapper;
 import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
 import com.volokh.danylo.visibility_utils.items.ListItemData;
 
@@ -38,6 +39,7 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
                     return false;
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
+
                     if (mPlayer.isAllVideoMute()) {
                         mPlayer.unMuteVideo();
                         tvIconSound.setText(v.getContext().getResources().getText(R.string.fa_volume_up));
