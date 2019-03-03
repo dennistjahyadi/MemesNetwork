@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
-
     <FrameLayout
         android:id="@+id/linTop"
         android:layout_width="match_parent"
@@ -117,7 +115,6 @@
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:textSize="11sp" />
-
         </RelativeLayout>
     </FrameLayout>
 
@@ -194,8 +191,6 @@
                 android:layout_toRightOf="@id/tvBtnComment"
                 android:text="0"
                 android:textSize="20dp" />
-
         </RelativeLayout>
     </FrameLayout>
-
 </android.support.constraint.ConstraintLayout>

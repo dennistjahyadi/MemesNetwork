@@ -54,8 +54,6 @@ public class MainActivity2 extends AppCompatActivity {
                        fragmentList.get(i).onPause();
                    }
                 }
-
-
             }
 
             @Override
@@ -69,7 +67,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     private void addFragments() {
         fragmentList.add(new NewFragment());
-        fragmentList.add(new NewFragment());
+      //  fragmentList.add(new NewFragment());
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -82,20 +80,12 @@ public class MainActivity2 extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-//            switch (position) {
-//                case 0:
-//                    return new NewFragment();
-//                case 1:
-//                    return new NewFragment();
-//                default:
-//                    return null;
-//            }
             return fragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 1;
         }
 
         @Override
@@ -103,8 +93,7 @@ public class MainActivity2 extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return "New";
-                case 1:
-                    return "Fresh";
+
                 default:
                     return null;
             }
