@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.acer.memesnetwork.R;
 import com.example.acer.memesnetwork.adapter.holders.VideoViewHolder;
+import com.example.acer.memesnetwork.adapter.items.BaseVideoItem;
 import com.example.acer.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.example.acer.memesnetwork.components.TextViewFaSolid;
 import com.volokh.danylo.video_player_manager.ui.MediaPlayerWrapper;
@@ -26,14 +27,16 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private List<Map<String, Object>> itemList;
+    private BaseVideoItem videoItem;
     private Context context;
     float finalWidth;
     float finalHeight;
 
     float maxHeightVideo;
-    public CommentRecyclerViewAdapter(Context context, List<Map<String, Object>> itemList) {
+    public CommentRecyclerViewAdapter(Context context, List<Map<String, Object>> itemList,BaseVideoItem videoItem) {
         this.context = context;
         this.itemList = itemList;
+        this.videoItem = videoItem;
     }
 
     class MyViewHolderHeader extends RecyclerView.ViewHolder {

@@ -75,6 +75,13 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         viewHolder.mCover.setVisibility(View.VISIBLE);
         directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl()).into(viewHolder.mCover);
 
+        viewHolder.linBtnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         videoItem.update(position, viewHolder, mVideoPlayerManager);
     }
 

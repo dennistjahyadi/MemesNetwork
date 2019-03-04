@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,7 +19,7 @@ import com.volokh.danylo.visibility_utils.items.ListItemData;
 public class VideoViewHolder extends RecyclerView.ViewHolder {
 
     public final RelativeLayout relativeLayout;
-
+    public final LinearLayout linBtnLike,linBtnDislike,linBtnComment;
     public final VideoPlayerView mPlayer;
     public final ImageView mCover;
     public final TextViewFaSolid tvIconSound;
@@ -27,6 +28,9 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
     public VideoViewHolder(View view) {
         super(view);
         relativeLayout = view.findViewById(R.id.relativeLayout);
+        linBtnLike = view.findViewById(R.id.linBtnLike);
+        linBtnDislike = view.findViewById(R.id.linBtnDislike);
+        linBtnComment = view.findViewById(R.id.linBtnComment);
         tvTitle = view.findViewById(R.id.tvTitle);
         tvLabelNoAudio = view.findViewById(R.id.tvLabelNoAudio);
         mPlayer = view.findViewById(R.id.player);
