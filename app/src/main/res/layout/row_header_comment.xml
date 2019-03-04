@@ -28,6 +28,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_centerVertical="true"
+                    android:src="@drawable/profile_img_default"
                     android:layout_marginLeft="20dp" />
 
                 <TextView

@@ -28,6 +28,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/ivPicture"
                     android:layout_width="35dp"
+                    android:src="@drawable/profile_img_default"
                     android:layout_height="35dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp" />
