@@ -1,10 +1,12 @@
 package com.example.acer.memesnetwork.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.acer.memesnetwork.activities.CommentActivity;
 import com.example.acer.memesnetwork.adapter.holders.VideoViewHolder;
 import com.example.acer.memesnetwork.adapter.items.BaseVideoItem;
 import com.example.acer.memesnetwork.adapter.items.DirectLinkVideoItem;
@@ -22,7 +24,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     private final Context mContext;
     float finalWidth;
     float finalHeight;
-
+    public static BaseVideoItem currentVideoItem;
     float maxHeightVideo;
 
     public VideoRecyclerViewAdapter(VideoPlayerManager videoPlayerManager, Context context, List<BaseVideoItem> list) {
@@ -43,7 +45,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
 
     @Override
     public void onBindViewHolder(VideoViewHolder viewHolder, int position) {
-        BaseVideoItem videoItem = mList.get(position);
+        final BaseVideoItem videoItem = mList.get(position);
         if (videoItem.getContentHeight() > videoItem.getContentWidth()) {
             // if video is potrait
             float ratio = (float) videoItem.getContentHeight() / videoItem.getContentWidth();
@@ -78,7 +80,17 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         viewHolder.linBtnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                currentVideoItem = videoItem;
+                Intent i = new Intent(mContext,CommentActivity.class);
+                mContext.startActivity(i);
+            }
+        });
+        viewHolder.tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentVideoItem = videoItem;
+                Intent i = new Intent(mContext,CommentActivity.class);
+                mContext.startActivity(i);
             }
         });
 

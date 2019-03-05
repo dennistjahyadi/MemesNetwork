@@ -1,6 +1,7 @@
 package com.example.acer.memesnetwork.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,11 +13,25 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
 import com.example.acer.memesnetwork.R;
+import com.example.acer.memesnetwork.activities.CommentActivity;
 import com.example.acer.memesnetwork.adapter.holders.VideoViewHolder;
 import com.example.acer.memesnetwork.adapter.items.BaseVideoItem;
 import com.example.acer.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.example.acer.memesnetwork.components.TextViewFaSolid;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
 import com.volokh.danylo.video_player_manager.ui.MediaPlayerWrapper;
 import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
 
@@ -31,17 +46,21 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private Context context;
     float finalWidth;
     float finalHeight;
-
     float maxHeightVideo;
+
     public CommentRecyclerViewAdapter(Context context, List<Map<String, Object>> itemList,BaseVideoItem videoItem) {
         this.context = context;
         this.itemList = itemList;
         this.videoItem = videoItem;
+        finalWidth = context.getResources().getDisplayMetrics().widthPixels;  // default phone width
+        finalHeight = context.getResources().getDisplayMetrics().heightPixels; // default phone heights
+        maxHeightVideo = (float) context.getResources().getDisplayMetrics().heightPixels * 0.8f; // set default maximum video size in phone
     }
 
     class MyViewHolderHeader extends RecyclerView.ViewHolder {
         public final RelativeLayout relativeLayout;
-        public final VideoPlayerView mPlayer;
+        public final PlayerView playerView;
+        public final SimpleExoPlayer player;
         public final ImageView mCover;
         public final TextViewFaSolid tvIconSound;
         public final TextView tvTitle,tvLabelNoAudio;
@@ -50,28 +69,11 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             relativeLayout = view.findViewById(R.id.relativeLayout);
             tvTitle = view.findViewById(R.id.tvTitle);
             tvLabelNoAudio = view.findViewById(R.id.tvLabelNoAudio);
-            mPlayer = view.findViewById(R.id.player);
+            playerView = view.findViewById(R.id.playerView);
             mCover = view.findViewById(R.id.cover);
             tvIconSound = view.findViewById(R.id.tvIconSound);
-            mPlayer.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if(!mPlayer.hasAudio()){
-                        return false;
-                    }
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-
-                        if (mPlayer.isAllVideoMute()) {
-                            mPlayer.unMuteVideo();
-                            tvIconSound.setText(v.getContext().getResources().getText(R.string.fa_volume_up));
-                        } else {
-                            mPlayer.muteVideo();
-                            tvIconSound.setText(v.getContext().getResources().getText(R.string.fa_volume_mute));
-                        }
-                    }
-                    return true;
-                }
-            });
+            player = ExoPlayerFactory.newSimpleInstance(context);
+            playerView.setPlayer(player);
 
         }
     }
@@ -100,36 +102,52 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolderHeader) {
             MyViewHolderHeader vhHeader = (MyViewHolderHeader) holder;
-//            if (((MyViewHolderHeader) holder).mPlayer.getContentHeight() > videoItem.getContentWidth()) {
-//                // if video is potrait
-//                float ratio = (float) videoItem.getContentHeight() / videoItem.getContentWidth();
+            if (videoItem.getContentHeight() > videoItem.getContentWidth()) {
+                // if video is potrait
+                float ratio = (float) videoItem.getContentHeight() / videoItem.getContentWidth();
+
+                finalHeight = finalWidth * ratio;
+                // if final height higher or same with phone height, we have to decrease it to make the video fit in phone. It will show around 3/4 phone screen
+                if (finalHeight >= maxHeightVideo) {
+                    finalHeight = maxHeightVideo * 0.7f;
+                }
+
+            } else if (videoItem.getContentHeight() < videoItem.getContentWidth()) {
+                // if video is landscape
+                float ratio = (float) videoItem.getContentWidth() / videoItem.getContentHeight();
+
+                finalHeight = finalWidth / ratio;
+            } else {
+                // if video is square
+                finalHeight = finalWidth;
+            }
+
+            ViewGroup.LayoutParams layoutParams = vhHeader.relativeLayout.getLayoutParams();
+            layoutParams.width = (int) finalWidth;
+            layoutParams.height = (int) finalHeight;
+            vhHeader.relativeLayout.setLayoutParams(layoutParams);
+
+            DirectLinkVideoItem directLinkVideoItem = (DirectLinkVideoItem) videoItem;
+
+            vhHeader.tvTitle.setText(directLinkVideoItem.getmTitle());
+//            vhHeader.mCover.setVisibility(View.VISIBLE);
 //
-//                finalHeight = finalWidth * ratio;
-//                // if final height higher or same with phone height, we have to decrease it to make the video fit in phone. It will show around 3/4 phone screen
-//                if (finalHeight >= maxHeightVideo) {
-//                    finalHeight = maxHeightVideo * 0.7f;
-//                }
-//
-//            } else if (videoItem.getContentHeight() < videoItem.getContentWidth()) {
-//                // if video is landscape
-//                float ratio = (float) videoItem.getContentWidth() / videoItem.getContentHeight();
-//
-//                finalHeight = finalWidth / ratio;
-//            } else {
-//                // if video is square
-//                finalHeight = finalWidth;
-//            }
-//
-//            ViewGroup.LayoutParams layoutParams = viewHolder.relativeLayout.getLayoutParams();
-//            layoutParams.width = (int) finalWidth;
-//            layoutParams.height = (int) finalHeight;
-//            viewHolder.relativeLayout.setLayoutParams(layoutParams);
-//
-//            DirectLinkVideoItem directLinkVideoItem = (DirectLinkVideoItem) videoItem;
-//
-//            viewHolder.tvTitle.setText(directLinkVideoItem.getmTitle());
-//            viewHolder.mCover.setVisibility(View.VISIBLE);
-//            directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl()).into(viewHolder.mCover);
+//            Picasso.get().load(directLinkVideoItem.getmCoverUrl())
+//                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+//                    .networkPolicy(NetworkPolicy.NO_CACHE)
+//                    .resize(0, vhHeader.mCover.getHeight())
+//                    .into(vhHeader.mCover);
+// Produces DataSource instances through which media data is loaded.
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
+                    Util.getUserAgent(context, "yourApplicationName"));
+// This is the MediaSource representing the media to be played.
+
+            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(Uri.parse(directLinkVideoItem.getmDirectUrl()));
+
+// Prepare the player with the source.
+            vhHeader.player.prepare(videoSource);
+            vhHeader.player.setPlayWhenReady(true);
 
         } else if (holder instanceof MyViewHolderItem) {
             final Map<String, Object> obj = itemList.get(position-1);
@@ -154,5 +172,9 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public int getItemCount() {
         return itemList.size() + 1;
+    }
+
+    private void sendComment(){
+
     }
 }
