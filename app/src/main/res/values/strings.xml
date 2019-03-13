@@ -6,5 +6,6 @@
     <string name="fa_thumbs_down">&#xf165;</string>
     <string name="fa_comment">&#xf075;</string>
     <string name="fa_arrow_left">&#xf060;</string>
-
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

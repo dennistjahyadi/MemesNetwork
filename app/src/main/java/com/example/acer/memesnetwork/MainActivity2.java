@@ -1,102 +1,118 @@
 package com.example.acer.memesnetwork;
 
-import android.app.ActionBar;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
 
-import com.example.acer.memesnetwork.fragments.NewFragment;
+import com.example.acer.memesnetwork.fragments.NewestMemesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity2 extends AppCompatActivity {
-    private ViewPagerAdapter demoCollectionPagerAdapter;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
+
     private List<Fragment> fragmentList = new ArrayList<>();
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayShowHomeEnabled(true);
         addFragments();
-        demoCollectionPagerAdapter =
-                new ViewPagerAdapter(getSupportFragmentManager(), fragmentList);
-        viewPager = findViewById(R.id.pager);
-        viewPager.setAdapter(demoCollectionPagerAdapter);
-        tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        // when first start, pause other fragments
-        for(int i=0;i<fragmentList.size();i++){
-            fragmentList.get(i).onPause();
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            toggle.getDrawerArrowDrawable().setColor(getColor(R.color.white));
+        } else {
+            toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         }
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        drawerLayout.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+        navigationView = findViewById(R.id.nav_view);
 
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        Fragment fragment = null;
+                        FragmentManager fragmentManager = getSupportFragmentManager(); // For A
+                        int itemId = menuItem.getItemId();
+                        switch (itemId) {
+                            case R.id.newest:
+                                fragment = new NewestMemesFragment();
+                                break;
+                            case R.id.favorite:
+                                break;
+                        }
+                        if (fragment != null) {
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.content_frame, fragment)
+                                    .commit();
+                        }
 
-            }
+                        // close drawer when item is tapped
+                        drawerLayout.closeDrawers();
 
-            @Override
-            public void onPageSelected(int position) {
-                // Here's your instance
-                fragmentList.get(position).onResume();
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
 
-                for(int i=0;i<fragmentList.size();i++){
-                   if(i!=position){
-                       fragmentList.get(i).onPause();
-                   }
-                }
-            }
+                        return true;
+                    }
+                });
+        firstLayout();
+    }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
+    private void firstLayout(){
+        Fragment fragment = new NewestMemesFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager(); // For A
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
+        }
+        navigationView.getMenu().getItem(0).setChecked(true);
 
     }
 
     private void addFragments() {
-        fragmentList.add(new NewFragment());
-      //  fragmentList.add(new NewFragment());
+        fragmentList.add(new NewestMemesFragment());
+        //  fragmentList.add(new NewestMemesFragment());
     }
 
-    class ViewPagerAdapter extends FragmentStatePagerAdapter {
-        private List<Fragment> fragmentList;
-
-        public ViewPagerAdapter(FragmentManager fm, List<Fragment> fragmentList) {
-            super(fm);
-            this.fragmentList = fragmentList;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
         }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "New";
-
-                default:
-                    return null;
-            }
-        }
+        return super.onOptionsItemSelected(item);
     }
 }

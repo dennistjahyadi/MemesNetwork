@@ -39,7 +39,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class NewFragment extends Fragment {
+public class NewestMemesFragment extends Fragment {
 
     private final ArrayList<BaseVideoItem> mList = new ArrayList<>();
 
