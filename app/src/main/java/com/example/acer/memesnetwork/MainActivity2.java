@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.acer.memesnetwork.fragments.NewestMemesFragment;
 import com.example.acer.memesnetwork.utils.SharedPreferenceUtils;
@@ -29,6 +32,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +111,29 @@ public class MainActivity2 extends AppCompatActivity {
                         return true;
                     }
                 });
+        String userData = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_DATA, "");
+        View headerView = navigationView.getHeaderView(0);
+
+        ConstraintLayout clSignedIn = headerView.findViewById(R.id.clSignedIn);
+        ConstraintLayout clSignedOut = headerView.findViewById(R.id.clSignedOut);
+        ImageView ivProfile = headerView.findViewById(R.id.ivProfile);
+        TextView navUsername = headerView.findViewById(R.id.tvName);
+        if (!userData.equals("")) {
+            clSignedIn.setVisibility(View.VISIBLE);
+            clSignedOut.setVisibility(View.GONE);
+            try {
+                JSONObject jsonObject = new JSONObject(userData);
+
+               //   navUsername.setText(jsonObject.getString("name"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else{
+            clSignedIn.setVisibility(View.GONE);
+            clSignedOut.setVisibility(View.VISIBLE);
+        }
+
         firstLayout();
     }
 
