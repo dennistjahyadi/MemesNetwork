@@ -4,15 +4,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.example.acer.memesnetwork.utils.SharedPreferenceUtils;
+import com.example.acer.memesnetwork.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final int RC_SIGN_IN = 1;
@@ -46,10 +55,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (account != null) {
             // user is log in
 
+            syncDatabase(account);
         } else {
             // user not log in
-
+            SharedPreferenceUtils.removeAllPrefs(getApplicationContext());
         }
+    }
+
+    private void syncDatabase(GoogleSignInAccount account){
+        String name = account.getDisplayName();
+        String email = account.getEmail();
+        String photoUrl = account.getPhotoUrl().getPath();
+        SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_EMAIL, email);
+        SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_NAME, name);
+        SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL, photoUrl);
+        SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, true);
+        final JSONObject jsonObject = new JSONObject();
+        try {
+             jsonObject.put("name", etLogin.getText().toString());
+             jsonObject.put("email", email);
+            jsonObject.put("messages", etComment.getText().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        AndroidNetworking.post(Utils.API_URL + "")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // do anything with response
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject result = response.getJSONObject(i);
+
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
     }
 
     @Override
