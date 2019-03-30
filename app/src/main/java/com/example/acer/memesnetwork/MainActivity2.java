@@ -103,24 +103,21 @@ public class MainActivity2 extends AppCompatActivity {
                         return true;
                     }
                 });
-        String userData = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_DATA, "");
+        Boolean isUserLoggedIn = SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false);
         View headerView = navigationView.getHeaderView(0);
 
         ConstraintLayout clSignedIn = headerView.findViewById(R.id.clSignedIn);
         ConstraintLayout clSignedOut = headerView.findViewById(R.id.clSignedOut);
         ImageView ivProfile = headerView.findViewById(R.id.ivProfile);
         TextView navUsername = headerView.findViewById(R.id.tvName);
-        if (!userData.equals("")) {
+        if (isUserLoggedIn) {
             clSignedIn.setVisibility(View.VISIBLE);
             clSignedOut.setVisibility(View.GONE);
-            try {
-                JSONObject jsonObject = new JSONObject(userData);
-
-               //   navUsername.setText(jsonObject.getString("name"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            String username = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_NAME,"");
+            if(username.equals("")){
+                // run choose username activity
             }
+
         }else{
             clSignedIn.setVisibility(View.GONE);
             clSignedOut.setVisibility(View.VISIBLE);

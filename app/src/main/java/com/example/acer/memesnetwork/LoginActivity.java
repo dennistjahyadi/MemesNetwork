@@ -63,22 +63,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void syncDatabase(GoogleSignInAccount account){
-        String name = account.getDisplayName();
         String email = account.getEmail();
-        String photoUrl = account.getPhotoUrl().getPath();
         SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_EMAIL, email);
-        SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_NAME, name);
-        SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL, photoUrl);
         SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, true);
         final JSONObject jsonObject = new JSONObject();
         try {
-             jsonObject.put("name", etLogin.getText().toString());
-             jsonObject.put("email", email);
-            jsonObject.put("messages", etComment.getText().toString());
+            jsonObject.put("email", email);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post(Utils.API_URL + "")
+        AndroidNetworking.post(Utils.API_URL + "syncusers")
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
