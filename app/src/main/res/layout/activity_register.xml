@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
 
-                <com.example.acer.memesnetwork.components.TextViewFaSolid
+                <com.dovoo.memesnetwork.components.TextViewFaSolid
                     android:id="@+id/tvBtnBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

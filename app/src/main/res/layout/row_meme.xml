@@ -106,7 +106,7 @@
                     android:adjustViewBounds="true" />
             </LinearLayout>
 
-            <com.example.acer.memesnetwork.components.TextViewFaSolid
+            <com.dovoo.memesnetwork.components.TextViewFaSolid
                 android:id="@+id/tvIconSound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
                 android:layout_marginLeft="32dp"
                 android:orientation="horizontal">
 
-                <com.example.acer.memesnetwork.components.TextViewFaRegular
+                <com.dovoo.memesnetwork.components.TextViewFaRegular
                     android:id="@+id/tvBtnLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                 android:layout_toRightOf="@id/linBtnLike"
                 android:orientation="horizontal">
 
-                <com.example.acer.memesnetwork.components.TextViewFaRegular
+                <com.dovoo.memesnetwork.components.TextViewFaRegular
                     android:id="@+id/tvBtnDislike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -210,7 +210,7 @@
                 android:orientation="horizontal">
 
 
-                <com.example.acer.memesnetwork.components.TextViewFaRegular
+                <com.dovoo.memesnetwork.components.TextViewFaRegular
                     android:id="@+id/tvBtnComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
