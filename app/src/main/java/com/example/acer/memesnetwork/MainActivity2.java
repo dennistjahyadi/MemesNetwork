@@ -1,10 +1,9 @@
 package com.example.acer.memesnetwork;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,20 +13,27 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.acer.memesnetwork.fragments.NewestMemesFragment;
+import com.example.acer.memesnetwork.utils.SharedPreferenceUtils;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity2 extends AppCompatActivity {
-
+    private final int RC_SIGN_IN = 1;
+    private GoogleSignInClient mGoogleSignInClient;
     private List<Fragment> fragmentList = new ArrayList<>();
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -36,6 +42,17 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        init();
+    }
+
+    private void init() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -86,10 +103,30 @@ public class MainActivity2 extends AppCompatActivity {
                         return true;
                     }
                 });
+        Boolean isUserLoggedIn = SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false);
+        View headerView = navigationView.getHeaderView(0);
+
+        ConstraintLayout clSignedIn = headerView.findViewById(R.id.clSignedIn);
+        ConstraintLayout clSignedOut = headerView.findViewById(R.id.clSignedOut);
+        ImageView ivProfile = headerView.findViewById(R.id.ivProfile);
+        TextView navUsername = headerView.findViewById(R.id.tvName);
+        if (isUserLoggedIn) {
+            clSignedIn.setVisibility(View.VISIBLE);
+            clSignedOut.setVisibility(View.GONE);
+            String username = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_NAME,"");
+            if(username.equals("")){
+                // run choose username activity
+            }
+
+        }else{
+            clSignedIn.setVisibility(View.GONE);
+            clSignedOut.setVisibility(View.VISIBLE);
+        }
+
         firstLayout();
     }
 
-    private void firstLayout(){
+    private void firstLayout() {
         Fragment fragment = new NewestMemesFragment();
         FragmentManager fragmentManager = getSupportFragmentManager(); // For A
         if (fragment != null) {
@@ -105,6 +142,28 @@ public class MainActivity2 extends AppCompatActivity {
         fragmentList.add(new NewestMemesFragment());
         //  fragmentList.add(new NewestMemesFragment());
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(account);
+
+    }
+
+    private void updateUI(GoogleSignInAccount account) {
+        if (account != null) {
+            // user is log in
+            SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_LOGIN, account.getEmail());
+        } else {
+            // user not log in
+            SharedPreferenceUtils.removeAllPrefs(getApplicationContext());
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

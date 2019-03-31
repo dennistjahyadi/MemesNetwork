@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.acer.memesnetwork.LoginActivity;
 import com.example.acer.memesnetwork.activities.CommentActivity;
 import com.example.acer.memesnetwork.adapter.holders.VideoViewHolder;
 import com.example.acer.memesnetwork.adapter.items.BaseVideoItem;
 import com.example.acer.memesnetwork.adapter.items.DirectLinkVideoItem;
+import com.example.acer.memesnetwork.utils.SharedPreferenceUtils;
 import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
 
 import java.util.List;
@@ -94,11 +96,42 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
             }
         });
 
+        viewHolder.linBtnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!SharedPreferenceUtils.getPrefs(mContext).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,false)) {
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(i);
+                }else{
+                    doLike();
+                }
+            }
+        });
+
+        viewHolder.linBtnDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!SharedPreferenceUtils.getPrefs(mContext).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,false)) {
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(i);
+                }else{
+                    doDislike();
+                }
+            }
+        });
         videoItem.update(position, viewHolder, mVideoPlayerManager);
     }
 
     @Override
     public int getItemCount() {
         return mList.size();
+    }
+
+    private void doLike(){
+
+    }
+
+    private void doDislike(){
+
     }
 }
