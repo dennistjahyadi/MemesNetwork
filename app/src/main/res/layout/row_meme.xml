@@ -33,17 +33,24 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_centerVertical="true"
+                    android:visibility="gone"
                     android:layout_marginLeft="20dp"
                     android:src="@drawable/profile_img_default" />
 
                 <TextView
-                    android:id="@+id/tvName"
+                    android:id="@+id/tvCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="18dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:paddingRight="8dp"
+                    android:background="@drawable/category_round_bg"
                     android:layout_toRightOf="@+id/ivPicture"
                     android:text="name"
+                    android:textStyle="bold"
                     android:textColor="@color/white" />
 
             </RelativeLayout>

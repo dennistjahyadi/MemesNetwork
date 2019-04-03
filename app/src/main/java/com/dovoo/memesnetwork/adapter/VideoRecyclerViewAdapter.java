@@ -76,6 +76,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         DirectLinkVideoItem directLinkVideoItem = (DirectLinkVideoItem) videoItem;
 
         viewHolder.tvTitle.setText(directLinkVideoItem.getmTitle());
+        viewHolder.tvCategory.setText(directLinkVideoItem.getmCategory());
         viewHolder.mCover.setVisibility(View.VISIBLE);
         directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl()).into(viewHolder.mCover);
 

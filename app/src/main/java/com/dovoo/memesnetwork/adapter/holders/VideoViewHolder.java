@@ -20,7 +20,7 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
     public final VideoPlayerView mPlayer;
     public final ImageView mCover;
     public final TextViewFaSolid tvIconSound;
-    public final TextView tvTitle,tvLabelNoAudio;
+    public final TextView tvCategory,tvTitle,tvLabelNoAudio;
 
     public VideoViewHolder(View view) {
         super(view);
@@ -29,6 +29,7 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
         linBtnDislike = view.findViewById(R.id.linBtnDislike);
         linBtnComment = view.findViewById(R.id.linBtnComment);
         tvTitle = view.findViewById(R.id.tvTitle);
+        tvCategory = view.findViewById(R.id.tvCategory);
         tvLabelNoAudio = view.findViewById(R.id.tvLabelNoAudio);
         mPlayer = view.findViewById(R.id.player);
         mCover = view.findViewById(R.id.cover);

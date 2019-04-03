@@ -175,6 +175,7 @@ public class FavoritesMemesFragment extends Fragment {
                                 String type =  result.getString("type");
                                 JSONObject imagesObject = new JSONObject(result.getString("images"));
                                 String coverUrl = imagesObject.getJSONObject("image700").getString("url");
+                                String category = result.getString("post_section");
 
                                 String videoUrl = null;
                                 boolean isVideo = false;
@@ -188,7 +189,7 @@ public class FavoritesMemesFragment extends Fragment {
                                 int width = imagesObject.getJSONObject("image700").getInt("width");
                                 int height = imagesObject.getJSONObject("image700").getInt("height");
 
-                                mList.add(new DirectLinkVideoItem(title, Utils.SOURCE_URL + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.SOURCE_URL + coverUrl, width, height,hasAudio,isVideo));
+                                mList.add(new DirectLinkVideoItem(category, title, Utils.SOURCE_URL + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.SOURCE_URL + coverUrl, width, height,hasAudio,isVideo));
                             }
 
                             videoRecyclerViewAdapter.notifyDataSetChanged();

@@ -10,6 +10,8 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dovoo.memesnetwork.activities.ChooseUsernameActivity;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,7 +28,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final int RC_SIGN_IN = 1;
     private GoogleSignInClient mGoogleSignInClient;
-    private String clientId = "1016402780199-vooan9eglqpkrohktsfo25sadbl7ccn2.apps.googleusercontent.com"; // get from console.developer.google.com
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(clientId)
+                .requestIdToken(Utils.clientId)
                 .requestEmail()
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.
@@ -63,10 +65,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void syncDatabase(GoogleSignInAccount account){
-        String email = account.getEmail();
-        SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_EMAIL, email);
-        SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, true);
+    private void syncDatabase(GoogleSignInAccount account) {
+        final String email = account.getEmail();
+
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("email", email);
@@ -74,29 +75,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
         }
         AndroidNetworking.post(Utils.API_URL + "syncusers")
+                .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
                 .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
+                .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         // do anything with response
                         try {
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject result = response.getJSONObject(i);
+                            JSONObject data = response.getJSONObject("data");
+                            SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_EMAIL, email);
+                            SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, true);
 
-
+                            if(data.isNull("username")){
+                                Intent i = new Intent(getApplicationContext(),ChooseUsernameActivity.class);
+                                startActivity(i);
+                            }else{
+                                SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_NAME, data.getString("username"));
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                        finish();
+
                     }
 
                     @Override
-                    public void onError(ANError error) {
+                    public void onError(ANError anError) {
                         // handle error
+                        System.out.print("error");
                     }
                 });
+
     }
 
     @Override

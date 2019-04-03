@@ -20,7 +20,7 @@ public class DirectLinkVideoItem extends BaseVideoItem {
     private String mDirectUrl;
     private String mTitle;
     private Picasso mImageLoader;
-    private String mCoverUrl;
+    private String mCoverUrl,mCategory;
     private boolean hasAudio = false;
     private boolean isVideo = true;
 
@@ -34,7 +34,7 @@ public class DirectLinkVideoItem extends BaseVideoItem {
 
     }
 
-    public DirectLinkVideoItem(String title, String directUrl, VideoPlayerManager videoPlayerManager, Picasso imageLoader, String coverUrl, Integer width, Integer height, boolean hasAudio, boolean isVideo) {
+    public DirectLinkVideoItem(String category, String title, String directUrl, VideoPlayerManager videoPlayerManager, Picasso imageLoader, String coverUrl, Integer width, Integer height, boolean hasAudio, boolean isVideo) {
         super(videoPlayerManager, width, height);
         this.mDirectUrl = directUrl;
         this.mTitle = title;
@@ -42,6 +42,7 @@ public class DirectLinkVideoItem extends BaseVideoItem {
         this.mCoverUrl = coverUrl;
         this.hasAudio = hasAudio;
         this.isVideo = isVideo;
+        this.mCategory = category;
     }
 
     public DirectLinkVideoItem(VideoPlayerManager videoPlayerManager, Picasso imageLoader, JSONObject data) {
@@ -153,5 +154,13 @@ public class DirectLinkVideoItem extends BaseVideoItem {
 
     public void setVideo(boolean video) {
         isVideo = video;
+    }
+
+    public String getmCategory() {
+        return mCategory;
+    }
+
+    public void setmCategory(String mCategory) {
+        this.mCategory = mCategory;
     }
 }
