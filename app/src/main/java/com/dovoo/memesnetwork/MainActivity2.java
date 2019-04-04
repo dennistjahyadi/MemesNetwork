@@ -101,6 +101,17 @@ public class MainActivity2 extends AppCompatActivity {
                         return true;
                     }
                 });
+
+        firstLayout();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkUserLoggedIn();
+    }
+
+    private void checkUserLoggedIn(){
         Boolean isUserLoggedIn = SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false);
         View headerView = navigationView.getHeaderView(0);
 
@@ -115,13 +126,12 @@ public class MainActivity2 extends AppCompatActivity {
             if(username.equals("")){
                 // run choose username activity
             }
+            navUsername.setText(username);
 
         }else{
             clSignedIn.setVisibility(View.GONE);
             clSignedOut.setVisibility(View.VISIBLE);
         }
-
-        firstLayout();
     }
 
     private void firstLayout() {

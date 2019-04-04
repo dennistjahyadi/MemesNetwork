@@ -84,14 +84,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // do anything with response
                         try {
                             JSONObject data = response.getJSONObject("data");
-                            SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_EMAIL, email);
-                            SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, true);
+
 
                             if(data.isNull("username")){
                                 Intent i = new Intent(getApplicationContext(),ChooseUsernameActivity.class);
+                                i.putExtra("email",email);
                                 startActivity(i);
                             }else{
                                 SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_NAME, data.getString("username"));
+                                SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_EMAIL, email);
+                                SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, true);
                             }
 
                         } catch (JSONException e) {

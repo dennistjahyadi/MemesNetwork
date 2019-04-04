@@ -24,12 +24,18 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Fullscreen" />
+            android:theme="@style/AppTheme.Fullscreen"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name=".activities.CommentActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
 
+        <activity
+            android:name=".activities.ChooseUsernameActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>
