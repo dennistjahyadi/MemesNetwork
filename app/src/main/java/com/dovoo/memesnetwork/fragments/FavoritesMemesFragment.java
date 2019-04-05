@@ -189,7 +189,7 @@ public class FavoritesMemesFragment extends Fragment {
                                 int width = imagesObject.getJSONObject("image700").getInt("width");
                                 int height = imagesObject.getJSONObject("image700").getInt("height");
 
-                                mList.add(new DirectLinkVideoItem(category, title, Utils.SOURCE_URL + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.SOURCE_URL + coverUrl, width, height,hasAudio,isVideo));
+                                mList.add(new DirectLinkVideoItem(category, title,  videoUrl, mVideoPlayerManager, Picasso.get(),  coverUrl, width, height,hasAudio,isVideo));
                             }
 
                             videoRecyclerViewAdapter.notifyDataSetChanged();
