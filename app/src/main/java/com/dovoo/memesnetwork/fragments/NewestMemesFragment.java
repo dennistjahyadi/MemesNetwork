@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -19,6 +20,7 @@ import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.VideoRecyclerViewAdapter;
 import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
+import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.squareup.picasso.Picasso;
 import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
@@ -57,6 +59,7 @@ public class NewestMemesFragment extends Fragment {
      * items position in the RecyclerView and LayoutManager
      */
     private ItemsPositionGetter mItemsPositionGetter;
+    private FrameLayout loadingBar;
 
     /**
      * Here we use {@link SingleVideoPlayerManager}, which means that only one video playback is possible.
@@ -75,6 +78,7 @@ public class NewestMemesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new, container, false);
+        loadingBar = view.findViewById(R.id.loadingBar);
 
         rvMemes = view.findViewById(R.id.rvMemes);
         // use this setting to improve performance if you know that changes
@@ -148,20 +152,30 @@ public class NewestMemesFragment extends Fragment {
                 }
             }
         });
+
+        rvMemes.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                fetchData(totalItemsCount);
+            }
+        });
         mItemsPositionGetter = new RecyclerViewItemPositionGetter(mLayoutManager, rvMemes);
 
-        fetchData();
+        fetchData(0);
 
         return view;
     }
 
-    private void fetchData() {
+    private void fetchData(int offset) {
+        loadingBar.setVisibility(View.VISIBLE);
+
 //        for (int i = 0; i < 100; i++) {
 //         //   mList.add(new DirectLinkVideoItem("asddas", "https://img-9gag-fun.9cache.com/photo/aA3yqzp_460sv.mp4", mVideoPlayerManager, Picasso.get(), "https://img-9gag-fun.9cache.com/photo/aA3yqzp_460s.jpg"));
 //            mList.add(new DirectLinkVideoItem("asddas", "http://192.168.1.8:8000/sources/apm9AD8_460sv.mp4", mVideoPlayerManager, Picasso.get(), "http://192.168.1.8:8000/sources/apm9AD8_460s.jpg"));
 //
 //        }
         AndroidNetworking.get(Utils.API_URL + "index")
+                .addQueryParameter("offset", offset + "")
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
@@ -207,12 +221,16 @@ public class NewestMemesFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        loadingBar.setVisibility(View.GONE);
+
                     }
 
                     @Override
                     public void onError(ANError error) {
                         // handle error
                         System.out.print("a");
+                        loadingBar.setVisibility(View.GONE);
+
                     }
                 });
     }

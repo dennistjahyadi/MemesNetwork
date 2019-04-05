@@ -1,260 +1,185 @@
 package com.dovoo.memesnetwork;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.widget.AbsListView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.dovoo.memesnetwork.adapter.VideoRecyclerViewAdapter;
-import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
-import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
-import com.dovoo.memesnetwork.utils.Utils;
-import com.squareup.picasso.Picasso;
-import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
-import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
-import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
-import com.volokh.danylo.video_player_manager.meta.MetaData;
-import com.volokh.danylo.visibility_utils.calculator.DefaultSingleItemCalculatorCallback;
-import com.volokh.danylo.visibility_utils.calculator.ListItemsVisibilityCalculator;
-import com.volokh.danylo.visibility_utils.calculator.SingleListViewItemActiveCalculator;
-import com.volokh.danylo.visibility_utils.scroll_utils.ItemsPositionGetter;
-import com.volokh.danylo.visibility_utils.scroll_utils.RecyclerViewItemPositionGetter;
+import com.dovoo.memesnetwork.fragments.NewestMemesFragment;
+import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-
-    private final ArrayList<BaseVideoItem> mList = new ArrayList<>();
-
-    /**
-     * Only the one (most visible) view should be active (and playing).
-     * To calculate visibility of views we use {@link SingleListViewItemActiveCalculator}
-     */
-    private final ListItemsVisibilityCalculator mVideoVisibilityCalculator =
-            new SingleListViewItemActiveCalculator(new DefaultSingleItemCalculatorCallback(), mList);
-
-    private RecyclerView rvMemes;
-    private LinearLayoutManager mLayoutManager;
-    private VideoRecyclerViewAdapter videoRecyclerViewAdapter;
-    /**
-     * ItemsPositionGetter is used by {@link ListItemsVisibilityCalculator} for getting information about
-     * items position in the RecyclerView and LayoutManager
-     */
-    private ItemsPositionGetter mItemsPositionGetter;
-
-    /**
-     * Here we use {@link SingleVideoPlayerManager}, which means that only one video playback is possible.
-     */
-    private final VideoPlayerManager<MetaData> mVideoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
-        @Override
-        public void onPlayerItemChanged(MetaData metaData) {
-
-        }
-    });
-
-    private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
+    private final int RC_SIGN_IN = 1;
+    private GoogleSignInClient mGoogleSignInClient;
+    private List<Fragment> fragmentList = new ArrayList<>();
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
-
-
-        rvMemes = findViewById(R.id.rvMemes);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        rvMemes.setHasFixedSize(true);
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        rvMemes.setLayoutManager(mLayoutManager);
-
-        videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(mVideoPlayerManager, MainActivity.this, mList);
-
-        rvMemes.setAdapter(videoRecyclerViewAdapter);
-
-        rvMemes.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
-                if(!mList.isEmpty()){
-                    // need to call this method from list view handler in order to have filled list
-                    rvMemes.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                mVideoVisibilityCalculator.onScrollStateIdle(
-                                        mItemsPositionGetter,
-                                        mLayoutManager.findFirstVisibleItemPosition(),
-                                        mLayoutManager.findLastVisibleItemPosition());
-                            } catch (ArrayIndexOutOfBoundsException e) {
-
-                            }
-                        }
-                    });
-
-                    mScrollState = scrollState;
-                    try {
-                        mVideoVisibilityCalculator.onScrollStateIdle(
-                                mItemsPositionGetter,
-                                mLayoutManager.findFirstVisibleItemPosition(),
-                                mLayoutManager.findLastVisibleItemPosition());
-                    } catch (ArrayIndexOutOfBoundsException e) {
-
-                    }
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if(!mList.isEmpty()){
-                    // need to call this method from list view handler in order to have filled list
-                    rvMemes.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                mVideoVisibilityCalculator.onScrollStateIdle(
-                                        mItemsPositionGetter,
-                                        mLayoutManager.findFirstVisibleItemPosition(),
-                                        mLayoutManager.findLastVisibleItemPosition());
-                            } catch (ArrayIndexOutOfBoundsException e) {
-
-                            }
-                        }
-                    });
-
-                    try {
-                        mVideoVisibilityCalculator.onScrollStateIdle(
-                                mItemsPositionGetter,
-                                mLayoutManager.findFirstVisibleItemPosition(),
-                                mLayoutManager.findLastVisibleItemPosition());
-                    } catch (ArrayIndexOutOfBoundsException e) {
-
-                    }
-                }
-            }
-        });
-        mItemsPositionGetter = new RecyclerViewItemPositionGetter(mLayoutManager, rvMemes);
-
-        fetchData();
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        init();
     }
 
-    private void fetchData() {
+    private void init() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayShowHomeEnabled(true);
+        addFragments();
 
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
-//        for (int i = 0; i < 100; i++) {
-//         //   mList.add(new DirectLinkVideoItem("asddas", "https://img-9gag-fun.9cache.com/photo/aA3yqzp_460sv.mp4", mVideoPlayerManager, Picasso.get(), "https://img-9gag-fun.9cache.com/photo/aA3yqzp_460s.jpg"));
-//            mList.add(new DirectLinkVideoItem("asddas", "http://192.168.1.8:8000/sources/apm9AD8_460sv.mp4", mVideoPlayerManager, Picasso.get(), "http://192.168.1.8:8000/sources/apm9AD8_460s.jpg"));
-//
-//        }
-        AndroidNetworking.get(Utils.API_URL + "index")
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            toggle.getDrawerArrowDrawable().setColor(getColor(R.color.white));
+        } else {
+            toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
+        }
+        drawerLayout.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+        navigationView = findViewById(R.id.nav_view);
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                        // do anything with response
-                        try {
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject result = response.getJSONObject(i);
-                                String title = result.getString("title");
-                                String type =  result.getString("type");
-                                JSONObject imagesObject = new JSONObject(result.getString("images"));
-                                String coverUrl = imagesObject.getJSONObject("image700").getString("url");
-                                String category = result.getString("post_section");
-
-                                String videoUrl = null;
-                                boolean isVideo = false;
-                                boolean hasAudio = false;
-                                if(type.equalsIgnoreCase("animated")){
-                                    isVideo = true;
-                                    videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
-                                    hasAudio = (imagesObject.getJSONObject("image460sv").getInt("hasAudio")==1 ? true : false);
-                                }
-
-                                int width = imagesObject.getJSONObject("image700").getInt("width");
-                                int height = imagesObject.getJSONObject("image700").getInt("height");
-
-                                mList.add(new DirectLinkVideoItem(category, title,  videoUrl, mVideoPlayerManager, Picasso.get(),  coverUrl, width, height,hasAudio,isVideo));
-                            }
-
-                            videoRecyclerViewAdapter.notifyDataSetChanged();
-                            if (!mList.isEmpty()) {
-                                rvMemes.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mVideoVisibilityCalculator.onScrollStateIdle(
-                                                mItemsPositionGetter,
-                                                mLayoutManager.findFirstVisibleItemPosition(),
-                                                mLayoutManager.findLastVisibleItemPosition());
-
-                                    }
-                                });
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        Fragment fragment = null;
+                        FragmentManager fragmentManager = getSupportFragmentManager(); // For A
+                        int itemId = menuItem.getItemId();
+                        switch (itemId) {
+                            case R.id.newest:
+                                fragment = new NewestMemesFragment();
+                                break;
+                            case R.id.favorite:
+                                break;
                         }
-                    }
+                        if (fragment != null) {
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.content_frame, fragment)
+                                    .commit();
+                        }
 
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
+                        // close drawer when item is tapped
+                        drawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
                     }
                 });
+
+        firstLayout();
     }
-
-
-    private void fetchData2() {
-        AndroidNetworking.get(Utils.API_URL + "index")
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        // do anything with response
-                        try {
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject result = response.getJSONObject(i);
-                                String title = result.getString("title");
-
-                                JSONObject imagesObject = new JSONObject(result.getString("images"));
-                                String coverUrl = imagesObject.getJSONObject("image700").getString("url");
-                                String videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
-                                //    mList.add(new DirectLinkVideoItem(title, Utils.API_URL + "sources/" + videoUrl, mVideoPlayerManager, Picasso.get(), Utils.API_URL + "sources/" + coverUrl));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
-                    }
-                });
-    }
-
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
+        checkUserLoggedIn();
+    }
+
+    private void checkUserLoggedIn(){
+        Boolean isUserLoggedIn = SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false);
+        View headerView = navigationView.getHeaderView(0);
+
+        ConstraintLayout clSignedIn = headerView.findViewById(R.id.clSignedIn);
+        ConstraintLayout clSignedOut = headerView.findViewById(R.id.clSignedOut);
+        ImageView ivProfile = headerView.findViewById(R.id.ivProfile);
+        TextView navUsername = headerView.findViewById(R.id.tvName);
+        if (isUserLoggedIn) {
+            clSignedIn.setVisibility(View.VISIBLE);
+            clSignedOut.setVisibility(View.GONE);
+            String username = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_NAME,"");
+            if(username.equals("")){
+                // run choose username activity
+            }
+            navUsername.setText(username);
+
+        }else{
+            clSignedIn.setVisibility(View.GONE);
+            clSignedOut.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void firstLayout() {
+        Fragment fragment = new NewestMemesFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager(); // For A
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
+        }
+        navigationView.getMenu().getItem(0).setChecked(true);
 
     }
 
+    private void addFragments() {
+        fragmentList.add(new NewestMemesFragment());
+        //  fragmentList.add(new NewestMemesFragment());
+    }
+
+
     @Override
-    public void onStop() {
-        super.onStop();
-        // we have to stop any playback in onStop
-        mVideoPlayerManager.resetMediaPlayer();
+    protected void onStart() {
+        super.onStart();
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(account);
+
+    }
+
+    private void updateUI(GoogleSignInAccount account) {
+        if (account != null) {
+            // user is log in
+            SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_LOGIN, account.getEmail());
+        } else {
+            // user not log in
+            SharedPreferenceUtils.removeAllPrefs(getApplicationContext());
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
