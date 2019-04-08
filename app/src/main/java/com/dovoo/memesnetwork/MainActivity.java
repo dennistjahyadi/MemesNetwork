@@ -52,13 +52,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayShowHomeEnabled(true);
         addFragments();
-
         drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        navigationView = findViewById(R.id.nav_view);
+        //setupNavigationDrawer(toolbar);
+
+        firstLayout();
+    }
+
+    private void setupNavigationDrawer(Toolbar toolbar){
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.setDrawerIndicatorEnabled(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             toggle.getDrawerArrowDrawable().setColor(getColor(R.color.white));
@@ -68,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
-        navigationView = findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -101,8 +110,6 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-
-        firstLayout();
     }
 
     @Override
