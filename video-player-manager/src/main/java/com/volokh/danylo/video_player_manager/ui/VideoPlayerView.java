@@ -280,7 +280,7 @@ public class VideoPlayerView extends ScalableTextureView
 
             } catch (IOException e) {
                 Logger.d(TAG, e.getMessage());
-                throw new RuntimeException(e);
+               // throw new RuntimeException(e);
             }
             mPath = path;
         }

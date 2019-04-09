@@ -122,7 +122,7 @@ public abstract class MediaPlayerWrapper
                 case PLAYBACK_COMPLETED:
                 case END:
                 case ERROR:
-                    throw new IllegalStateException("prepare, called from illegal state " + mState);
+                    //throw new IllegalStateException("prepare, called from illegal state " + mState);
             }
         }
         if (SHOW_LOGS) Logger.v(TAG, "<< prepare, mState " + mState);

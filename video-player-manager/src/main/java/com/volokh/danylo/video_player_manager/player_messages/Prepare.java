@@ -40,7 +40,7 @@ public class Prepare extends PlayerMessage{
             case STOPPED:
             case PLAYBACK_COMPLETED:
             case END:
-                throw new RuntimeException("unhandled state " + resultOfPrepare);
+                //throw new RuntimeException("unhandled state " + resultOfPrepare);
 
             case PREPARED:
                 mResultPlayerMessageState = PlayerMessageState.PREPARED;

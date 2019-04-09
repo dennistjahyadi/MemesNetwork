@@ -1,5 +1,6 @@
 package com.dovoo.memesnetwork;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,11 +14,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dovoo.memesnetwork.activities.ProfileActivity;
+import com.dovoo.memesnetwork.activities.SectionActivity;
 import com.dovoo.memesnetwork.fragments.NewestMemesFragment;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -31,10 +36,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private final int RC_SIGN_IN = 1;
+    private final int ACTIVITY_RESULT_SECTION = 2;
     private GoogleSignInClient mGoogleSignInClient;
     private List<Fragment> fragmentList = new ArrayList<>();
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private LinearLayout linBtnSection;
+    private TextView tvBtnProfile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +68,30 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
+        linBtnSection = findViewById(R.id.linBtnSection);
+        tvBtnProfile = findViewById(R.id.tvBtnProfile);
         navigationView = findViewById(R.id.nav_view);
+
+        tvBtnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Boolean isUserLoggedIn = SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false);
+                if (isUserLoggedIn) {
+                    Intent i = new Intent(getApplicationContext(),ProfileActivity.class);
+                    startActivity(i);
+                }else{
+                    Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(i);
+                }
+            }
+        });
+        linBtnSection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), SectionActivity.class);
+                startActivityForResult(i, ACTIVITY_RESULT_SECTION);
+            }
+        });
         //setupNavigationDrawer(toolbar);
 
         firstLayout();
