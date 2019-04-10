@@ -2,17 +2,29 @@ package com.dovoo.memesnetwork.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dovoo.memesnetwork.LoginActivity;
+import com.dovoo.memesnetwork.R;
+import com.dovoo.memesnetwork.activities.ChooseUsernameActivity;
 import com.dovoo.memesnetwork.activities.CommentActivity;
 import com.dovoo.memesnetwork.adapter.holders.VideoViewHolder;
 import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
+import com.dovoo.memesnetwork.utils.Utils;
 import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -28,14 +40,18 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     float finalHeight;
     public static BaseVideoItem currentVideoItem;
     float maxHeightVideo;
+    private Integer userId;
+    private FrameLayout mLoadingBar;
 
-    public VideoRecyclerViewAdapter(VideoPlayerManager videoPlayerManager, Context context, List<BaseVideoItem> list) {
+    public VideoRecyclerViewAdapter(VideoPlayerManager videoPlayerManager, Context context, FrameLayout loadingBar , List<BaseVideoItem> list) {
         mVideoPlayerManager = videoPlayerManager;
         mContext = context;
+        mLoadingBar = loadingBar;
         mList = list;
         finalWidth = mContext.getResources().getDisplayMetrics().widthPixels;  // default phone width
         finalHeight = mContext.getResources().getDisplayMetrics().heightPixels; // default phone heights
         maxHeightVideo = (float) mContext.getResources().getDisplayMetrics().heightPixels * 0.8f; // set default maximum video size in phone
+        userId = SharedPreferenceUtils.getPrefs(context).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID,0);
     }
 
     @Override
@@ -46,7 +62,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     }
 
     @Override
-    public void onBindViewHolder(VideoViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final VideoViewHolder viewHolder, int position) {
         final BaseVideoItem videoItem = mList.get(position);
         if (videoItem.getContentHeight() > videoItem.getContentWidth()) {
             // if video is potrait
@@ -73,7 +89,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         layoutParams.height = (int) finalHeight;
         viewHolder.relativeLayout.setLayoutParams(layoutParams);
 
-        DirectLinkVideoItem directLinkVideoItem = (DirectLinkVideoItem) videoItem;
+        final DirectLinkVideoItem directLinkVideoItem = (DirectLinkVideoItem) videoItem;
 
         viewHolder.tvTitle.setText(directLinkVideoItem.getmTitle());
         viewHolder.tvCategory.setText(directLinkVideoItem.getmCategory());
@@ -104,7 +120,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
                     Intent i = new Intent(mContext, LoginActivity.class);
                     mContext.startActivity(i);
                 }else{
-                    doLike();
+                    doLike(viewHolder, directLinkVideoItem.getId());
                 }
             }
         });
@@ -116,7 +132,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
                     Intent i = new Intent(mContext, LoginActivity.class);
                     mContext.startActivity(i);
                 }else{
-                    doDislike();
+                    doDislike(viewHolder, directLinkVideoItem.getId());
                 }
             }
         });
@@ -128,11 +144,110 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         return mList.size();
     }
 
-    private void doLike(){
+    private void doLike(final VideoViewHolder viewHolder, Integer memeId){
+        mLoadingBar.setVisibility(View.VISIBLE);
+        viewHolder.linBtnLike.setEnabled(false);
+        viewHolder.linBtnDislike.setEnabled(false);
+        final JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("meme_id", memeId);
+            jsonObject.put("user_id", userId);
+            jsonObject.put("like", 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        AndroidNetworking.post(Utils.API_URL + "insertlike")
+                .addJSONObjectBody(jsonObject)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        try {
+                            Integer totalLike = response.getInt("total_like");
+                            Integer totalDislike = response.getInt("total_dislike");
 
+                            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                            viewHolder.tvTotalLike.setText(totalLike+"");
+                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+                            viewHolder.tvTotalDislike.setText(totalDislike+"");
+                            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                            viewHolder.linBtnLike.setEnabled(false);
+                            viewHolder.linBtnDislike.setEnabled(true);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        mLoadingBar.setVisibility(View.GONE);
+
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        // handle error
+                        System.out.print("error");
+                        mLoadingBar.setVisibility(View.GONE);
+                        viewHolder.linBtnLike.setEnabled(true);
+                        viewHolder.linBtnDislike.setEnabled(true);
+
+                    }
+                });
     }
 
-    private void doDislike(){
+    private void doDislike(final VideoViewHolder viewHolder, Integer memeId){
+        mLoadingBar.setVisibility(View.VISIBLE);
+        viewHolder.linBtnLike.setEnabled(false);
+        viewHolder.linBtnDislike.setEnabled(false);
 
+        final JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("meme_id", memeId);
+            jsonObject.put("user_id", userId);
+            jsonObject.put("like", 0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        AndroidNetworking.post(Utils.API_URL + "insertlike")
+                .addJSONObjectBody(jsonObject)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        try {
+                            Integer totalLike = response.getInt("total_like");
+                            Integer totalDislike = response.getInt("total_dislike");
+
+                            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+                            viewHolder.tvTotalLike.setText(totalLike+"");
+                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                            viewHolder.tvTotalDislike.setText(totalDislike+"");
+                            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+                            viewHolder.linBtnLike.setEnabled(true);
+                            viewHolder.linBtnDislike.setEnabled(false);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        mLoadingBar.setVisibility(View.GONE);
+
+
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        // handle error
+                        System.out.print("error");
+                        mLoadingBar.setVisibility(View.GONE);
+                        viewHolder.linBtnLike.setEnabled(true);
+                        viewHolder.linBtnDislike.setEnabled(true);
+
+                    }
+                });
     }
 }

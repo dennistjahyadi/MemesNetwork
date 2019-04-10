@@ -84,7 +84,7 @@ public class FavoritesMemesFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         rvMemes.setLayoutManager(mLayoutManager);
 
-        videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(mVideoPlayerManager, getActivity(), mList);
+        videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(mVideoPlayerManager, getActivity(),null, mList);
 
         rvMemes.setAdapter(videoRecyclerViewAdapter);
 
@@ -171,6 +171,7 @@ public class FavoritesMemesFragment extends Fragment {
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject result = response.getJSONObject(i);
+                                Integer id = result.getInt("id");
                                 String title = result.getString("title");
                                 String type =  result.getString("type");
                                 JSONObject imagesObject = new JSONObject(result.getString("images"));
@@ -189,7 +190,7 @@ public class FavoritesMemesFragment extends Fragment {
                                 int width = imagesObject.getJSONObject("image700").getInt("width");
                                 int height = imagesObject.getJSONObject("image700").getInt("height");
 
-                                mList.add(new DirectLinkVideoItem(category, title,  videoUrl, mVideoPlayerManager, Picasso.get(),  coverUrl, width, height,hasAudio,isVideo));
+                                mList.add(new DirectLinkVideoItem(id,category, title,  videoUrl, mVideoPlayerManager, Picasso.get(),  coverUrl, width, height,hasAudio,isVideo));
                             }
 
                             videoRecyclerViewAdapter.notifyDataSetChanged();
