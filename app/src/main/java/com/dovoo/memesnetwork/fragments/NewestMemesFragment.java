@@ -39,6 +39,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NewestMemesFragment extends Fragment {
 
@@ -73,6 +75,16 @@ public class NewestMemesFragment extends Fragment {
 
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
 
+    private String section = null;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            section = bundle.getString("section", null);
+        }
+    }
 
     @Nullable
     @Override
@@ -156,17 +168,17 @@ public class NewestMemesFragment extends Fragment {
         rvMemes.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                fetchData(totalItemsCount);
+                fetchData(totalItemsCount,section);
             }
         });
         mItemsPositionGetter = new RecyclerViewItemPositionGetter(mLayoutManager, rvMemes);
 
-        fetchData(0);
+        fetchData(0,section);
 
         return view;
     }
 
-    private void fetchData(int offset) {
+    private void fetchData(int offset, String section) {
         loadingBar.setVisibility(View.VISIBLE);
 
 //        for (int i = 0; i < 100; i++) {
@@ -174,8 +186,15 @@ public class NewestMemesFragment extends Fragment {
 //            mList.add(new DirectLinkVideoItem("asddas", "http://192.168.1.8:8000/sources/apm9AD8_460sv.mp4", mVideoPlayerManager, Picasso.get(), "http://192.168.1.8:8000/sources/apm9AD8_460s.jpg"));
 //
 //        }
+
+        Map<String,String> param = new HashMap<>();
+        param.put("offset", offset + "");
+        if(section!=null && !section.equalsIgnoreCase("all")){
+            param.put("post_section", section);
+        }
+
         AndroidNetworking.get(Utils.API_URL + "index")
-                .addQueryParameter("offset", offset + "")
+                .addQueryParameter(param)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {

@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ public class SectionActivity extends AppCompatActivity {
         rvSection = findViewById(R.id.rvSection);
         linBtnBack = findViewById(R.id.linBtnBack);
 
-        sectionRecyclerViewAdapter = new SectionRecyclerViewAdapter(getApplicationContext(), itemList);
+        sectionRecyclerViewAdapter = new SectionRecyclerViewAdapter(this, itemList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvSection.setAdapter(sectionRecyclerViewAdapter);
         rvSection.setLayoutManager(layoutManager);
@@ -71,6 +72,9 @@ public class SectionActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         // do anything with response
                         try {
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("name","ALL");
+                            itemList.add(map);
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject result = response.getJSONObject(i);
                                 itemList.add(Utils.toMap(result));

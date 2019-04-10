@@ -1,6 +1,8 @@
 package com.dovoo.memesnetwork.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +19,7 @@ import java.util.Map;
 public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<SectionRecyclerViewAdapter.MyViewHolder> {
 
     private List<Map<String,Object>> itemList;
-    private Context context;
+    private Activity activity;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linBtnSection;
@@ -29,8 +31,8 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<SectionRecy
         }
     }
 
-    public SectionRecyclerViewAdapter(Context context, List<Map<String,Object>> itemList){
-        this.context = context;
+    public SectionRecyclerViewAdapter(Activity activity, List<Map<String,Object>> itemList){
+        this.activity = activity;
         this.itemList = itemList;
     }
 
@@ -43,8 +45,17 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<SectionRecy
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
-        Map<String,Object> obj = itemList.get(i);
+        final Map<String,Object> obj = itemList.get(i);
         viewHolder.tvSection.setText((String)obj.get("name"));
+        viewHolder.linBtnSection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent data = new Intent();
+                data.putExtra("name", (String)obj.get("name"));
+                activity.setResult(Activity.RESULT_OK,data);
+                activity.finish();
+            }
+        });
     }
 
     @Override

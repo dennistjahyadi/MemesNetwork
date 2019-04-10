@@ -210,6 +210,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ACTIVITY_RESULT_SECTION && resultCode == RESULT_OK) {
+            String section = data.getStringExtra("name");
+            Fragment fragment = new NewestMemesFragment();
+            Bundle arguments = new Bundle();
+            arguments.putString("section", section);
+            fragment.setArguments(arguments);
+            FragmentManager fragmentManager = getSupportFragmentManager(); // For A
+            if (fragment != null) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment)
+                        .commit();
+            }
+
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
