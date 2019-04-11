@@ -12,6 +12,8 @@ import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 /**
  * Use this class if you have direct path to the video source
  */
@@ -24,6 +26,7 @@ public class DirectLinkVideoItem extends BaseVideoItem {
     private Integer id;
     private boolean hasAudio = false;
     private boolean isVideo = true;
+    private Map<String,Object> data;
 
 
     public DirectLinkVideoItem(String title, String directUrl, VideoPlayerManager videoPlayerManager, Picasso imageLoader, String coverUrl, Integer width, Integer height) {
@@ -35,7 +38,7 @@ public class DirectLinkVideoItem extends BaseVideoItem {
 
     }
 
-    public DirectLinkVideoItem(Integer id, String category, String title, String directUrl, VideoPlayerManager videoPlayerManager, Picasso imageLoader, String coverUrl, Integer width, Integer height, boolean hasAudio, boolean isVideo) {
+    public DirectLinkVideoItem(Integer id, String category, String title, String directUrl, Map<String,Object> data,VideoPlayerManager videoPlayerManager, Picasso imageLoader, String coverUrl, Integer width, Integer height, boolean hasAudio, boolean isVideo) {
         super(videoPlayerManager, width, height);
         this.id = id;
         this.mDirectUrl = directUrl;
@@ -45,6 +48,7 @@ public class DirectLinkVideoItem extends BaseVideoItem {
         this.hasAudio = hasAudio;
         this.isVideo = isVideo;
         this.mCategory = category;
+        this.data = data;
     }
 
     public DirectLinkVideoItem(VideoPlayerManager videoPlayerManager, Picasso imageLoader, JSONObject data) {
@@ -172,5 +176,13 @@ public class DirectLinkVideoItem extends BaseVideoItem {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Map<String, Object> getData() {
+        return data;
+    }
+
+    public void setData(Map<String, Object> data) {
+        this.data = data;
     }
 }

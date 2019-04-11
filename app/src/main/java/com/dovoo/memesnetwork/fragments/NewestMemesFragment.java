@@ -221,8 +221,12 @@ public class NewestMemesFragment extends Fragment {
 
                                 int width = imagesObject.getJSONObject("image700").getInt("width");
                                 int height = imagesObject.getJSONObject("image700").getInt("height");
+                                Map<String,Object> data = new HashMap<>();
+                                data.put("total_like", result.get("total_like"));
+                                data.put("total_dislike", result.get("total_dislike"));
+                                data.put("total_comment", result.get("total_comment"));
 
-                                mList.add(new DirectLinkVideoItem(id, category, title,  videoUrl, mVideoPlayerManager, Picasso.get(),  coverUrl, width, height,hasAudio,isVideo));
+                                mList.add(new DirectLinkVideoItem(id, category, title,  videoUrl, data, mVideoPlayerManager, Picasso.get(),  coverUrl, width, height,hasAudio,isVideo));
                             }
 
                             videoRecyclerViewAdapter.notifyDataSetChanged();

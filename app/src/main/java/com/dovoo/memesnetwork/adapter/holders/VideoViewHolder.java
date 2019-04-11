@@ -20,13 +20,14 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
     public final VideoPlayerView mPlayer;
     public final ImageView mCover;
     public final TextViewFaSolid tvIconSound;
-    public final TextView tvCategory,tvTitle,tvLabelNoAudio,tvBtnLike,tvBtnDislike,tvTotalLike,tvTotalDislike;
+    public final TextView tvCategory,tvTitle,tvLabelNoAudio,tvBtnLike,tvBtnDislike,tvTotalLike,tvTotalDislike,tvTotalComment;
 
     public VideoViewHolder(View view) {
         super(view);
         relativeLayout = view.findViewById(R.id.relativeLayout);
         tvTotalLike = view.findViewById(R.id.tvTotalLike);
         tvTotalDislike = view.findViewById(R.id.tvTotalDislike);
+        tvTotalComment = view.findViewById(R.id.tvTotalComment);
         tvBtnLike = view.findViewById(R.id.tvBtnLike);
         tvBtnDislike = view.findViewById(R.id.tvBtnDislike);
         linBtnLike = view.findViewById(R.id.linBtnLike);

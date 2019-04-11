@@ -43,7 +43,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     private Integer userId;
     private FrameLayout mLoadingBar;
 
-    public VideoRecyclerViewAdapter(VideoPlayerManager videoPlayerManager, Context context, FrameLayout loadingBar , List<BaseVideoItem> list) {
+    public VideoRecyclerViewAdapter(VideoPlayerManager videoPlayerManager, Context context, FrameLayout loadingBar, List<BaseVideoItem> list) {
         mVideoPlayerManager = videoPlayerManager;
         mContext = context;
         mLoadingBar = loadingBar;
@@ -51,7 +51,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         finalWidth = mContext.getResources().getDisplayMetrics().widthPixels;  // default phone width
         finalHeight = mContext.getResources().getDisplayMetrics().heightPixels; // default phone heights
         maxHeightVideo = (float) mContext.getResources().getDisplayMetrics().heightPixels * 0.8f; // set default maximum video size in phone
-        userId = SharedPreferenceUtils.getPrefs(context).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID,0);
+        userId = SharedPreferenceUtils.getPrefs(context).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0);
     }
 
     @Override
@@ -96,11 +96,19 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         viewHolder.mCover.setVisibility(View.VISIBLE);
         directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl()).into(viewHolder.mCover);
 
+        Integer totalLike = (Integer) directLinkVideoItem.getData().get("total_like");
+        Integer totalDislike = (Integer) directLinkVideoItem.getData().get("total_dislike");
+        Integer totalComment = (Integer) directLinkVideoItem.getData().get("total_comment");
+
+        viewHolder.tvTotalLike.setText(totalLike+"");
+        viewHolder.tvTotalDislike.setText(totalDislike+"");
+        viewHolder.tvTotalComment.setText(totalComment+"");
+
         viewHolder.linBtnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentVideoItem = videoItem;
-                Intent i = new Intent(mContext,CommentActivity.class);
+                Intent i = new Intent(mContext, CommentActivity.class);
                 mContext.startActivity(i);
             }
         });
@@ -108,7 +116,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
             @Override
             public void onClick(View v) {
                 currentVideoItem = videoItem;
-                Intent i = new Intent(mContext,CommentActivity.class);
+                Intent i = new Intent(mContext, CommentActivity.class);
                 mContext.startActivity(i);
             }
         });
@@ -116,10 +124,10 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         viewHolder.linBtnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!SharedPreferenceUtils.getPrefs(mContext).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,false)) {
+                if (!SharedPreferenceUtils.getPrefs(mContext).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false)) {
                     Intent i = new Intent(mContext, LoginActivity.class);
                     mContext.startActivity(i);
-                }else{
+                } else {
                     doLike(viewHolder, directLinkVideoItem.getId());
                 }
             }
@@ -128,10 +136,10 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         viewHolder.linBtnDislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!SharedPreferenceUtils.getPrefs(mContext).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,false)) {
+                if (!SharedPreferenceUtils.getPrefs(mContext).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false)) {
                     Intent i = new Intent(mContext, LoginActivity.class);
                     mContext.startActivity(i);
-                }else{
+                } else {
                     doDislike(viewHolder, directLinkVideoItem.getId());
                 }
             }
@@ -144,7 +152,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         return mList.size();
     }
 
-    private void doLike(final VideoViewHolder viewHolder, Integer memeId){
+    private void doLike(final VideoViewHolder viewHolder, Integer memeId) {
         mLoadingBar.setVisibility(View.VISIBLE);
         viewHolder.linBtnLike.setEnabled(false);
         viewHolder.linBtnDislike.setEnabled(false);
@@ -170,9 +178,9 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
 
                             viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
                             viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                            viewHolder.tvTotalLike.setText(totalLike+"");
+                            viewHolder.tvTotalLike.setText(totalLike + "");
                             viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-                            viewHolder.tvTotalDislike.setText(totalDislike+"");
+                            viewHolder.tvTotalDislike.setText(totalDislike + "");
                             viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                             viewHolder.linBtnLike.setEnabled(false);
                             viewHolder.linBtnDislike.setEnabled(true);
@@ -197,7 +205,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
                 });
     }
 
-    private void doDislike(final VideoViewHolder viewHolder, Integer memeId){
+    private void doDislike(final VideoViewHolder viewHolder, Integer memeId) {
         mLoadingBar.setVisibility(View.VISIBLE);
         viewHolder.linBtnLike.setEnabled(false);
         viewHolder.linBtnDislike.setEnabled(false);
@@ -224,9 +232,9 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
 
                             viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                             viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-                            viewHolder.tvTotalLike.setText(totalLike+"");
+                            viewHolder.tvTotalLike.setText(totalLike + "");
                             viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                            viewHolder.tvTotalDislike.setText(totalDislike+"");
+                            viewHolder.tvTotalDislike.setText(totalDislike + "");
                             viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
                             viewHolder.linBtnLike.setEnabled(true);
                             viewHolder.linBtnDislike.setEnabled(false);
@@ -235,8 +243,6 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
                             e.printStackTrace();
                         }
                         mLoadingBar.setVisibility(View.GONE);
-
-
                     }
 
                     @Override
