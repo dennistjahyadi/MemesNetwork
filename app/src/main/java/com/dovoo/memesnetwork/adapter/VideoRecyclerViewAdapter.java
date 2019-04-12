@@ -109,6 +109,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
             public void onClick(View v) {
                 currentVideoItem = videoItem;
                 Intent i = new Intent(mContext, CommentActivity.class);
+                i.putExtra("meme_id",directLinkVideoItem.getId());
                 mContext.startActivity(i);
             }
         });

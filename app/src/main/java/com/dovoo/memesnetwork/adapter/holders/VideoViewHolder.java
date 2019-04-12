@@ -34,7 +34,7 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
         linBtnDislike = view.findViewById(R.id.linBtnDislike);
         linBtnComment = view.findViewById(R.id.linBtnComment);
         tvTitle = view.findViewById(R.id.tvTitle);
-        tvCategory = view.findViewById(R.id.tvCategory);
+        tvCategory = view.findViewById(R.id.tvUsername);
         tvLabelNoAudio = view.findViewById(R.id.tvLabelNoAudio);
         mPlayer = view.findViewById(R.id.player);
         mCover = view.findViewById(R.id.cover);

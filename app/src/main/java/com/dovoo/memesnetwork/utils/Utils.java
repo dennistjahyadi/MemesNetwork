@@ -1,5 +1,10 @@
 package com.dovoo.memesnetwork.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +17,7 @@ import java.util.Map;
 
 public class Utils {
 
-    public static final String DOMAIN = "http://192.168.100.12:8000";
+    public static final String DOMAIN = "http://192.168.43.224:8000";
     public static final String API_URL = DOMAIN+"/api/";
     public static final String SOURCE_URL = DOMAIN+"/sources/";
 
@@ -52,5 +57,13 @@ public class Utils {
             list.add(value);
         }
         return list;
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        View view = activity.findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

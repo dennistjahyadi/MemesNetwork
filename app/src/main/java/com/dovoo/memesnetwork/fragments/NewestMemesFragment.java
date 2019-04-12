@@ -21,6 +21,7 @@ import com.dovoo.memesnetwork.adapter.VideoRecyclerViewAdapter;
 import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
+import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.squareup.picasso.Picasso;
 import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
@@ -100,14 +101,14 @@ public class NewestMemesFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         rvMemes.setLayoutManager(mLayoutManager);
 
-        videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(mVideoPlayerManager, getActivity(),loadingBar, mList);
+        videoRecyclerViewAdapter = new VideoRecyclerViewAdapter(mVideoPlayerManager, getActivity(), loadingBar, mList);
 
         rvMemes.setAdapter(videoRecyclerViewAdapter);
 
         rvMemes.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
-                if(!mList.isEmpty()){
+                if (!mList.isEmpty()) {
                     // need to call this method from list view handler in order to have filled list
                     rvMemes.post(new Runnable() {
                         @Override
@@ -137,7 +138,7 @@ public class NewestMemesFragment extends Fragment {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if(!mList.isEmpty()){
+                if (!mList.isEmpty()) {
                     // need to call this method from list view handler in order to have filled list
                     rvMemes.post(new Runnable() {
                         @Override
@@ -168,12 +169,12 @@ public class NewestMemesFragment extends Fragment {
         rvMemes.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                fetchData(totalItemsCount,section);
+                fetchData(totalItemsCount, section);
             }
         });
         mItemsPositionGetter = new RecyclerViewItemPositionGetter(mLayoutManager, rvMemes);
 
-        fetchData(0,section);
+        fetchData(0, section);
 
         return view;
     }
@@ -187,9 +188,11 @@ public class NewestMemesFragment extends Fragment {
 //
 //        }
 
-        Map<String,String> param = new HashMap<>();
+        Map<String, String> param = new HashMap<>();
         param.put("offset", offset + "");
-        if(section!=null && !section.equalsIgnoreCase("all")){
+        param.put("user_id", SharedPreferenceUtils.getPrefs(getContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0) + "");
+
+        if (section != null && !section.equalsIgnoreCase("all")) {
             param.put("post_section", section);
         }
 
@@ -206,27 +209,27 @@ public class NewestMemesFragment extends Fragment {
                                 JSONObject result = response.getJSONObject(i);
                                 Integer id = result.getInt("id");
                                 String title = result.getString("title");
-                                String type =  result.getString("type");
+                                String type = result.getString("type");
                                 JSONObject imagesObject = new JSONObject(result.getString("images"));
                                 String coverUrl = imagesObject.getJSONObject("image700").getString("url");
                                 String category = result.getString("post_section");
                                 String videoUrl = null;
                                 boolean isVideo = false;
                                 boolean hasAudio = false;
-                                if(type.equalsIgnoreCase("animated")){
+                                if (type.equalsIgnoreCase("animated")) {
                                     isVideo = true;
                                     videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
-                                    hasAudio = (imagesObject.getJSONObject("image460sv").getInt("hasAudio")==1 ? true : false);
+                                    hasAudio = (imagesObject.getJSONObject("image460sv").getInt("hasAudio") == 1 ? true : false);
                                 }
 
                                 int width = imagesObject.getJSONObject("image700").getInt("width");
                                 int height = imagesObject.getJSONObject("image700").getInt("height");
-                                Map<String,Object> data = new HashMap<>();
+                                Map<String, Object> data = new HashMap<>();
                                 data.put("total_like", result.get("total_like"));
                                 data.put("total_dislike", result.get("total_dislike"));
                                 data.put("total_comment", result.get("total_comment"));
 
-                                mList.add(new DirectLinkVideoItem(id, category, title,  videoUrl, data, mVideoPlayerManager, Picasso.get(),  coverUrl, width, height,hasAudio,isVideo));
+                                mList.add(new DirectLinkVideoItem(id, category, title, videoUrl, data, mVideoPlayerManager, Picasso.get(), coverUrl, width, height, hasAudio, isVideo));
                             }
 
                             videoRecyclerViewAdapter.notifyDataSetChanged();
@@ -300,12 +303,13 @@ public class NewestMemesFragment extends Fragment {
         super.onResume();
         resumeVideoUsingStupidMethod();
     }
-    private void resumeVideoUsingStupidMethod(){
+
+    private void resumeVideoUsingStupidMethod() {
         // i just don't know to play the video,
         // this shit did the trick. just do fast scroll (LOL)
 
-        rvMemes.scrollBy(0,1300);
-        rvMemes.scrollBy(0,-1300);
+        rvMemes.scrollBy(0, 1300);
+        rvMemes.scrollBy(0, -1300);
 
     }
 

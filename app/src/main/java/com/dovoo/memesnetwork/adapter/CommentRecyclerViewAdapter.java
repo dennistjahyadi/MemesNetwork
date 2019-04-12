@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,13 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
@@ -39,6 +45,8 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     float finalWidth;
     float finalHeight;
     float maxHeightVideo;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
     public CommentRecyclerViewAdapter(Context context, List<Map<String, Object>> itemList,BaseVideoItem videoItem) {
         this.context = context;
@@ -70,9 +78,12 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     class MyViewHolderItem extends RecyclerView.ViewHolder {
+        TextView tvUsername,tvComment,tvCreatedDate;
         public MyViewHolderItem(View itemView) {
             super(itemView);
-
+            tvUsername = itemView.findViewById(R.id.tvUsername);
+            tvComment = itemView.findViewById(R.id.tvComment);
+            tvCreatedDate = itemView.findViewById(R.id.tvCreatedDate);
         }
     }
 
@@ -143,6 +154,23 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         } else if (holder instanceof MyViewHolderItem) {
             final Map<String, Object> obj = itemList.get(position-1);
             MyViewHolderItem vhItem = (MyViewHolderItem) holder;
+            vhItem.tvUsername.setText((String)obj.get("created_by"));
+            vhItem.tvComment.setText((String)obj.get("messages"));
+
+            try {
+                if(!(obj.get("created_at")+"").equals("null")) {
+                    Date mDate = sdf.parse((String) obj.get("created_at"));
+                    long your_time_in_milliseconds = mDate.getTime();
+                    long current_time_in_millisecinds = System.currentTimeMillis();
+
+                    CharSequence thedate = DateUtils.getRelativeTimeSpanString(your_time_in_milliseconds, current_time_in_millisecinds, DateUtils.MINUTE_IN_MILLIS);
+                    vhItem.tvCreatedDate.setText(thedate);
+                }else{
+                    vhItem.tvCreatedDate.setText("null");
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
         }
     }
