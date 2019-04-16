@@ -103,6 +103,25 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         viewHolder.tvTotalLike.setText(totalLike+"");
         viewHolder.tvTotalDislike.setText(totalDislike+"");
         viewHolder.tvTotalComment.setText(totalComment+"");
+        if(directLinkVideoItem.getData().get("is_liked") instanceof Integer){
+            Integer isLiked = (Integer) directLinkVideoItem.getData().get("is_liked");
+            if(isLiked==1){
+                viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+                viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+                viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            }else{
+                viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+                viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+            }
+        }else{
+            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+        }
 
         viewHolder.linBtnComment.setOnClickListener(new View.OnClickListener() {
             @Override

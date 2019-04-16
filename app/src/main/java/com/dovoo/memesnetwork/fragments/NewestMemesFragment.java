@@ -228,6 +228,7 @@ public class NewestMemesFragment extends Fragment {
                                 data.put("total_like", result.get("total_like"));
                                 data.put("total_dislike", result.get("total_dislike"));
                                 data.put("total_comment", result.get("total_comment"));
+                                data.put("is_liked", result.get("is_liked"));
 
                                 mList.add(new DirectLinkVideoItem(id, category, title, videoUrl, data, mVideoPlayerManager, Picasso.get(), coverUrl, width, height, hasAudio, isVideo));
                             }
