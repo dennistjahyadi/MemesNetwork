@@ -10,6 +10,7 @@
     <string name="fa_th_list">&#xf00b;</string>
     <string name="fa_laugh_squint">&#xf59b;</string>
     <string name="fa_hand_point_left">&#xf0a5;</string>
+    <string name="fa_angle_left">&#xf104;</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
