@@ -38,17 +38,26 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="left|start"
                 android:layout_marginLeft="4dp"
                 android:text="Back"
                 android:textColor="@color/white" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/tvBtnEditProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end"
+            android:layout_marginRight="16dp"
+            android:text="Edit"
+            android:padding="4dp"
+            android:textColor="@color/white" />
 
     </android.support.v7.widget.Toolbar>
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
+        android:id="@+id/ivProfile"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginTop="80dp"
@@ -66,9 +75,9 @@
         android:layout_marginTop="8dp"
         android:text="username"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/profile_image"
-        app:layout_constraintStart_toStartOf="@+id/profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintEnd_toEndOf="@+id/ivProfile"
+        app:layout_constraintStart_toStartOf="@+id/ivProfile"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -116,6 +125,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linComment"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/grey900"
@@ -128,6 +138,22 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="Comments"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/grey900"
+        android:layout_margin="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/linComment">
+
+        <TextView
+            android:id="@+id/tvBtnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Logout"
             android:textColor="@color/white" />
 
     </LinearLayout>

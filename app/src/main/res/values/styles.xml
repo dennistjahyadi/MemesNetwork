@@ -18,7 +18,7 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="TextLabel" parent="TextAppearance.AppCompat">
+    <style name="TextLabel" parent="ThemeOverlay.AppCompat.Light">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/white</item>
         <item name="android:textSize">@dimen/font_medium2</item>

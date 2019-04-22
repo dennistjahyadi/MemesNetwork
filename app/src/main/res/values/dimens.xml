@@ -8,6 +8,7 @@
     <dimen name="font_medium">12sp</dimen>
     <dimen name="font_medium2">14sp</dimen>
     <dimen name="font_large">16sp</dimen>
+    <dimen name="font_large2">18sp</dimen>
     <dimen name="app_bar_height">250dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">196dp</dimen>

@@ -12,6 +12,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dovoo.memesnetwork.activities.ChooseUsernameActivity;
+import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,14 +34,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(Utils.clientId)
-                .requestEmail()
-                .build();
+
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GlobalFunc.mGoogleSignInClient;
+
         findViewById(R.id.sign_in_button).setOnClickListener(this);
     }
 
@@ -50,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
         updateUI(account);
 
     }
@@ -86,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             JSONObject data = response.getJSONObject("data");
 
 
-                            if(data.isNull("username")){
+                            if(data.isNull("username") || data.getString("username").equals("")){
                                 Intent i = new Intent(getApplicationContext(),ChooseUsernameActivity.class);
                                 i.putExtra("email",email);
                                 startActivity(i);

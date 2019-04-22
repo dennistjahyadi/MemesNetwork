@@ -47,4 +47,15 @@ public class SharedPreferenceUtils {
         prefsEditor.clear();
         prefsEditor.apply();
     }
+    public static void removeUserPrefs(Context context){
+        SharedPreferences.Editor prefsEditor = context.getSharedPreferences(SharedPreferenceUtils.SP_NAME, MODE_PRIVATE).edit();
+        prefsEditor.remove(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN);
+        prefsEditor.remove(SharedPreferenceUtils.PREFERENCES_USER_ID);
+        prefsEditor.remove(SharedPreferenceUtils.PREFERENCES_USER_EMAIL);
+        prefsEditor.remove(SharedPreferenceUtils.PREFERENCES_USER_NAME);
+        prefsEditor.remove(SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL);
+        prefsEditor.remove(SharedPreferenceUtils.PREFERENCES_USER_LOGIN);
+        prefsEditor.remove(SharedPreferenceUtils.PREFERENCES_USER_PASSWORD);
+        prefsEditor.apply();
+    }
 }
