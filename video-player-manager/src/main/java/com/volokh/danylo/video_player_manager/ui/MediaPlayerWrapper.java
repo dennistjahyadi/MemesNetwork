@@ -108,7 +108,7 @@ public abstract class MediaPlayerWrapper
 
                     } catch (IllegalStateException ex) {
                         /** we should not call {@link MediaPlayerWrapper#prepare()} in wrong state so we fall here*/
-                        throw new RuntimeException(ex);
+                        //throw new RuntimeException(ex);
 
                     } catch (IOException ex){
                         onPrepareError(ex);

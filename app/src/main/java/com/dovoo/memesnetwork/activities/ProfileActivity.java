@@ -53,15 +53,6 @@ public class ProfileActivity extends AppCompatActivity {
         linBtnBack = findViewById(R.id.linBtnBack);
         ivProfile = findViewById(R.id.ivProfile);
 
-        String username = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_NAME, "");
-        tvUsername.setText(username);
-        String userPhotoUrl = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL, "");
-        if (!userPhotoUrl.equals("")) {
-            Picasso.get().load(userPhotoUrl).into(ivProfile);
-        } else {
-            Picasso.get().load(R.drawable.funny_user2).into(ivProfile);
-        }
-
         linBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,14 +71,16 @@ public class ProfileActivity extends AppCompatActivity {
         tvBtnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(getApplicationContext(),LikeHistoryActivity.class);
+                startActivity(i);
             }
         });
 
         tvBtnDislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(getApplicationContext(),DislikeHistoryActivity.class);
+                startActivity(i);
             }
         });
 
@@ -109,6 +102,19 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String username = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_NAME, "");
+        tvUsername.setText(username);
+        String userPhotoUrl = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL, "");
+        if (!userPhotoUrl.equals("")) {
+            Picasso.get().load(userPhotoUrl).into(ivProfile);
+        } else {
+            Picasso.get().load(R.drawable.funny_user2).into(ivProfile);
+        }
     }
 
     private void doGoogleLogout() {

@@ -26,6 +26,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TimeZone;
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -46,6 +48,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     float finalHeight;
     float maxHeightVideo;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private int[] funnyimgs = new int[] {R.drawable.funny_user1,R.drawable.funny_user2,R.drawable.funny_user3};
 
 
     public CommentRecyclerViewAdapter(Context context, List<Map<String, Object>> itemList,BaseVideoItem videoItem) {
@@ -79,11 +82,13 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     class MyViewHolderItem extends RecyclerView.ViewHolder {
         TextView tvUsername,tvComment,tvCreatedDate;
+        ImageView ivPicture;
         public MyViewHolderItem(View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvComment = itemView.findViewById(R.id.tvComment);
             tvCreatedDate = itemView.findViewById(R.id.tvCreatedDate);
+            ivPicture = itemView.findViewById(R.id.ivPicture);
         }
     }
 
@@ -156,6 +161,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             MyViewHolderItem vhItem = (MyViewHolderItem) holder;
             vhItem.tvUsername.setText((String)obj.get("created_by"));
             vhItem.tvComment.setText((String)obj.get("messages"));
+            Picasso.get().load(new Random().nextInt(3)).into(vhItem.ivPicture);
 
             try {
                 if(!(obj.get("created_at")+"").equals("null")) {

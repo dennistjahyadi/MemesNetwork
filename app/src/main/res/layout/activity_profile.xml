@@ -55,13 +55,12 @@
 
     </android.support.v7.widget.Toolbar>
 
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivProfile"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginTop="80dp"
-        android:src="@drawable/funny_user1"
+        android:src="@drawable/funny_user2"
         app:civ_border_color="@color/white"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
