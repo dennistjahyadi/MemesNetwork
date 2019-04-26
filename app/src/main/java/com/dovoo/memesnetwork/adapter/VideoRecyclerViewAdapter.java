@@ -19,6 +19,7 @@ import com.dovoo.memesnetwork.activities.CommentActivity;
 import com.dovoo.memesnetwork.adapter.holders.VideoViewHolder;
 import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
+import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
@@ -38,7 +39,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
     private final Context mContext;
     float finalWidth;
     float finalHeight;
-    public static BaseVideoItem currentVideoItem;
+   // public static BaseVideoItem currentVideoItem;
     float maxHeightVideo;
     private Integer userId;
     private FrameLayout mLoadingBar;
@@ -126,7 +127,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         viewHolder.linBtnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentVideoItem = videoItem;
+                GlobalFunc.currentVideoItem = videoItem;
                 Intent i = new Intent(mContext, CommentActivity.class);
                 i.putExtra("meme_id",directLinkVideoItem.getId());
                 mContext.startActivity(i);
@@ -135,7 +136,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
         viewHolder.tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentVideoItem = videoItem;
+                GlobalFunc.currentVideoItem = videoItem;
                 Intent i = new Intent(mContext, CommentActivity.class);
                 mContext.startActivity(i);
             }

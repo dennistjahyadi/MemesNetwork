@@ -7,11 +7,13 @@ import android.support.v7.app.AlertDialog;
 
 import com.dovoo.memesnetwork.LoginActivity;
 import com.dovoo.memesnetwork.R;
+import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 public class GlobalFunc {
 
     public static GoogleSignInClient mGoogleSignInClient;
+    public static BaseVideoItem currentVideoItem;
 
 
 

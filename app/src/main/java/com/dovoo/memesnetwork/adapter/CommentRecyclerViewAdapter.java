@@ -161,7 +161,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             MyViewHolderItem vhItem = (MyViewHolderItem) holder;
             vhItem.tvUsername.setText((String)obj.get("created_by"));
             vhItem.tvComment.setText((String)obj.get("messages"));
-            Picasso.get().load(new Random().nextInt(3)).into(vhItem.ivPicture);
+            Picasso.get().load(funnyimgs[new Random().nextInt(3)]).into(vhItem.ivPicture);
 
             try {
                 if(!(obj.get("created_at")+"").equals("null")) {
@@ -199,7 +199,4 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         return itemList.size() + 1;
     }
 
-    private void sendComment(){
-
-    }
 }

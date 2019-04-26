@@ -27,7 +27,7 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView tvBtnLike, tvBtnDislike, tvBtnComment, tvUsername, tvBtnEditProfile, tvBtnLogout;
+    private TextView tvBtnLike, tvBtnDislike, tvBtnComment, tvBtnPrivacyPolicy, tvUsername, tvBtnEditProfile, tvBtnLogout;
     private LinearLayout linBtnBack;
     private ImageView ivProfile;
 
@@ -48,6 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvBtnLike = findViewById(R.id.tvBtnLike);
         tvBtnDislike = findViewById(R.id.tvBtnDislike);
         tvBtnComment = findViewById(R.id.tvBtnComment);
+        tvBtnPrivacyPolicy = findViewById(R.id.tvBtnPrivacyPolicy);
         tvBtnLogout = findViewById(R.id.tvBtnLogout);
         tvUsername = findViewById(R.id.tvUsername);
         linBtnBack = findViewById(R.id.linBtnBack);
@@ -87,7 +88,8 @@ public class ProfileActivity extends AppCompatActivity {
         tvBtnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent i = new Intent(getApplicationContext(),CommentHistoryActivity.class);
+                startActivity(i);
             }
         });
         tvBtnLogout.setOnClickListener(new View.OnClickListener() {

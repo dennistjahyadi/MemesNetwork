@@ -22,6 +22,7 @@ import com.dovoo.memesnetwork.adapter.CommentRecyclerViewAdapter;
 import com.dovoo.memesnetwork.adapter.VideoRecyclerViewAdapter;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
+import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.squareup.picasso.Picasso;
@@ -72,7 +73,7 @@ public class CommentActivity extends AppCompatActivity {
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        commentRecyclerViewAdapter = new CommentRecyclerViewAdapter(getApplicationContext(), itemList, VideoRecyclerViewAdapter.currentVideoItem);
+        commentRecyclerViewAdapter = new CommentRecyclerViewAdapter(getApplicationContext(), itemList, GlobalFunc.currentVideoItem);
         rvComment.setLayoutManager(linearLayoutManager);
         rvComment.setAdapter(commentRecyclerViewAdapter);
         rvComment.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
