@@ -97,6 +97,7 @@ public class CommentActivity extends AppCompatActivity {
         loadingBar.setVisibility(View.VISIBLE);
         Map<String,String> param = new HashMap<>();
         param.put("offset", offset + "");
+        param.put("meme_id", memeId + "");
         AndroidNetworking.get(Utils.API_URL + "comments")
                 .addQueryParameter(param)
                 .setPriority(Priority.HIGH)

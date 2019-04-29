@@ -148,14 +148,22 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
                     Util.getUserAgent(context, "yourApplicationName"));
 // This is the MediaSource representing the media to be played.
+            if(directLinkVideoItem.getmDirectUrl()!=null) {
 
-            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(directLinkVideoItem.getmDirectUrl()));
+                MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                        .createMediaSource(Uri.parse(directLinkVideoItem.getmDirectUrl()));
 
 // Prepare the player with the source.
-            player.prepare(videoSource);
-            player.setPlayWhenReady(true);
+                player.prepare(videoSource);
+                player.setPlayWhenReady(true);
+                vhHeader.mCover.setVisibility(View.GONE);
 
+            }else{
+
+                vhHeader.playerView.setVisibility(View.GONE);
+                vhHeader.mCover.setVisibility(View.VISIBLE);
+                directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl()).into(vhHeader.mCover);
+            }
         } else if (holder instanceof MyViewHolderItem) {
             final Map<String, Object> obj = itemList.get(position-1);
             MyViewHolderItem vhItem = (MyViewHolderItem) holder;

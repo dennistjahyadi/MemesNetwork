@@ -102,11 +102,11 @@
                 android:id="@+id/aaa"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
                 android:orientation="vertical">
                 <!-- Top Player-->
                 <ImageView
                     android:id="@+id/cover"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

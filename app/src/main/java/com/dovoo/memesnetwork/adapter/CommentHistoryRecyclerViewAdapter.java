@@ -19,6 +19,7 @@ import com.dovoo.memesnetwork.activities.CommentActivity;
 import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.dovoo.memesnetwork.components.TextViewFaSolid;
+import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -28,6 +29,9 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -98,7 +102,32 @@ public class CommentHistoryRecyclerViewAdapter extends RecyclerView.Adapter<Comm
             vhItem.clBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(context,CommentActivity.class);
+
+                    try {
+                        Integer id = (int)obj.get("meme_id");
+                        String title = (String)obj.get("title");
+                        String type = (String)obj.get("type");
+                        JSONObject imagesObject = null;
+                        imagesObject = new JSONObject((String)obj.get("images"));
+                        String coverUrl = imagesObject.getJSONObject("image700").getString("url");
+                        String category = (String)obj.get("post_section");
+                        String videoUrl = null;
+                        boolean isVideo = false;
+                        boolean hasAudio = false;
+                        if (type.equalsIgnoreCase("animated")) {
+                            isVideo = true;
+                            videoUrl = imagesObject.getJSONObject("image460sv").getString("url");
+                            hasAudio = (imagesObject.getJSONObject("image460sv").getInt("hasAudio") == 1 ? true : false);
+                        }
+
+                        int width = imagesObject.getJSONObject("image700").getInt("width");
+                        int height = imagesObject.getJSONObject("image700").getInt("height");
+                        GlobalFunc.currentVideoItem = new DirectLinkVideoItem(id, category, title, videoUrl, null, null, Picasso.get(), coverUrl, width, height, hasAudio, isVideo);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Intent i = new Intent(context, CommentActivity.class);
                     i.putExtra("meme_id",(int)obj.get("meme_id"));
                     context.startActivity(i);
                 }

@@ -84,7 +84,7 @@ public class CommentHistoryActivity extends AppCompatActivity {
         Map<String,String> param = new HashMap<>();
         param.put("offset", offset + "");
         param.put("user_id", SharedPreferenceUtils.getPrefs(getApplicationContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID,0)+"");
-        AndroidNetworking.get(Utils.API_URL + "comments")
+        AndroidNetworking.get(Utils.API_URL + "commentsuserhistory")
                 .addQueryParameter(param)
                 .setPriority(Priority.HIGH)
                 .build()
@@ -95,15 +95,15 @@ public class CommentHistoryActivity extends AppCompatActivity {
                         try {
                             JSONArray result = response.getJSONArray("data");
                             for (int i = 0; i < result.length(); i++) {
+
                                 itemList.add(Utils.toMap(result.getJSONObject(i)));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-
                         loadingBar.setVisibility(View.GONE);
-
+                        commentHistoryRecyclerViewAdapter.notifyDataSetChanged();
                     }
 
                     @Override
