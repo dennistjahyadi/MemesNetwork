@@ -27,6 +27,7 @@ import com.dovoo.memesnetwork.fragments.NewestMemesFragment;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
             // Build a GoogleSignInClient with the options specified by gso.
             GlobalFunc.mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         }
+        MobileAds.initialize(this, getResources().getString(R.string.admob_app_id));
+
         init();
     }
 

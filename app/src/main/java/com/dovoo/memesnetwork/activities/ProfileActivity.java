@@ -18,11 +18,14 @@ import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.mopub.mobileads.MoPubView;
 import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -30,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView tvBtnLike, tvBtnDislike, tvBtnComment, tvBtnPrivacyPolicy, tvUsername, tvBtnEditProfile, tvBtnLogout;
     private LinearLayout linBtnBack;
     private ImageView ivProfile;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +57,10 @@ public class ProfileActivity extends AppCompatActivity {
         tvUsername = findViewById(R.id.tvUsername);
         linBtnBack = findViewById(R.id.linBtnBack);
         ivProfile = findViewById(R.id.ivProfile);
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         linBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +136,5 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
 }

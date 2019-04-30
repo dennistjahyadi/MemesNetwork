@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -23,6 +24,10 @@ import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.mopub.mobileads.MoPubErrorCode;
+import com.mopub.mobileads.MoPubView;
 import com.squareup.picasso.Picasso;
 import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
 import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
@@ -77,6 +82,7 @@ public class NewestMemesFragment extends Fragment {
     private int mScrollState = AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
 
     private String section = null;
+    private AdView mAdView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +100,11 @@ public class NewestMemesFragment extends Fragment {
         loadingBar = view.findViewById(R.id.loadingBar);
 
         rvMemes = view.findViewById(R.id.rvMemes);
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         rvMemes.setHasFixedSize(true);
@@ -326,4 +337,5 @@ public class NewestMemesFragment extends Fragment {
         // we have to stop any playback in onStop
         mVideoPlayerManager.resetMediaPlayer();
     }
+
 }

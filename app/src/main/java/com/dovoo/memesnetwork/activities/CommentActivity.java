@@ -25,6 +25,9 @@ import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.mopub.mobileads.MoPubView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -47,6 +50,7 @@ public class CommentActivity extends AppCompatActivity {
     private FrameLayout loadingBar;
     private Integer memeId;
     private LinearLayout linBtnBack;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +69,11 @@ public class CommentActivity extends AppCompatActivity {
         etComment = findViewById(R.id.etComment);
         btnSend = findViewById(R.id.btnSend);
         rvComment = findViewById(R.id.rvComment);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
         linBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,4 +199,5 @@ public class CommentActivity extends AppCompatActivity {
             commentRecyclerViewAdapter.player.stop(true);
         }
     }
+
 }

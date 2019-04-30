@@ -12,6 +12,12 @@
     <string name="fa_laugh_squint">&#xf59b;</string>
     <string name="fa_hand_point_left">&#xf0a5;</string>
     <string name="fa_angle_left">&#xf104;</string>
+    <string name="admob_app_id">ca-app-pub-4908922088432819~3422409226</string>
+    <!-- test -->
+    <string name="admob_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+    <!-- published -->
+    <!--<string name="admob_banner_ad_unit_id">ca-app-pub-4908922088432819/1366133667</string>-->
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

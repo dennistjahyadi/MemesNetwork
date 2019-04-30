@@ -454,7 +454,7 @@ public abstract class MediaPlayerWrapper
                     break;
                 case PREPARING:
                 case END:
-                    throw new IllegalStateException("cannot call reset from state " + mState.get());
+                    //throw new IllegalStateException("cannot call reset from state " + mState.get());
             }
         }
         if (SHOW_LOGS) Logger.v(TAG, "<< reset , mState " + mState);
