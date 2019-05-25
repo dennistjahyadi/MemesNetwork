@@ -21,6 +21,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.dovoo.memesnetwork.activities.ProfileActivity;
 import com.dovoo.memesnetwork.activities.SectionActivity;
 import com.dovoo.memesnetwork.fragments.NewestMemesFragment;
@@ -37,7 +41,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PurchasesUpdatedListener {
     private final int RC_SIGN_IN = 1;
     private final int ACTIVITY_RESULT_SECTION = 2;
     private GoogleSignInClient mGoogleSignInClient;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private LinearLayout linBtnSection;
     private TextView tvBtnProfile;
+    private BillingClient billingClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +67,20 @@ public class MainActivity extends AppCompatActivity {
             GlobalFunc.mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         }
         MobileAds.initialize(this, getResources().getString(R.string.admob_app_id));
-
+        billingClient = BillingClient.newBuilder(MainActivity.this).setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
+                if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
         init();
     }
 
@@ -226,5 +244,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+
     }
 }

@@ -16,6 +16,8 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.SectionRecyclerViewAdapter;
 import com.dovoo.memesnetwork.utils.Utils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +34,7 @@ public class SectionActivity extends AppCompatActivity {
     private SectionRecyclerViewAdapter sectionRecyclerViewAdapter;
     private LinearLayout linBtnBack;
     private List<Map<String, Object>> itemList = new ArrayList<>();
+    private AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +47,9 @@ public class SectionActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         rvSection = findViewById(R.id.rvSection);
         linBtnBack = findViewById(R.id.linBtnBack);

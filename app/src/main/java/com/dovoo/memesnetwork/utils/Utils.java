@@ -17,15 +17,17 @@ import java.util.Map;
 
 public class Utils {
 
-    public static final String DOMAIN = "http://192.168.100.12:8000";
+    //public static final String DOMAIN = "http://192.168.1.8:8000";
+    public static final String DOMAIN = "http://68.183.159.197:8000";
+
     public static final String API_URL = DOMAIN+"/api/";
     public static final String SOURCE_URL = DOMAIN+"/sources/";
 
 
-    //test
-   // public static final String MOPUB_AD_UNIT_ID = "b195f8dd8ded45fe847ad89ed1d016da";
+    // test
+    // public static final String MOPUB_AD_UNIT_ID = "b195f8dd8ded45fe847ad89ed1d016da";
 
-    //publish
+    // publish
     public static final String MOPUB_AD_UNIT_ID = "90d50eb73f9941bd83629652b0ad6a4d";
 
     // hollow clientId: 1016402780199-fqinff42oo693meufqji5na1adj53b7v.apps.googleusercontent.com

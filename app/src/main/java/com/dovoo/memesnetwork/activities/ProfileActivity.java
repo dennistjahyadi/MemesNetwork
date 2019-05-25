@@ -4,33 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.dovoo.memesnetwork.LoginActivity;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
-import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.mopub.mobileads.MoPubView;
 import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView tvBtnLike, tvBtnDislike, tvBtnComment, tvBtnPrivacyPolicy, tvUsername, tvBtnEditProfile, tvBtnLogout;
+    private TextView tvBtnLike, tvBtnDislike, tvBtnComment, tvBtnPrivacyPolicy,tvBtnSubscription, tvUsername, tvBtnEditProfile, tvBtnLogout;
     private LinearLayout linBtnBack;
     private ImageView ivProfile;
     private AdView mAdView;
@@ -53,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvBtnDislike = findViewById(R.id.tvBtnDislike);
         tvBtnComment = findViewById(R.id.tvBtnComment);
         tvBtnPrivacyPolicy = findViewById(R.id.tvBtnPrivacyPolicy);
+        tvBtnSubscription = findViewById(R.id.tvBtnSubscription);
         tvBtnLogout = findViewById(R.id.tvBtnLogout);
         tvUsername = findViewById(R.id.tvUsername);
         linBtnBack = findViewById(R.id.linBtnBack);
@@ -100,6 +94,14 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        tvBtnSubscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Coming soon",Toast.LENGTH_LONG).show();
+            }
+        });
+
         tvBtnLogout.setOnClickListener(new View.OnClickListener() {
 
             @Override

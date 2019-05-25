@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -26,8 +25,6 @@ import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.mopub.mobileads.MoPubErrorCode;
-import com.mopub.mobileads.MoPubView;
 import com.squareup.picasso.Picasso;
 import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
 import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
