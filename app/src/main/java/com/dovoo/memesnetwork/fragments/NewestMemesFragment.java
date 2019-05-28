@@ -3,8 +3,11 @@ package com.dovoo.memesnetwork.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import com.dovoo.memesnetwork.adapter.VideoRecyclerViewAdapter;
 import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
+import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.ads.AdRequest;
@@ -30,6 +34,7 @@ import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
 import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
 import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
 import com.volokh.danylo.video_player_manager.meta.MetaData;
+import com.volokh.danylo.video_player_manager.ui.SimpleMainThreadMediaPlayerListener;
 import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
 import com.volokh.danylo.visibility_utils.calculator.DefaultSingleItemCalculatorCallback;
 import com.volokh.danylo.visibility_utils.calculator.ListItemsVisibilityCalculator;
@@ -80,6 +85,8 @@ public class NewestMemesFragment extends Fragment {
 
     private String section = null;
     private AdView mAdView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private FloatingActionButton fab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +104,8 @@ public class NewestMemesFragment extends Fragment {
         loadingBar = view.findViewById(R.id.loadingBar);
 
         rvMemes = view.findViewById(R.id.rvMemes);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        fab = view.findViewById(R.id.fab);
 
         mAdView = view.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -177,17 +186,52 @@ public class NewestMemesFragment extends Fragment {
         rvMemes.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                fetchData(totalItemsCount, section);
+                fetchData(totalItemsCount);
             }
         });
+
+
         mItemsPositionGetter = new RecyclerViewItemPositionGetter(mLayoutManager, rvMemes);
 
-        fetchData(0, section);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        swipeRefreshLayout.setEnabled(false);
+                        fetchData(0);
+                    }
+                }
+        );
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecyclerView.SmoothScroller smoothScrollerToTop = new LinearSmoothScroller(getContext()) {
+                    @Override
+                    protected int getVerticalSnapPreference() {
+                        return LinearSmoothScroller.SNAP_TO_START;
+                    }
+                };
+                smoothScrollerToTop.setTargetPosition(0);
+
+                mLayoutManager.startSmoothScroll(smoothScrollerToTop);
+            }
+        });
+
+        new SimpleMainThreadMediaPlayerListener() {
+            @Override
+            public void onErrorMainThread(int what, int extra) {
+                mVideoPlayerManager.resetMediaPlayer();
+            }
+        };
+
+        fetchData(0);
 
         return view;
     }
 
-    private void fetchData(int offset, String section) {
+
+    private void fetchData(int offset) {
         loadingBar.setVisibility(View.VISIBLE);
 
 //        for (int i = 0; i < 100; i++) {
@@ -195,6 +239,9 @@ public class NewestMemesFragment extends Fragment {
 //            mList.add(new DirectLinkVideoItem("asddas", "http://192.168.1.8:8000/sources/apm9AD8_460sv.mp4", mVideoPlayerManager, Picasso.get(), "http://192.168.1.8:8000/sources/apm9AD8_460s.jpg"));
 //
 //        }
+        if (offset == 0) {
+            mList.clear();
+        }
 
         Map<String, String> param = new HashMap<>();
         param.put("offset", offset + "");
@@ -258,6 +305,15 @@ public class NewestMemesFragment extends Fragment {
                             e.printStackTrace();
                         }
                         loadingBar.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
+
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        resumeVideoUsingStupidMethod();
+                        swipeRefreshLayout.setEnabled(true);
 
                     }
 
@@ -266,6 +322,7 @@ public class NewestMemesFragment extends Fragment {
                         // handle error
                         System.out.print("a");
                         loadingBar.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
 
                     }
                 });
@@ -321,6 +378,7 @@ public class NewestMemesFragment extends Fragment {
         rvMemes.scrollBy(0, -1300);
 
     }
+
 
     @Override
     public void onPause() {

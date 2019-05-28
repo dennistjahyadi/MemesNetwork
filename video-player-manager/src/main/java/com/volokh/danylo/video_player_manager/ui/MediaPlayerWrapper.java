@@ -493,7 +493,10 @@ public abstract class MediaPlayerWrapper
 
         if(surfaceTexture != null){
             mSurface = new Surface(surfaceTexture);
-            mMediaPlayer.setSurface(mSurface); // TODO fix illegal state exception
+            try {
+                mMediaPlayer.setSurface(mSurface);// TODO fix illegal state exception
+            } catch (Exception e) {
+            }
         } else {
             mMediaPlayer.setSurface(null);
         }

@@ -1,11 +1,13 @@
 package com.dovoo.memesnetwork.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +18,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dovoo.memesnetwork.LoginActivity;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.CommentRecyclerViewAdapter;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
@@ -68,7 +71,17 @@ public class CommentActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-
+        etComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    if (!SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false)) {
+                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(i);
+                    }
+                }
+            }
+        });
         linBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +102,10 @@ public class CommentActivity extends AppCompatActivity {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(TextUtils.isEmpty(etComment.getText()))
+                {
+                    return;
+                }
                 sendComment();
             }
         });
@@ -177,6 +194,15 @@ public class CommentActivity extends AppCompatActivity {
                         btnSend.setEnabled(true);
                     }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        etComment.setFocusableInTouchMode(false);
+        etComment.setFocusable(false);
+        etComment.setFocusableInTouchMode(true);
+        etComment.setFocusable(true);
     }
 
     @Override

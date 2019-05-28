@@ -1,5 +1,6 @@
 package com.dovoo.memesnetwork;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,9 +13,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,26 +23,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.dovoo.memesnetwork.activities.ProfileActivity;
 import com.dovoo.memesnetwork.activities.SectionActivity;
 import com.dovoo.memesnetwork.fragments.NewestMemesFragment;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
-import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PurchasesUpdatedListener {
+public class MainActivity extends AppCompatActivity {
     private final int RC_SIGN_IN = 1;
     private final int ACTIVITY_RESULT_SECTION = 2;
     private GoogleSignInClient mGoogleSignInClient;
@@ -50,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     private NavigationView navigationView;
     private LinearLayout linBtnSection;
     private TextView tvBtnProfile;
-    private BillingClient billingClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,20 +60,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
             GlobalFunc.mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         }
         MobileAds.initialize(this, getResources().getString(R.string.admob_app_id));
-        billingClient = BillingClient.newBuilder(MainActivity.this).setListener(this).build();
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
-                if (billingResponseCode == BillingClient.BillingResponse.OK) {
-                    // The BillingClient is ready. You can query purchases here.
-                }
-            }
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-            }
-        });
+
         init();
     }
 
@@ -246,7 +227,22 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     }
 
     @Override
-    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+    public void onBackPressed() {
+        super.onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("exit :( ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
+                    }
+                });
+        // Create the AlertDialog object and return it
+        builder.create();
+        builder.show();
     }
 }
