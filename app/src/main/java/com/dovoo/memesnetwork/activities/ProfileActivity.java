@@ -1,6 +1,7 @@
 package com.dovoo.memesnetwork.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
@@ -21,12 +30,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 
-public class ProfileActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProfileActivity extends AppCompatActivity implements PurchasesUpdatedListener {
 
     private TextView tvBtnLike, tvBtnDislike, tvBtnComment, tvBtnPrivacyPolicy,tvBtnSubscription, tvUsername, tvBtnEditProfile, tvBtnLogout;
     private LinearLayout linBtnBack;
     private ImageView ivProfile;
     private AdView mAdView;
+    private BillingClient billingClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-
+        setupPayment();
         tvBtnEditProfile = findViewById(R.id.tvBtnEditProfile);
         tvBtnLike = findViewById(R.id.tvBtnLike);
         tvBtnDislike = findViewById(R.id.tvBtnDislike);
@@ -60,6 +73,14 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        tvBtnPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://68.183.159.197/privacypolicy/"));
+                startActivity(browserIntent);
             }
         });
 
@@ -116,6 +137,36 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    private void setupPayment(){
+
+        billingClient = BillingClient.newBuilder(ProfileActivity.this).setListener(this).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+        List<String> skuList = new ArrayList<>();
+        skuList.add("premium member");
+        SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+        billingClient.querySkuDetailsAsync(params.build(),
+                new SkuDetailsResponseListener() {
+                    @Override
+                    public void onSkuDetailsResponse(BillingResult billingResult,
+                                                     List<SkuDetails> skuDetailsList) {
+                        // Process the result.
+                    }
+                });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -139,4 +190,8 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
+
+    }
 }

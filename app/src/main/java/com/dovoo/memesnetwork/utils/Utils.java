@@ -32,7 +32,7 @@ public class Utils {
 
     // hollow clientId: 1016402780199-fqinff42oo693meufqji5na1adj53b7v.apps.googleusercontent.com
 
-    public static final String clientId  = "1016402780199-fqinff42oo693meufqji5na1adj53b7v.apps.googleusercontent.com"; // get from console.developer.google.com
+    public static final String clientId  = "1016402780199-g60jlvimi8qgs9fh0jnl9dvgvbpo1q8m.apps.googleusercontent.com"; // get from console.developer.google.com
 
 
     public static Map<String, Object> toMap(JSONObject object) throws JSONException {

@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         if(GlobalFunc.mGoogleSignInClient==null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(Utils.clientId)
                     .requestEmail()
                     .build();
             // Build a GoogleSignInClient with the options specified by gso.
