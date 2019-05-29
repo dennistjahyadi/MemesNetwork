@@ -33,13 +33,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileActivity extends AppCompatActivity implements PurchasesUpdatedListener {
+public class ProfileActivity extends AppCompatActivity {
 
     private TextView tvBtnLike, tvBtnDislike, tvBtnComment, tvBtnPrivacyPolicy,tvBtnSubscription, tvUsername, tvBtnEditProfile, tvBtnLogout;
     private LinearLayout linBtnBack;
     private ImageView ivProfile;
     private AdView mAdView;
-    private BillingClient billingClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +52,6 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        setupPayment();
         tvBtnEditProfile = findViewById(R.id.tvBtnEditProfile);
         tvBtnLike = findViewById(R.id.tvBtnLike);
         tvBtnDislike = findViewById(R.id.tvBtnDislike);
@@ -139,32 +137,7 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
 
     private void setupPayment(){
 
-        billingClient = BillingClient.newBuilder(ProfileActivity.this).setListener(this).build();
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    // The BillingClient is ready. You can query purchases here.
-                }
-            }
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-            }
-        });
-        List<String> skuList = new ArrayList<>();
-        skuList.add("premium member");
-        SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
-        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
-        billingClient.querySkuDetailsAsync(params.build(),
-                new SkuDetailsResponseListener() {
-                    @Override
-                    public void onSkuDetailsResponse(BillingResult billingResult,
-                                                     List<SkuDetails> skuDetailsList) {
-                        // Process the result.
-                    }
-                });
+
     }
 
     @Override
@@ -190,8 +163,4 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
                 });
     }
 
-    @Override
-    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
-
-    }
 }
