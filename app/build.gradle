@@ -20,6 +20,12 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+ext {
+    latest_snapshot = '3.7.0.2901-SNAPSHOT' // TODO check above for latest version
+    // below: other dependencies' versions maybe
+    latest_release = '3.6.2.2903' // TODO check above for latest version
+
+}
 
 dependencies {
 
@@ -39,6 +45,10 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation "im.ene.toro3:toro:${latest_release}"
+    implementation "im.ene.toro3:toro-ext-exoplayer:${latest_release}"  // to get ExoPlayer support
+    implementation "im.ene.toro3:toro:${latest_snapshot}"
+    implementation "im.ene.toro3:toro-ext-exoplayer:${latest_snapshot}"  // to get ExoPlayer support
     implementation 'com.google.android.exoplayer:exoplayer:2.9.6'
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
 

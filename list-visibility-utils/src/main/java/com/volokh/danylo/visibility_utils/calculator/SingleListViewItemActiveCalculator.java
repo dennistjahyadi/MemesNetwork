@@ -185,11 +185,9 @@ public class SingleListViewItemActiveCalculator extends BaseItemsVisibilityCalcu
 
         if(mostVisibleItem.isMostVisibleItemChanged()){
             if(SHOW_LOGS) Logger.v(TAG, "topToBottomMostVisibleItem, item changed");
-
             setCurrentItem(mostVisibleItem);
         } else {
             if(SHOW_LOGS) Logger.v(TAG, "topToBottomMostVisibleItem, item not changed");
-
         }
     }
 
@@ -199,7 +197,7 @@ public class SingleListViewItemActiveCalculator extends BaseItemsVisibilityCalcu
         int currentItemVisibilityPercents;
 
         for(int indexOfCurrentItem = itemsPositionGetter.getFirstVisiblePosition(), indexOfCurrentView = itemsPositionGetter.indexOfChild(outMostVisibleItem.getView())
-                ; indexOfCurrentView < itemsPositionGetter.getChildCount() // iterating via listView Items
+            ; indexOfCurrentView < itemsPositionGetter.getChildCount() // iterating via listView Items
                 ; indexOfCurrentItem++, indexOfCurrentView++){
 
             if(SHOW_LOGS) Logger.v(TAG, "topToBottomMostVisibleItem, indexOfCurrentView " + indexOfCurrentView);
@@ -234,7 +232,7 @@ public class SingleListViewItemActiveCalculator extends BaseItemsVisibilityCalcu
 
         int currentItemVisibilityPercents;
         for(int indexOfCurrentItem = itemsPositionGetter.getLastVisiblePosition(), indexOfCurrentView = itemsPositionGetter.indexOfChild(outMostVisibleItem.getView())
-                ; indexOfCurrentView >= 0 // iterating via listView Items
+            ; indexOfCurrentView >= 0 // iterating via listView Items
                 ; indexOfCurrentItem--, indexOfCurrentView--){
 
             if(SHOW_LOGS) Logger.v(TAG, "bottomToTopMostVisibleItem, indexOfCurrentView " + indexOfCurrentView);

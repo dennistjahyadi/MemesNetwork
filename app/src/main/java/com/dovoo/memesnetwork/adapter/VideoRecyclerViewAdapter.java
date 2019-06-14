@@ -72,7 +72,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoViewHold
             finalHeight = finalWidth * ratio;
             // if final height higher or same with phone height, we have to decrease it to make the video fit in phone. It will show around 3/4 phone screen
             if (finalHeight >= maxHeightVideo) {
-                finalHeight = maxHeightVideo * 0.7f;
+                finalHeight = maxHeightVideo * 0.5f;
             }
 
         } else if (videoItem.getContentHeight() < videoItem.getContentWidth()) {

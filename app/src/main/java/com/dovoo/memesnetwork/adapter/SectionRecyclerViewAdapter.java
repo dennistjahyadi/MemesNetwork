@@ -48,12 +48,18 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<SectionRecy
         final Map<String,Object> obj = itemList.get(i);
         viewHolder.tvSection.setText((String)obj.get("name"));
         viewHolder.linBtnSection.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                Intent data = new Intent();
-                data.putExtra("name", (String)obj.get("name"));
-                activity.setResult(Activity.RESULT_OK,data);
-                activity.finish();
+                Thread t = new Thread() {
+                    public void run() {
+                        Intent data = new Intent();
+                        data.putExtra("name", (String)obj.get("name"));
+                        activity.setResult(Activity.RESULT_OK,data);
+                        activity.finish();
+                    }
+                };
+                t.start();
             }
         });
     }

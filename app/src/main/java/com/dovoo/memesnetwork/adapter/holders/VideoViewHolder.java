@@ -1,5 +1,7 @@
 package com.dovoo.memesnetwork.adapter.holders;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,11 +18,11 @@ import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
 public class VideoViewHolder extends RecyclerView.ViewHolder {
 
     public final RelativeLayout relativeLayout;
-    public final LinearLayout linBtnLike,linBtnDislike,linBtnComment;
+    public final LinearLayout linBtnLike, linBtnDislike, linBtnComment;
     public final VideoPlayerView mPlayer;
     public final ImageView mCover;
     public final TextViewFaSolid tvIconSound;
-    public final TextView tvCategory,tvTitle,tvLabelNoAudio,tvBtnLike,tvBtnDislike,tvTotalLike,tvTotalDislike,tvTotalComment;
+    public final TextView tvCategory, tvTitle, tvLabelNoAudio, tvBtnLike, tvBtnDislike, tvTotalLike, tvTotalDislike, tvTotalComment;
 
     public VideoViewHolder(View view) {
         super(view);
@@ -41,19 +43,22 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
         tvIconSound = view.findViewById(R.id.tvIconSound);
         mPlayer.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!mPlayer.hasAudio()){
+            public boolean onTouch(final View v, MotionEvent event) {
+                if (!mPlayer.hasAudio()) {
                     return false;
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        public void run() {
+                            if (mPlayer.isAllVideoMute()) {
+                                mPlayer.unMuteVideo();
+                                tvIconSound.setText(v.getContext().getResources().getText(R.string.fa_volume_up));
+                            } else {
+                                mPlayer.muteVideo();
+                                tvIconSound.setText(v.getContext().getResources().getText(R.string.fa_volume_mute));
+                            }                        }
+                    });
 
-                    if (mPlayer.isAllVideoMute()) {
-                        mPlayer.unMuteVideo();
-                        tvIconSound.setText(v.getContext().getResources().getText(R.string.fa_volume_up));
-                    } else {
-                        mPlayer.muteVideo();
-                        tvIconSound.setText(v.getContext().getResources().getText(R.string.fa_volume_mute));
-                    }
                 }
                 return true;
             }

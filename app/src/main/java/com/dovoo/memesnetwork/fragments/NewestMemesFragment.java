@@ -288,33 +288,27 @@ public class NewestMemesFragment extends Fragment {
                                 mList.add(new DirectLinkVideoItem(id, category, title, videoUrl, data, mVideoPlayerManager, Picasso.get(), coverUrl, width, height, hasAudio, isVideo));
                             }
 
-                            videoRecyclerViewAdapter.notifyDataSetChanged();
-                            if (!mList.isEmpty()) {
-                                rvMemes.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mVideoVisibilityCalculator.onScrollStateIdle(
-                                                mItemsPositionGetter,
-                                                mLayoutManager.findFirstVisibleItemPosition(),
-                                                mLayoutManager.findLastVisibleItemPosition());
 
-                                    }
-                                });
-                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         loadingBar.setVisibility(View.GONE);
-                        swipeRefreshLayout.setRefreshing(false);
 
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        resumeVideoUsingStupidMethod();
+
                         swipeRefreshLayout.setEnabled(true);
+                        videoRecyclerViewAdapter.notifyDataSetChanged();
+                        if (!mList.isEmpty()) {
+                            rvMemes.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mVideoVisibilityCalculator.onScrollStateIdle(
+                                            mItemsPositionGetter,
+                                            mLayoutManager.findFirstVisibleItemPosition(),
+                                            mLayoutManager.findLastVisibleItemPosition());
 
+                                }
+                            });
+                        }
                     }
 
                     @Override
@@ -367,13 +361,19 @@ public class NewestMemesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        resumeVideoUsingStupidMethod();
+        if(videoRecyclerViewAdapter.getItemCount()>0){
+            resumeVideoUsingStupidMethod();
+        }
     }
 
     private void resumeVideoUsingStupidMethod() {
         // i just don't know to play the video,
         // this shit did the trick. just do fast scroll (LOL)
-
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         rvMemes.scrollBy(0, 1300);
         rvMemes.scrollBy(0, -1300);
 
