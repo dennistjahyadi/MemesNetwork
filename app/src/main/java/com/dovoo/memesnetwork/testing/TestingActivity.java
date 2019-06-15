@@ -1,16 +1,20 @@
 package com.dovoo.memesnetwork.testing;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.dovoo.memesnetwork.R;
-import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
@@ -29,25 +33,31 @@ import im.ene.toro.widget.Container;
 import im.ene.toro.widget.PressablePlayerSelector;
 
 public class TestingActivity extends AppCompatActivity {
-    Container container;
-    LinearLayoutManager layoutManager;
-    TestingAdapter adapter;
-    PressablePlayerSelector selector;
+    private Container container;
+    private LinearLayoutManager layoutManager;
+    private TestingAdapter adapter;
+    private PressablePlayerSelector selector;
     private List<DirectLinkItemTest> directLinkItemTestList = new ArrayList<>();
     private String section = null;
+    private FrameLayout loadingBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_testing);
         container = findViewById(R.id.player_container);
+        loadingBar = findViewById(R.id.loadingBar);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        fab = findViewById(R.id.fab);
 
         layoutManager = new LinearLayoutManager(this);
         container.setLayoutManager(layoutManager);
         selector = new PressablePlayerSelector(container);
         container.setPlayerSelector(selector);
 
-        adapter = new TestingAdapter(getApplicationContext(), selector, directLinkItemTestList);
+        adapter = new TestingAdapter(getApplicationContext(), selector, directLinkItemTestList,loadingBar);
         container.setAdapter(adapter);
         container.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -55,11 +65,34 @@ public class TestingActivity extends AppCompatActivity {
                 fetchData(totalItemsCount);
             }
         });
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        swipeRefreshLayout.setEnabled(false);
+                        fetchData(0);
+                    }
+                }
+        );
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecyclerView.SmoothScroller smoothScrollerToTop = new LinearSmoothScroller(getApplicationContext()) {
+                    @Override
+                    protected int getVerticalSnapPreference() {
+                        return LinearSmoothScroller.SNAP_TO_START;
+                    }
+                };
+                smoothScrollerToTop.setTargetPosition(0);
+
+                layoutManager.startSmoothScroll(smoothScrollerToTop);
+            }
+        });
         fetchData(0);
     }
 
     private void fetchData(int offset) {
-        //loadingBar.setVisibility(View.VISIBLE);
+        loadingBar.setVisibility(View.VISIBLE);
 
 //        for (int i = 0; i < 100; i++) {
 //         //   mList.add(new DirectLinkVideoItem("asddas", "https://img-9gag-fun.9cache.com/photo/aA3yqzp_460sv.mp4", mVideoPlayerManager, Picasso.get(), "https://img-9gag-fun.9cache.com/photo/aA3yqzp_460s.jpg"));
@@ -115,25 +148,20 @@ public class TestingActivity extends AppCompatActivity {
                                 directLinkItemTestList.add(new DirectLinkItemTest(id, category, title, videoUrl, data, Picasso.get(), coverUrl, width, height, hasAudio, isVideo));
                             }
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-//                        loadingBar.setVisibility(View.GONE);
-//
-//
-//                        swipeRefreshLayout.setEnabled(true);
+                        loadingBar.setVisibility(View.GONE);
+                        swipeRefreshLayout.setEnabled(true);
                         adapter.notifyDataSetChanged();
-
                     }
 
                     @Override
                     public void onError(ANError error) {
                         // handle error
                         System.out.print("a");
-//                        loadingBar.setVisibility(View.GONE);
-//                        swipeRefreshLayout.setRefreshing(false);
-
+                        loadingBar.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
     }

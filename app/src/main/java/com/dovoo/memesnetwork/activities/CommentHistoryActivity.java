@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -17,8 +16,6 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.CommentHistoryRecyclerViewAdapter;
-import com.dovoo.memesnetwork.adapter.CommentRecyclerViewAdapter;
-import com.dovoo.memesnetwork.adapter.VideoRecyclerViewAdapter;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;

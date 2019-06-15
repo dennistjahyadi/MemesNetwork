@@ -228,7 +228,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage("exit :( ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

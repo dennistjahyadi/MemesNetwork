@@ -13,11 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dovoo.memesnetwork.R;
-import com.dovoo.memesnetwork.activities.CommentActivity;
-import com.dovoo.memesnetwork.adapter.holders.VideoViewHolder;
-import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
-import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
 import com.dovoo.memesnetwork.components.TextViewFaSolid;
+import com.dovoo.memesnetwork.testing.DirectLinkItemTest;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -30,18 +27,16 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.TimeZone;
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private List<Map<String, Object>> itemList;
-    private BaseVideoItem videoItem;
+    private DirectLinkItemTest videoItem;
     private Context context;
     public SimpleExoPlayer player;
     float finalWidth;
@@ -51,7 +46,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private int[] funnyimgs = new int[] {R.drawable.funny_user1,R.drawable.funny_user2,R.drawable.funny_user3};
 
 
-    public CommentRecyclerViewAdapter(Context context, List<Map<String, Object>> itemList,BaseVideoItem videoItem) {
+    public CommentRecyclerViewAdapter(Context context, List<Map<String, Object>> itemList,DirectLinkItemTest videoItem) {
         this.context = context;
         this.itemList = itemList;
         this.videoItem = videoItem;
@@ -109,9 +104,9 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolderHeader) {
             MyViewHolderHeader vhHeader = (MyViewHolderHeader) holder;
-            if (videoItem.getContentHeight() > videoItem.getContentWidth()) {
+            if (videoItem.getmHeight() > videoItem.getmWidth()) {
                 // if video is potrait
-                float ratio = (float) videoItem.getContentHeight() / videoItem.getContentWidth();
+                float ratio = (float) videoItem.getmHeight() / videoItem.getmWidth();
 
                 finalHeight = finalWidth * ratio;
                 // if final height higher or same with phone height, we have to decrease it to make the video fit in phone. It will show around 3/4 phone screen
@@ -119,9 +114,9 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     finalHeight = maxHeightVideo * 0.5f;
                 }
 
-            } else if (videoItem.getContentHeight() < videoItem.getContentWidth()) {
+            } else if (videoItem.getmHeight() < videoItem.getmWidth()) {
                 // if video is landscape
-                float ratio = (float) videoItem.getContentWidth() / videoItem.getContentHeight();
+                float ratio = (float) videoItem.getmWidth() / videoItem.getmHeight();
 
                 finalHeight = finalWidth / ratio;
             } else {
@@ -134,9 +129,8 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             layoutParams.height = (int) finalHeight;
             vhHeader.relativeLayout.setLayoutParams(layoutParams);
 
-            DirectLinkVideoItem directLinkVideoItem = (DirectLinkVideoItem) videoItem;
 
-            vhHeader.tvTitle.setText(directLinkVideoItem.getmTitle());
+            vhHeader.tvTitle.setText(videoItem.getmTitle());
 //            vhHeader.mCover.setVisibility(View.VISIBLE);
 //
 //            Picasso.get().load(directLinkVideoItem.getmCoverUrl())
@@ -148,10 +142,10 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
                     Util.getUserAgent(context, "yourApplicationName"));
 // This is the MediaSource representing the media to be played.
-            if(directLinkVideoItem.getmDirectUrl()!=null) {
+            if(videoItem.getmDirectUrl()!=null) {
 
                 MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                        .createMediaSource(Uri.parse(directLinkVideoItem.getmDirectUrl()));
+                        .createMediaSource(Uri.parse(videoItem.getmDirectUrl()));
 
 // Prepare the player with the source.
                 player.prepare(videoSource);
@@ -162,7 +156,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
                 vhHeader.playerView.setVisibility(View.GONE);
                 vhHeader.mCover.setVisibility(View.VISIBLE);
-                directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl()).into(vhHeader.mCover);
+                videoItem.getmImageLoader().load(videoItem.getmCoverUrl()).into(vhHeader.mCover);
             }
         } else if (holder instanceof MyViewHolderItem) {
             final Map<String, Object> obj = itemList.get(position-1);

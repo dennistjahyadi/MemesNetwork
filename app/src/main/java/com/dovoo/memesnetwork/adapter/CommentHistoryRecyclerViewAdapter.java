@@ -2,7 +2,6 @@ package com.dovoo.memesnetwork.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -11,23 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.activities.CommentActivity;
-import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
-import com.dovoo.memesnetwork.adapter.items.DirectLinkVideoItem;
-import com.dovoo.memesnetwork.components.TextViewFaSolid;
+import com.dovoo.memesnetwork.testing.DirectLinkItemTest;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -122,12 +110,13 @@ public class CommentHistoryRecyclerViewAdapter extends RecyclerView.Adapter<Comm
 
                         int width = imagesObject.getJSONObject("image700").getInt("width");
                         int height = imagesObject.getJSONObject("image700").getInt("height");
-                        GlobalFunc.currentVideoItem = new DirectLinkVideoItem(id, category, title, videoUrl, null, null, Picasso.get(), coverUrl, width, height, hasAudio, isVideo);
+                        GlobalFunc.currentVideoItem = new DirectLinkItemTest(id, category, title, videoUrl, null,  Picasso.get(), coverUrl, width, height, hasAudio, isVideo);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                     Intent i = new Intent(context, CommentActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("meme_id",(int)obj.get("meme_id"));
                     context.startActivity(i);
                 }

@@ -2,20 +2,16 @@ package com.dovoo.memesnetwork.utils;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 
-import com.dovoo.memesnetwork.LoginActivity;
-import com.dovoo.memesnetwork.R;
-import com.dovoo.memesnetwork.adapter.items.BaseVideoItem;
+import com.dovoo.memesnetwork.testing.DirectLinkItemTest;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 public class GlobalFunc {
 
     public static GoogleSignInClient mGoogleSignInClient;
-    public static BaseVideoItem currentVideoItem;
-
-
+    public static DirectLinkItemTest currentVideoItem;
+    public static boolean isMute = false;
 
     public static void logout(final Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
