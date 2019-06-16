@@ -1,9 +1,14 @@
 package com.dovoo.memesnetwork;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
@@ -23,8 +28,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.billingclient.api.BillingClient;
+import com.android.vending.billing.IInAppBillingService;
 import com.dovoo.memesnetwork.activities.ProfileActivity;
 import com.dovoo.memesnetwork.activities.SectionActivity;
+import com.dovoo.memesnetwork.billing.BillingManager;
 import com.dovoo.memesnetwork.fragments.NewestMemesFragment;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
@@ -45,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private LinearLayout linBtnSection;
     private TextView tvBtnProfile;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -149,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -194,8 +204,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentList.add(new NewestMemesFragment());
         //  fragmentList.add(new NewestMemesFragment());
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -244,4 +252,6 @@ public class MainActivity extends AppCompatActivity {
         builder.create();
         builder.show();
     }
+
+
 }

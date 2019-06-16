@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -22,6 +23,7 @@ import com.dovoo.memesnetwork.LoginActivity;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.CommentRecyclerViewAdapter;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
+import com.dovoo.memesnetwork.utils.AdUtils;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
@@ -54,7 +56,7 @@ public class CommentActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
-        memeId = getIntent().getIntExtra("meme_id",0);
+        memeId = getIntent().getIntExtra("meme_id", 0);
         init();
     }
 
@@ -68,8 +70,8 @@ public class CommentActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         rvComment = findViewById(R.id.rvComment);
         mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        AdUtils.loadAds(getApplicationContext(),mAdView);
+
 
         etComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -96,14 +98,13 @@ public class CommentActivity extends AppCompatActivity {
         rvComment.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                fetchData(totalItemsCount-1,false);
+                fetchData(totalItemsCount - 1, false);
             }
         });
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(etComment.getText()))
-                {
+                if (TextUtils.isEmpty(etComment.getText())) {
                     return;
                 }
                 sendComment();
@@ -112,11 +113,11 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void fetchData(int offset, final boolean scrollToLastComment) {
-        if(offset==0){
+        if (offset == 0) {
             itemList.clear();
         }
         loadingBar.setVisibility(View.VISIBLE);
-        Map<String,String> param = new HashMap<>();
+        Map<String, String> param = new HashMap<>();
         param.put("offset", offset + "");
         param.put("meme_id", memeId + "");
         AndroidNetworking.get(Utils.API_URL + "comments")
@@ -136,7 +137,7 @@ public class CommentActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        if(scrollToLastComment){
+                        if (scrollToLastComment) {
                             rvComment.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -165,7 +166,7 @@ public class CommentActivity extends AppCompatActivity {
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("meme_id", memeId);
-            jsonObject.put("user_id",SharedPreferenceUtils.getPrefs(getApplicationContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID,0));
+            jsonObject.put("user_id", SharedPreferenceUtils.getPrefs(getApplicationContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0));
             jsonObject.put("messages", etComment.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -184,7 +185,7 @@ public class CommentActivity extends AppCompatActivity {
                         btnSend.setEnabled(true);
                         etComment.setText("");
                         Utils.hideKeyboard(CommentActivity.this);
-                        fetchData(0,true);
+                        fetchData(0, true);
                     }
 
                     @Override
@@ -192,6 +193,7 @@ public class CommentActivity extends AppCompatActivity {
                         // handle error
                         loadingBar.setVisibility(View.GONE);
                         btnSend.setEnabled(true);
+                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -208,7 +210,7 @@ public class CommentActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(commentRecyclerViewAdapter.player!=null) {
+        if (commentRecyclerViewAdapter.player != null) {
             commentRecyclerViewAdapter.player.stop(true);
         }
     }
@@ -216,7 +218,7 @@ public class CommentActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if(commentRecyclerViewAdapter.player!=null) {
+        if (commentRecyclerViewAdapter.player != null) {
             commentRecyclerViewAdapter.player.stop(true);
         }
     }

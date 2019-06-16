@@ -1,6 +1,12 @@
 package com.dovoo.memesnetwork.fragments;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,15 +20,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.dovoo.memesnetwork.R;
+import com.dovoo.memesnetwork.billing.BillingManager;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager;
 import com.dovoo.memesnetwork.testing.DirectLinkItemTest;
 import com.dovoo.memesnetwork.testing.TestingAdapter;
+import com.dovoo.memesnetwork.utils.AdUtils;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.ads.AdRequest;
@@ -41,7 +50,7 @@ import java.util.Map;
 import im.ene.toro.widget.Container;
 import im.ene.toro.widget.PressablePlayerSelector;
 
-public class NewestMemesFragment extends Fragment {
+public class NewestMemesFragment extends Fragment implements BillingManager.BillingUpdatesListener {
 
     private FrameLayout loadingBar;
     private String section = null;
@@ -53,7 +62,9 @@ public class NewestMemesFragment extends Fragment {
     private TestingAdapter adapter;
     private PressablePlayerSelector selector;
     private List<DirectLinkItemTest> directLinkItemTestList = new ArrayList<>();
-
+    private ServiceConnection mServiceConn;
+    private IInAppBillingService mService;
+    private BillingManager billingManager;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,10 +78,11 @@ public class NewestMemesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup viewGroup, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new, viewGroup, false);
+        billingManager = new BillingManager(this);
+        setupBillingService();
 
         mAdView = view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+
         container = view.findViewById(R.id.player_container);
         loadingBar = view.findViewById(R.id.loadingBar);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -118,6 +130,57 @@ public class NewestMemesFragment extends Fragment {
         return view;
     }
 
+    private void setupBillingService() {
+        mServiceConn = new ServiceConnection() {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mService = null;
+            }
+
+            @Override
+            public void onServiceConnected(ComponentName name,
+                                           IBinder service) {
+                mService = IInAppBillingService.Stub.asInterface(service);
+                checkMemberIsPremium();
+            }
+        };
+
+        Intent i = new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        i.setPackage("com.android.vending");
+
+        getContext().bindService(i,
+                mServiceConn, Context.BIND_AUTO_CREATE);
+    }
+
+
+    public void checkMemberIsPremium() {
+        boolean isPremiumMember = false;
+        String packageName = "com.dovoo.memesnetwork";
+        try {
+            Bundle ownedItems = mService.getPurchases(3, packageName, "subs", null);
+            int response = ownedItems.getInt("RESPONSE_CODE");
+            if (response == 0) {
+                ArrayList ownedSkus =
+                        ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+                ArrayList purchaseDataList =
+                        ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+
+                for (int i = 0; i < purchaseDataList.size(); ++i) {
+                    String sku = (String) ownedSkus.get(i);
+                    if (sku.equals("premium_member")) {
+                        isPremiumMember = true;
+                    }
+                }
+
+                // if continuationToken != null, call getPurchases again
+                // and pass in the token to retrieve more items
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        billingManager.updateMemberStatus(getContext(), isPremiumMember);
+
+    }
 
     private void fetchData(int offset) {
         loadingBar.setVisibility(View.VISIBLE);
@@ -191,6 +254,12 @@ public class NewestMemesFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        AdUtils.loadAds(getContext(),mAdView);
+    }
+
+    @Override
     public void onDestroyView() {
         layoutManager = null;
         adapter = null;
@@ -198,4 +267,10 @@ public class NewestMemesFragment extends Fragment {
         super.onDestroyView();
     }
 
+    @Override
+    public void onSubscriptionPurchaseUpdated() {
+
+        AdUtils.loadAds(getContext(),mAdView);
+
+    }
 }

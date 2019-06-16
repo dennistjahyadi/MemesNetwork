@@ -6,10 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -88,7 +90,7 @@ public class TestingAdapter extends RecyclerView.Adapter<TestingViewHolder> {
         layoutParams.width = (int) finalWidth;
         layoutParams.height = (int) finalHeight;
         viewHolder.relativeLayout.setLayoutParams(layoutParams);
-        viewHolder.tvTitle.setText(directLinkVideoItem.getmTitle());
+        viewHolder.tvTitle.setText(Html.fromHtml(directLinkVideoItem.getmTitle()));
         viewHolder.tvCategory.setText(directLinkVideoItem.getmCategory());
         viewHolder.mCover.setVisibility(View.VISIBLE);
         directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl()).into(viewHolder.mCover);
@@ -240,7 +242,7 @@ public class TestingAdapter extends RecyclerView.Adapter<TestingViewHolder> {
                         mLoadingBar.setVisibility(View.GONE);
                         viewHolder.linBtnLike.setEnabled(true);
                         viewHolder.linBtnDislike.setEnabled(true);
-
+                        Toast.makeText(mContext,"Fail",Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -293,6 +295,7 @@ public class TestingAdapter extends RecyclerView.Adapter<TestingViewHolder> {
                         mLoadingBar.setVisibility(View.GONE);
                         viewHolder.linBtnLike.setEnabled(true);
                         viewHolder.linBtnDislike.setEnabled(true);
+                        Toast.makeText(mContext,"Fail",Toast.LENGTH_LONG).show();
 
                     }
                 });

@@ -15,6 +15,7 @@ public class SharedPreferenceUtils {
     public static final String PREFERENCES_USER_PHOTO_URL = "user_photo_url";
     public static final String PREFERENCES_USER_LOGIN = "user_login";
     public static final String PREFERENCES_USER_PASSWORD = "user_password";
+    public static final String PREFERENCES_PREMIUM_MEMBER = "premium_member";
 
     public static SharedPreferences getPrefs(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(SharedPreferenceUtils.SP_NAME, MODE_PRIVATE);

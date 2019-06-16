@@ -15,6 +15,8 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.SectionRecyclerViewAdapter;
+import com.dovoo.memesnetwork.utils.AdUtils;
+import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -48,8 +50,8 @@ public class SectionActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        AdUtils.loadAds(getApplicationContext(),mAdView);
+
 
         rvSection = findViewById(R.id.rvSection);
         linBtnBack = findViewById(R.id.linBtnBack);
@@ -67,6 +69,8 @@ public class SectionActivity extends AppCompatActivity {
         });
         fetchData();
     }
+
+
 
     private void fetchData() {
 
