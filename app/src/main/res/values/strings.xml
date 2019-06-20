@@ -4,6 +4,8 @@
     <string name="fa_volume_mute">&#xf6a9;</string>
     <string name="fa_thumbs_up">&#xf164;</string>
     <string name="fa_thumbs_down">&#xf165;</string>
+    <string name="fa_alt_share_square">&#xf1e1;</string>
+    <string name="fa_alt_share">&#xf1e0;</string>
     <string name="fa_comment">&#xf075;</string>
     <string name="fa_arrow_left">&#xf060;</string>
     <string name="fa_user_circle">&#xf2bd;</string>

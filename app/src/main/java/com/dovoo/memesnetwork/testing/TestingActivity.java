@@ -15,6 +15,8 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.dovoo.memesnetwork.R;
+import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter;
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
@@ -35,7 +37,7 @@ import im.ene.toro.widget.PressablePlayerSelector;
 public class TestingActivity extends AppCompatActivity {
     private Container container;
     private LinearLayoutManager layoutManager;
-    private TestingAdapter adapter;
+    private MemesRecyclerViewAdapter adapter;
     private PressablePlayerSelector selector;
     private List<DirectLinkItemTest> directLinkItemTestList = new ArrayList<>();
     private String section = null;
@@ -57,7 +59,7 @@ public class TestingActivity extends AppCompatActivity {
         selector = new PressablePlayerSelector(container);
         container.setPlayerSelector(selector);
 
-        adapter = new TestingAdapter(getApplicationContext(), selector, directLinkItemTestList,loadingBar);
+        adapter = new MemesRecyclerViewAdapter(getApplicationContext(), selector, directLinkItemTestList,loadingBar);
         container.setAdapter(adapter);
         container.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override

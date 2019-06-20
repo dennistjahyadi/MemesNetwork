@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.components.TextViewFaSolid;
-import com.dovoo.memesnetwork.testing.DirectLinkItemTest;
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;

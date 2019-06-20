@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.activities.CommentActivity;
-import com.dovoo.memesnetwork.testing.DirectLinkItemTest;
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.squareup.picasso.Picasso;
 

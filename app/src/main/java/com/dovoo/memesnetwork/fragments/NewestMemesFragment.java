@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,16 +24,16 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.dovoo.memesnetwork.MainActivity;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.billing.BillingManager;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager;
-import com.dovoo.memesnetwork.testing.DirectLinkItemTest;
-import com.dovoo.memesnetwork.testing.TestingAdapter;
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
+import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter;
 import com.dovoo.memesnetwork.utils.AdUtils;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
@@ -59,7 +58,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
     private FloatingActionButton fab;
     private Container container;
     private MyLinearLayoutManager layoutManager;
-    private TestingAdapter adapter;
+    private MemesRecyclerViewAdapter adapter;
     private PressablePlayerSelector selector;
     private List<DirectLinkItemTest> directLinkItemTestList = new ArrayList<>();
     private ServiceConnection mServiceConn;
@@ -94,7 +93,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
         selector = new PressablePlayerSelector(container);
         container.setPlayerSelector(selector);
 
-        adapter = new TestingAdapter(getContext(), selector, directLinkItemTestList,loadingBar);
+        adapter = new MemesRecyclerViewAdapter(getContext(), selector, directLinkItemTestList,((MainActivity)getActivity()).loadingBar);
         container.setAdapter(adapter);
         container.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override

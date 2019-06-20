@@ -5,11 +5,11 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/grey900"
     android:layout_marginBottom="30dp"
+    android:background="@color/grey900"
+    android:orientation="vertical"
     android:paddingTop="5dp"
-    android:paddingBottom="20dp"
-    android:orientation="vertical">
+    android:paddingBottom="20dp">
 
     <FrameLayout
         android:id="@+id/linTop"
@@ -34,37 +34,39 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
                     android:layout_marginLeft="20dp"
-                    android:src="@drawable/profile_img_default" />
+                    android:src="@drawable/profile_img_default"
+                    android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/tvUsername"
+                    android:id="@+id/tvCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="18dp"
+                    android:layout_toRightOf="@+id/ivPicture"
+                    android:background="@drawable/category_round_bg"
                     android:paddingLeft="8dp"
                     android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
                     android:paddingRight="8dp"
-                    android:background="@drawable/category_round_bg"
-                    android:layout_toRightOf="@+id/ivPicture"
+                    android:paddingBottom="2dp"
                     android:text="name"
-                    android:textStyle="bold"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="2dp"
                 android:text="title"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -146,22 +148,26 @@
         android:id="@+id/linBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linMiddle">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="4">
 
             <LinearLayout
                 android:id="@+id/linBtnLike"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <com.dovoo.memesnetwork.components.TextViewFaRegular
@@ -187,10 +193,12 @@
 
             <LinearLayout
                 android:id="@+id/linBtnDislike"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
                 android:layout_toRightOf="@id/linBtnLike"
+                android:padding="4dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <com.dovoo.memesnetwork.components.TextViewFaRegular
@@ -215,10 +223,12 @@
 
             <LinearLayout
                 android:id="@+id/linBtnComment"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
                 android:layout_toRightOf="@+id/linBtnDislike"
+                android:padding="4dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
 
@@ -243,8 +253,28 @@
                     android:textSize="20dp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/linBtnShare"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/linBtnDislike"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-        </RelativeLayout>
+
+                <com.dovoo.memesnetwork.components.TextViewFaSolid
+                    android:id="@+id/tvBtnShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/fa_alt_share"
+                    android:textColor="@color/white"
+                    android:textSize="26dp" />
+
+            </LinearLayout>
+        </LinearLayout>
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

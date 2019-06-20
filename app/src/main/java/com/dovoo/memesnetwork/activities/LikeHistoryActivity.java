@@ -2,12 +2,7 @@ package com.dovoo.memesnetwork.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -20,8 +15,8 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager;
-import com.dovoo.memesnetwork.testing.DirectLinkItemTest;
-import com.dovoo.memesnetwork.testing.TestingAdapter;
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
+import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.squareup.picasso.Picasso;
@@ -44,7 +39,7 @@ public class LikeHistoryActivity extends AppCompatActivity {
     private String section = null;
     private Container container;
     private MyLinearLayoutManager layoutManager;
-    private TestingAdapter adapter;
+    private MemesRecyclerViewAdapter adapter;
     private PressablePlayerSelector selector;
     private List<DirectLinkItemTest> directLinkItemTestList = new ArrayList<>();
     private FrameLayout loadingBar;
@@ -78,7 +73,7 @@ public class LikeHistoryActivity extends AppCompatActivity {
         selector = new PressablePlayerSelector(container);
         container.setPlayerSelector(selector);
 
-        adapter = new TestingAdapter(getApplicationContext(), selector, directLinkItemTestList,loadingBar);
+        adapter = new MemesRecyclerViewAdapter(getApplicationContext(), selector, directLinkItemTestList,loadingBar);
         container.setAdapter(adapter);
         container.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override

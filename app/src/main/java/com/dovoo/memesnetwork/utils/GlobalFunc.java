@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
-import com.dovoo.memesnetwork.testing.DirectLinkItemTest;
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 public class GlobalFunc {

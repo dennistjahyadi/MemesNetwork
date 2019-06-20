@@ -1,10 +1,12 @@
 package com.dovoo.memesnetwork;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -12,6 +14,7 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private LinearLayout linBtnSection;
     private TextView tvBtnProfile;
+    public FrameLayout loadingBar;
 
 
     @Override
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         linBtnSection = findViewById(R.id.linBtnSection);
         tvBtnProfile = findViewById(R.id.tvBtnProfile);
         navigationView = findViewById(R.id.nav_view);
+        loadingBar = findViewById(R.id.loadingBar);
 
         tvBtnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +169,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkUserLoggedIn();
+        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1123);
+        }
     }
 
     private void checkUserLoggedIn(){
