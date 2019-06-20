@@ -105,7 +105,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                       //swipeRefreshLayout.setEnabled(false);
+                       swipeRefreshLayout.setVisibility(View.GONE);
                         fetchData(0);
                     }
                 }
@@ -235,6 +235,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
                             adapter.notifyDataSetChanged();
                             swipeRefreshLayout.setEnabled(true);
                             swipeRefreshLayout.setRefreshing(false);
+                            swipeRefreshLayout.setVisibility(View.VISIBLE);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -248,6 +249,8 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
                         System.out.print("a");
                         loadingBar.setVisibility(View.GONE);
                         swipeRefreshLayout.setRefreshing(false);
+                        swipeRefreshLayout.setVisibility(View.VISIBLE);
+
                     }
                 });
     }
