@@ -91,9 +91,11 @@ public class CommentHistoryActivity extends AppCompatActivity {
                         // do anything with response
                         try {
                             JSONArray result = response.getJSONArray("data");
+                            String currentDatetime = response.getString("current_datetime");
+
                             for (int i = 0; i < result.length(); i++) {
 
-                                itemList.add(Utils.toMap(result.getJSONObject(i)));
+                                itemList.add(Utils.toMap(result.getJSONObject(i),currentDatetime));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

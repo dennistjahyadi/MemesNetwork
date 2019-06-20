@@ -111,7 +111,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 finalHeight = finalWidth * ratio;
                 // if final height higher or same with phone height, we have to decrease it to make the video fit in phone. It will show around 3/4 phone screen
                 if (finalHeight >= maxHeightVideo) {
-                    finalHeight = maxHeightVideo * 0.5f;
+                    finalHeight = maxHeightVideo * 0.7f;
                 }
 
             } else if (videoItem.getmHeight() < videoItem.getmWidth()) {
@@ -161,17 +161,19 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         } else if (holder instanceof MyViewHolderItem) {
             final Map<String, Object> obj = itemList.get(position-1);
             MyViewHolderItem vhItem = (MyViewHolderItem) holder;
+            //vhItem.tvUsername.setText((String)obj.get("created_by"));
             vhItem.tvUsername.setText((String)obj.get("created_by"));
             vhItem.tvComment.setText((String)obj.get("messages"));
             Picasso.get().load(funnyimgs[new Random().nextInt(3)]).into(vhItem.ivPicture);
 
             try {
                 if(!(obj.get("created_at")+"").equals("null")) {
-                    Date mDate = sdf.parse((String) obj.get("created_at"));
-                    long your_time_in_milliseconds = mDate.getTime();
-                    long current_time_in_millisecinds = System.currentTimeMillis();
+                    Date createdAtDate = sdf.parse((String) obj.get("created_at"));
+                    Date currentDate = sdf.parse((String) obj.get("current_datetime"));
+                    long createAtMiliseconds = createdAtDate.getTime();
+                    long currentTimeMiliseconds = currentDate.getTime();
 
-                    CharSequence thedate = DateUtils.getRelativeTimeSpanString(your_time_in_milliseconds, current_time_in_millisecinds, DateUtils.MINUTE_IN_MILLIS);
+                    CharSequence thedate = DateUtils.getRelativeTimeSpanString(createAtMiliseconds, currentTimeMiliseconds, DateUtils.MINUTE_IN_MILLIS);
                     vhItem.tvCreatedDate.setText(thedate);
                 }else{
                     vhItem.tvCreatedDate.setText("null");

@@ -42,8 +42,18 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="2dp"
                     android:text="section"
+                    android:textStyle="bold"
                     android:textColor="@color/white" />
             </LinearLayout>
+
+            <com.dovoo.memesnetwork.components.TextViewChlorinr
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" MemesNetwork "
+                android:textSize="24dp"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                />
 
             <com.dovoo.memesnetwork.components.TextViewFaRegular
                 android:id="@+id/tvBtnProfile"

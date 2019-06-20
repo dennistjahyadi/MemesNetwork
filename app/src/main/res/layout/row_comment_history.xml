@@ -34,13 +34,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:id="@+id/ivPicture"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_centerVertical="true"
-                    android:padding="4dp"
-                    android:src="@drawable/funny_user1" />
+                    android:layout_width="30dp"
+                    android:background="@drawable/img_circle_bg"
+                    android:layout_height="30dp"
+                    android:src="@drawable/funny_user1"
+                    android:layout_centerVertical="true" />
 
                 <TextView
                     android:id="@+id/tvUsername"

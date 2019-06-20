@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.androidnetworking.AndroidNetworking;
@@ -37,6 +38,7 @@ public class SectionActivity extends AppCompatActivity {
     private LinearLayout linBtnBack;
     private List<Map<String, Object>> itemList = new ArrayList<>();
     private AdView mAdView;
+    public FrameLayout loadingBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class SectionActivity extends AppCompatActivity {
 
         rvSection = findViewById(R.id.rvSection);
         linBtnBack = findViewById(R.id.linBtnBack);
+        loadingBar = findViewById(R.id.loadingBar);
 
         sectionRecyclerViewAdapter = new SectionRecyclerViewAdapter(this, itemList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -73,7 +76,7 @@ public class SectionActivity extends AppCompatActivity {
 
 
     private void fetchData() {
-
+        loadingBar.setVisibility(View.VISIBLE);
         AndroidNetworking.get(Utils.API_URL + "sections")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -94,11 +97,14 @@ public class SectionActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        loadingBar.setVisibility(View.GONE);
+
                     }
 
                     @Override
                     public void onError(ANError error) {
                         // handle error
+                        loadingBar.setVisibility(View.GONE);
                     }
                 });
     }

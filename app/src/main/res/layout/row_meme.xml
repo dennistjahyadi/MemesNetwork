@@ -9,7 +9,7 @@
     android:background="@color/grey900"
     android:orientation="vertical"
     android:paddingTop="5dp"
-    android:paddingBottom="20dp">
+    android:paddingBottom="15dp">
 
     <FrameLayout
         android:id="@+id/linTop"
@@ -148,7 +148,7 @@
         android:id="@+id/linBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

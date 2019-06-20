@@ -75,11 +75,12 @@ public class CommentHistoryRecyclerViewAdapter extends RecyclerView.Adapter<Comm
 
             try {
                 if(!(obj.get("created_at")+"").equals("null")) {
-                    Date mDate = sdf.parse((String) obj.get("created_at"));
-                    long your_time_in_milliseconds = mDate.getTime();
-                    long current_time_in_millisecinds = System.currentTimeMillis();
+                    Date createdAtDate = sdf.parse((String) obj.get("created_at"));
+                    Date currentDate = sdf.parse((String) obj.get("current_datetime"));
+                    long createAtMiliseconds = createdAtDate.getTime();
+                    long currentTimeMiliseconds = currentDate.getTime();
 
-                    CharSequence thedate = DateUtils.getRelativeTimeSpanString(your_time_in_milliseconds, current_time_in_millisecinds, DateUtils.MINUTE_IN_MILLIS);
+                    CharSequence thedate = DateUtils.getRelativeTimeSpanString(createAtMiliseconds, currentTimeMiliseconds, DateUtils.MINUTE_IN_MILLIS);
                     vhItem.tvCreatedDate.setText(thedate);
                 }else{
                     vhItem.tvCreatedDate.setText("null");

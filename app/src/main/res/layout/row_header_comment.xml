@@ -43,6 +43,7 @@
                     android:layout_marginLeft="18dp"
                     android:paddingLeft="8dp"
                     android:paddingTop="2dp"
+                    android:visibility="gone"
                     android:paddingBottom="2dp"
                     android:paddingRight="8dp"
                     android:background="@drawable/category_round_bg"

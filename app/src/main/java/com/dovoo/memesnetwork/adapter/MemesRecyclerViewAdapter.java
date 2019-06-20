@@ -93,7 +93,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
             finalHeight = finalWidth * ratio;
             // if final height higher or same with phone height, we have to decrease it to make the video fit in phone. It will show around 3/4 phone screen
             if (finalHeight >= maxHeightVideo) {
-                finalHeight = maxHeightVideo * 0.5f;
+                finalHeight = maxHeightVideo * 0.6f;
             }
 
         } else if (directLinkVideoItem.getmHeight() < directLinkVideoItem.getmWidth()) {
@@ -162,12 +162,13 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
         viewHolder.tvBtnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewHolder.tvBtnShare.setEnabled(false);
-                mLoadingBar.setVisibility(View.VISIBLE);
-                if (mContext.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(mContext,android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(mContext, "Please allow storage permission", Toast.LENGTH_LONG).show();
                     return;
                 }
+                viewHolder.tvBtnShare.setEnabled(false);
+                mLoadingBar.setVisibility(View.VISIBLE);
+
                 final boolean isVideo = (directLinkVideoItem.getmDirectUrl()!=null);
                 String theUrl =directLinkVideoItem.getmCoverUrl();
                 if(directLinkVideoItem.getmDirectUrl()!=null){
