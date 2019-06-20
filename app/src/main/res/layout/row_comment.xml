@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingRight="16dp"
-    android:paddingBottom="8dp"
     android:layout_marginTop="3dp"
     android:background="@color/grey900"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingRight="16dp"
+    android:paddingBottom="8dp">
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:visibility="gone"
         android:background="@color/grey700"
-        />
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/linTop"
         android:layout_width="match_parent"
@@ -35,10 +36,10 @@
                 <ImageView
                     android:id="@+id/ivPicture"
                     android:layout_width="30dp"
-                    android:background="@drawable/img_circle_bg"
                     android:layout_height="30dp"
-                    android:src="@drawable/funny_user1"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/img_circle_bg"
+                    android:src="@drawable/funny_user1" />
 
                 <TextView
                     android:id="@+id/tvUsername"
@@ -47,8 +48,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/ivPicture"
+                    android:text="name"
                     android:textColor="@color/white"
-                    android:text="name" />
+                    android:textIsSelectable="true" />
 
             </RelativeLayout>
 
@@ -57,11 +59,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/font_medium2"
-                android:textStyle="bold"
                 android:layout_marginTop="8dp"
+                android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"
                 android:textColor="@color/white"
-                android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest" />
+                android:textIsSelectable="true"
+                android:textSize="@dimen/font_medium2"
+                android:textStyle="bold" />
         </LinearLayout>
     </FrameLayout>
 
@@ -73,21 +76,20 @@
         android:paddingLeft="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linTop">
+
         <TextView
             android:id="@+id/tvCreatedDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="22 okt 2019 "
             android:layout_gravity="right"
+            android:text="22 okt 2019 "
             android:textColor="@color/white"
             android:textSize="@dimen/font_small"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </FrameLayout>
-
-
 
 
 </android.support.constraint.ConstraintLayout>

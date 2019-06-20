@@ -16,6 +16,7 @@ import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.components.TextViewFaSolid;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerView;
 
@@ -23,6 +24,7 @@ import im.ene.toro.ToroPlayer;
 import im.ene.toro.ToroUtil;
 import im.ene.toro.exoplayer.ExoPlayerDispatcher;
 import im.ene.toro.exoplayer.ExoPlayerViewHelper;
+import im.ene.toro.exoplayer.Playable;
 import im.ene.toro.helper.ToroPlayerHelper;
 import im.ene.toro.media.PlaybackInfo;
 import im.ene.toro.widget.Container;
@@ -42,7 +44,11 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
     public LinearLayout linBtnLike, linBtnDislike, linBtnComment;
     public ImageView mCover;
     public TextViewFaSolid tvIconSound;
-    public TextView tvCategory, tvTitle, tvLabelNoAudio, tvBtnLike, tvBtnDislike, tvTotalLike, tvTotalDislike, tvTotalComment,tvBtnShare;
+    public TextView tvCategory, tvTitle, tvLabelNoAudio, tvBtnLike, tvBtnDislike, tvTotalLike, tvTotalDislike, tvTotalComment, tvBtnShare;
+
+    public SpinKitView loadingBarVideo;
+
+    public Playable.EventListener listener;
 
     public MemesViewHolder(final View itemView, PressablePlayerSelector selector) {
         super(itemView);
@@ -52,6 +58,7 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
         tvTotalDislike = itemView.findViewById(R.id.tvTotalDislike);
         tvTotalComment = itemView.findViewById(R.id.tvTotalComment);
         tvBtnLike = itemView.findViewById(R.id.tvBtnLike);
+        loadingBarVideo = itemView.findViewById(R.id.loadingBarVideo);
         tvBtnDislike = itemView.findViewById(R.id.tvBtnDislike);
         linBtnLike = itemView.findViewById(R.id.linBtnLike);
         linBtnDislike = itemView.findViewById(R.id.linBtnDislike);
@@ -111,6 +118,8 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
     public void initialize(@NonNull Container container, @NonNull PlaybackInfo playbackInfo) {
         if (helper == null) {
             helper = new ExoPlayerViewHelper(this, mediaUri);
+            ((ExoPlayerViewHelper) helper).addEventListener(listener);
+
         }
         helper.initialize(container, playbackInfo);
     }
@@ -120,7 +129,7 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
         if (helper != null && this.mediaUri != null) {
             helper.play();
             mCover.setVisibility(View.GONE);
-            if(playerView.getPlayer()!=null) {
+            if (playerView.getPlayer() != null) {
 
                 if (GlobalFunc.isMute) {
                     tvIconSound.setText(itemView.getResources().getText(R.string.fa_volume_mute));
@@ -130,7 +139,7 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
                     playerView.getPlayer().getAudioComponent().setVolume(1);
                 }
 
-                if(playerView.getPlayer().getRepeatMode()!=Player.REPEAT_MODE_ALL) {
+                if (playerView.getPlayer().getRepeatMode() != Player.REPEAT_MODE_ALL) {
                     playerView.getPlayer().setRepeatMode(Player.REPEAT_MODE_ALL);
                 }
 
@@ -152,11 +161,15 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
 
     @Override
     public void release() {
+        mCover.setVisibility(View.VISIBLE);
+
         if (helper != null) {
+            ((ExoPlayerViewHelper) helper).removeEventListener(listener);
             helper.release();
             helper = null;
         }
     }
+
 
     @Override
     public boolean wantsToPlay() {
@@ -176,8 +189,28 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
     public void bind(DirectLinkItemTest directLinkItemTest) {
         if (directLinkItemTest.getmDirectUrl() != null) {
             this.mediaUri = Uri.parse(directLinkItemTest.getmDirectUrl());
+            listener = new Playable.DefaultEventListener() {
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                    super.onPlayerStateChanged(playWhenReady, playbackState);
+                    if (playbackState == 2) {
+                        loadingBarVideo.setVisibility(View.VISIBLE);
+                    } else {
+                        loadingBarVideo.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onRenderedFirstFrame() {
+                    super.onRenderedFirstFrame();
+                    mCover.setVisibility(View.GONE);
+                }
+            };
         } else {
             this.mediaUri = null;
+            loadingBarVideo.setVisibility(View.GONE);
+            mCover.setVisibility(View.VISIBLE);
         }
+
     }
 }

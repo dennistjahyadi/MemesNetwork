@@ -61,6 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                android:textIsSelectable="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
@@ -142,6 +143,15 @@
                 android:textStyle="bold" />
 
         </RelativeLayout>
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/loadingBarVideo"
+            style="@style/SpinKitView.Large.Wave"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:alpha="0.85"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/white" />
     </FrameLayout>
 
     <FrameLayout
