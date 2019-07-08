@@ -115,9 +115,9 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
         viewHolder.mCover.setVisibility(View.VISIBLE);
         directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl()).into(viewHolder.mCover);
 
-        Integer totalLike = (Integer) directLinkVideoItem.getData().get("total_like");
-        Integer totalDislike = (Integer) directLinkVideoItem.getData().get("total_dislike");
-        Integer totalComment = (Integer) directLinkVideoItem.getData().get("total_comment");
+        String totalLike = (String) directLinkVideoItem.getData().get("total_like");
+        String totalDislike = (String) directLinkVideoItem.getData().get("total_dislike");
+        String totalComment = (String) directLinkVideoItem.getData().get("total_comment");
 
         if (directLinkVideoItem.isVideo()) {
             //video

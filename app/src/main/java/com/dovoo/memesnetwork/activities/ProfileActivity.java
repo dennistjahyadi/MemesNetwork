@@ -105,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
         tvBtnPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://68.183.159.197/privacypolicy/"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://memesnetwork.com/privacypolicy"));
                 startActivity(browserIntent);
             }
         });
