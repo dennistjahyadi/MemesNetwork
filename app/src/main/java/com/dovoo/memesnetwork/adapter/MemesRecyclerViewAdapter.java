@@ -316,6 +316,8 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                             viewHolder.linBtnLike.setEnabled(false);
                             viewHolder.linBtnDislike.setEnabled(true);
                             directLinkVideoItem.getData().put("is_liked", 1);
+                            String totLike = (String) directLinkVideoItem.getData().get("total_like");
+                            directLinkVideoItem.getData().put("total_like", (Integer.parseInt(totLike)+1)+"");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -372,6 +374,8 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                             viewHolder.linBtnLike.setEnabled(true);
                             viewHolder.linBtnDislike.setEnabled(false);
                             directLinkVideoItem.getData().put("is_liked", 0);
+                            String totDislike = (String) directLinkVideoItem.getData().get("total_dislike");
+                            directLinkVideoItem.getData().put("total_dislike", (Integer.parseInt(totDislike)+1)+"");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
