@@ -12,12 +12,15 @@ public class BillingManager {
         void onSubscriptionPurchaseUpdated();
     }
 
-    public BillingManager(BillingUpdatesListener billingUpdatesListener){
+    public BillingManager(BillingUpdatesListener billingUpdatesListener) {
         this.billingUpdatesListener = billingUpdatesListener;
     }
 
-    public void updateMemberStatus(Context context, boolean premiumMember){
-        SharedPreferenceUtils.setPrefs(context,SharedPreferenceUtils.PREFERENCES_PREMIUM_MEMBER,premiumMember);
+    public void updateMemberStatus(Context context, boolean premiumMember) {
+        if (context == null) {
+            return;
+        }
+        SharedPreferenceUtils.setPrefs(context, SharedPreferenceUtils.PREFERENCES_PREMIUM_MEMBER, premiumMember);
         billingUpdatesListener.onSubscriptionPurchaseUpdated();
     }
 }

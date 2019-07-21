@@ -142,17 +142,23 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
         if (directLinkVideoItem.getData().get("is_liked") instanceof Integer) {
             Integer isLiked = (Integer) directLinkVideoItem.getData().get("is_liked");
             if (isLiked == 1) {
+                viewHolder.linBtnLike.setEnabled(false);
+                viewHolder.linBtnDislike.setEnabled(true);
                 viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
                 viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
                 viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
             } else {
+                viewHolder.linBtnLike.setEnabled(true);
+                viewHolder.linBtnDislike.setEnabled(false);
                 viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
                 viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
             }
         } else {
+            viewHolder.linBtnLike.setEnabled(true);
+            viewHolder.linBtnDislike.setEnabled(true);
             viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
             viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
             viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
@@ -162,16 +168,16 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
         viewHolder.tvBtnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(mContext,android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(mContext, "Please allow storage permission", Toast.LENGTH_LONG).show();
                     return;
                 }
                 viewHolder.tvBtnShare.setEnabled(false);
                 mLoadingBar.setVisibility(View.VISIBLE);
 
-                final boolean isVideo = (directLinkVideoItem.getmDirectUrl()!=null);
-                String theUrl =directLinkVideoItem.getmCoverUrl();
-                if(directLinkVideoItem.getmDirectUrl()!=null){
+                final boolean isVideo = (directLinkVideoItem.getmDirectUrl() != null);
+                String theUrl = directLinkVideoItem.getmCoverUrl();
+                if (directLinkVideoItem.getmDirectUrl() != null) {
                     theUrl = directLinkVideoItem.getmDirectUrl();
                 }
 
@@ -184,9 +190,9 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                                 File loadedFile = response.getBody();
 
                                 Intent share = new Intent(Intent.ACTION_SEND);
-                                if(!isVideo) {
+                                if (!isVideo) {
                                     share.setType("image/*");
-                                }else{
+                                } else {
                                     share.setType("video/*");
                                 }
                                 Uri uri;
@@ -196,8 +202,8 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                                     uri = FileProvider.getUriForFile(mContext, BuildConfig.APPLICATION_ID + ".provider", loadedFile);
                                 }
 
-                                String shareMessage= "\nWith MemesNetwork everything is laughable, download here\n\n";
-                                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+                                String shareMessage = "\nWith MemesNetwork everything is laughable, download here\n\n";
+                                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n";
                                 share.putExtra(Intent.EXTRA_TEXT, shareMessage);
                                 share.putExtra(Intent.EXTRA_STREAM, uri);
 
@@ -214,7 +220,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                                 mLoadingBar.setVisibility(View.GONE);
                                 viewHolder.tvBtnShare.setEnabled(true);
 
-                                Toast.makeText(mContext,"Cannot sharing file",Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Cannot sharing file", Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -249,7 +255,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(i);
                 } else {
-                    doLike(viewHolder, directLinkVideoItem.getId());
+                    doLike(viewHolder, directLinkVideoItem);
                 }
             }
         });
@@ -262,7 +268,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(i);
                 } else {
-                    doDislike(viewHolder, directLinkVideoItem.getId());
+                    doDislike(viewHolder, directLinkVideoItem);
                 }
             }
         });
@@ -275,7 +281,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
         return directLinkItemTestList.size();
     }
 
-    private void doLike(final MemesViewHolder viewHolder, Integer memeId) {
+    private void doLike(final MemesViewHolder viewHolder, final DirectLinkItemTest directLinkVideoItem) {
         mLoadingBar.setVisibility(View.VISIBLE);
         viewHolder.linBtnLike.setEnabled(false);
         viewHolder.linBtnDislike.setEnabled(false);
@@ -283,7 +289,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
 
         final JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("meme_id", memeId);
+            jsonObject.put("meme_id", directLinkVideoItem.getId());
             jsonObject.put("user_id", userId);
             jsonObject.put("like", 1);
         } catch (JSONException e) {
@@ -309,6 +315,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                             viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                             viewHolder.linBtnLike.setEnabled(false);
                             viewHolder.linBtnDislike.setEnabled(true);
+                            directLinkVideoItem.getData().put("is_liked", 1);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -330,7 +337,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                 });
     }
 
-    private void doDislike(final MemesViewHolder viewHolder, Integer memeId) {
+    private void doDislike(final MemesViewHolder viewHolder, final DirectLinkItemTest directLinkVideoItem) {
         mLoadingBar.setVisibility(View.VISIBLE);
         viewHolder.linBtnLike.setEnabled(false);
         viewHolder.linBtnDislike.setEnabled(false);
@@ -338,7 +345,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
 
         final JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("meme_id", memeId);
+            jsonObject.put("meme_id", directLinkVideoItem.getId());
             jsonObject.put("user_id", userId);
             jsonObject.put("like", 0);
         } catch (JSONException e) {
@@ -364,6 +371,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
                             viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
                             viewHolder.linBtnLike.setEnabled(true);
                             viewHolder.linBtnDislike.setEnabled(false);
+                            directLinkVideoItem.getData().put("is_liked", 0);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
