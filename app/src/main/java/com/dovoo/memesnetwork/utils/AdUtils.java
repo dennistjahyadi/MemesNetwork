@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class AdUtils {
 
@@ -19,5 +20,12 @@ public class AdUtils {
             adview.setVisibility(View.GONE);
         }
 
+    }
+
+    public static void loadInterstitialAds(Context context, InterstitialAd interstitialAd){
+        boolean isPremiumMember = SharedPreferenceUtils.getPrefs(context).getBoolean(SharedPreferenceUtils.PREFERENCES_PREMIUM_MEMBER, false);
+        if (!isPremiumMember) {
+            interstitialAd.loadAd(new AdRequest.Builder().build());
+        }
     }
 }

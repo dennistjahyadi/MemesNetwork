@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.androidnetworking.AndroidNetworking;
@@ -34,7 +35,9 @@ import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter;
 import com.dovoo.memesnetwork.utils.AdUtils;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -45,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import im.ene.toro.widget.Container;
 import im.ene.toro.widget.PressablePlayerSelector;
@@ -64,6 +68,8 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
     private ServiceConnection mServiceConn;
     private IInAppBillingService mService;
     private BillingManager billingManager;
+    private InterstitialAd mInterstitialAd;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +87,21 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
         setupBillingService();
 
         mAdView = view.findViewById(R.id.adView);
+        mInterstitialAd = new InterstitialAd(getContext());
+        mInterstitialAd.setAdUnitId("ca-app-pub-4908922088432819/1640263467");
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                mInterstitialAd.show();
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                Toast.makeText(getContext(),"To remove ads, click button remove ads on your profile", Toast.LENGTH_LONG).show();
+            }
+        });
 
         container = view.findViewById(R.id.player_container);
         loadingBar = view.findViewById(R.id.loadingBar);
@@ -183,6 +204,13 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
 
     private void fetchData(int offset) {
         loadingBar.setVisibility(View.VISIBLE);
+        int min = 1;
+        int max = 100;
+        int randomNum = new Random().nextInt((max - min) + 1) + min;
+
+        if(randomNum>30){
+            AdUtils.loadInterstitialAds(getContext(),mInterstitialAd);
+        }
 
         if (offset == 0) {
             directLinkItemTestList.clear();
@@ -273,6 +301,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
     public void onSubscriptionPurchaseUpdated() {
 
         AdUtils.loadAds(getContext(),mAdView);
+        AdUtils.loadInterstitialAds(getContext(),mInterstitialAd);
 
     }
 }
