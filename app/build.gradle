@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.dovoo.memesnetwork"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 25
         versionName "25"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -23,21 +23,21 @@ android {
 ext {
     latest_snapshot = '3.7.0.2901-SNAPSHOT' // TODO check above for latest version
     // below: other dependencies' versions maybe
-    latest_release = '3.6.2.2903' // TODO check above for latest version
+    latest_release = '3.7.0.2010003' // TODO check above for latest version
 
 }
 
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:exifinterface:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'com.android.support:support-media-compat:28.0.0'
-    implementation 'com.android.support:customtabs:28.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.exifinterface:exifinterface:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.media:media:1.0.0'
+    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
@@ -47,16 +47,14 @@ dependencies {
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     implementation "im.ene.toro3:toro:${latest_release}"
     implementation "im.ene.toro3:toro-ext-exoplayer:${latest_release}"  // to get ExoPlayer support
-    implementation "im.ene.toro3:toro:${latest_snapshot}"
-    implementation "im.ene.toro3:toro-ext-exoplayer:${latest_snapshot}"  // to get ExoPlayer support
-    implementation 'com.google.android.exoplayer:exoplayer:2.9.6'
+    implementation 'com.google.android.exoplayer:exoplayer:r2.13.2'
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
 
-    implementation 'com.google.android.gms:play-services-ads:17.2.0'
-    implementation 'com.android.billingclient:billing:2.0.1'
+    implementation 'com.google.android.gms:play-services-ads:19.7.0'
+    implementation 'com.android.billingclient:billing:3.0.0'
     implementation 'com.github.kk121:File-Loader:1.2'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }

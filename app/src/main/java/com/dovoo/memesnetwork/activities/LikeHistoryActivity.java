@@ -1,12 +1,11 @@
 package com.dovoo.memesnetwork.activities;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -73,7 +72,7 @@ public class LikeHistoryActivity extends AppCompatActivity {
         selector = new PressablePlayerSelector(container);
         container.setPlayerSelector(selector);
 
-        adapter = new MemesRecyclerViewAdapter(getApplicationContext(), selector, directLinkItemTestList,loadingBar);
+        adapter = new MemesRecyclerViewAdapter(getApplicationContext(), selector, directLinkItemTestList, loadingBar);
         container.setAdapter(adapter);
         container.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override

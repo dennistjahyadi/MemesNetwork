@@ -12,7 +12,7 @@
         android:scaleType="centerCrop"
         android:src="@color/grey800" />
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -94,7 +94,7 @@
 
         </LinearLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.ConstraintLayout>
 
     <include
         android:layout_width="match_parent"

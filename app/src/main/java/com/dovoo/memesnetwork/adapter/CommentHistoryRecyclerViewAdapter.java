@@ -3,7 +3,7 @@ package com.dovoo.memesnetwork.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;

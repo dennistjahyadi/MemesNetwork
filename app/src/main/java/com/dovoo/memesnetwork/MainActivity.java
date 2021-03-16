@@ -1,25 +1,25 @@
 package com.dovoo.memesnetwork;
 
 import android.Manifest;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.ConstraintLayout;
+
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.Fragment;
+import androidx.core.app.FragmentManager;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.widget.DrawerLayout;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -32,11 +32,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.vending.billing.IInAppBillingService;
 import com.dovoo.memesnetwork.activities.ProfileActivity;
 import com.dovoo.memesnetwork.activities.SectionActivity;
-import com.dovoo.memesnetwork.billing.BillingManager;
 import com.dovoo.memesnetwork.fragments.NewestMemesFragment;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
@@ -64,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (ContextCompat.checkSelfPermission(getApplicationContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1123);
         }
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        if(GlobalFunc.mGoogleSignInClient==null) {
+        if (GlobalFunc.mGoogleSignInClient == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .build();
@@ -101,10 +98,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Boolean isUserLoggedIn = SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false);
                 if (isUserLoggedIn) {
-                    Intent i = new Intent(getApplicationContext(),ProfileActivity.class);
+                    Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
                     startActivity(i);
-                }else{
-                    Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                } else {
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(i);
                 }
             }
@@ -121,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         firstLayout();
     }
 
-    private void setupNavigationDrawer(Toolbar toolbar){
+    private void setupNavigationDrawer(Toolbar toolbar) {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.setDrawerIndicatorEnabled(false);
 
@@ -168,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -176,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void checkUserLoggedIn(){
+    private void checkUserLoggedIn() {
         Boolean isUserLoggedIn = SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false);
         View headerView = navigationView.getHeaderView(0);
 
@@ -187,13 +183,13 @@ public class MainActivity extends AppCompatActivity {
         if (isUserLoggedIn) {
             clSignedIn.setVisibility(View.VISIBLE);
             clSignedOut.setVisibility(View.GONE);
-            String username = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_NAME,"");
-            if(username.equals("")){
+            String username = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_NAME, "");
+            if (username.equals("")) {
                 // run choose username activity
             }
             navUsername.setText(username);
 
-        }else{
+        } else {
             clSignedIn.setVisibility(View.GONE);
             clSignedOut.setVisibility(View.VISIBLE);
         }
