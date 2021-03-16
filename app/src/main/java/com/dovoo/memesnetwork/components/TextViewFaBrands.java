@@ -1,8 +1,10 @@
 package com.dovoo.memesnetwork.components;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatTextView;
+
 import com.dovoo.memesnetwork.utils.FontManager;
 
 public class TextViewFaBrands extends AppCompatTextView {

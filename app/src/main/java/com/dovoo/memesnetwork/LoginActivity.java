@@ -2,15 +2,15 @@ package com.dovoo.memesnetwork;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dovoo.memesnetwork.activities.ChooseUsernameActivity;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
@@ -19,11 +19,9 @@ import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -85,16 +83,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             JSONObject data = response.getJSONObject("data");
 
 
-                            if(data.isNull("username") || data.getString("username").equals("")){
-                                Intent i = new Intent(getApplicationContext(),ChooseUsernameActivity.class);
-                                i.putExtra("email",email);
+                            if (data.isNull("username") || data.getString("username").equals("")) {
+                                Intent i = new Intent(getApplicationContext(), ChooseUsernameActivity.class);
+                                i.putExtra("email", email);
                                 startActivity(i);
-                            }else{
+                            } else {
                                 SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_NAME, data.getString("username"));
                                 SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_ID, data.getInt("id"));
                                 SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_EMAIL, email);
                                 SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, true);
-                                Toast.makeText(getApplicationContext(),"Welcome "+data.getString("username")+" :)",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Welcome " + data.getString("username") + " :)", Toast.LENGTH_LONG).show();
                             }
 
                         } catch (JSONException e) {

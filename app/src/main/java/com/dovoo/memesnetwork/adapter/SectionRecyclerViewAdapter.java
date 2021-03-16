@@ -1,15 +1,15 @@
 package com.dovoo.memesnetwork.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dovoo.memesnetwork.R;
 
@@ -18,12 +18,13 @@ import java.util.Map;
 
 public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<SectionRecyclerViewAdapter.MyViewHolder> {
 
-    private List<Map<String,Object>> itemList;
+    private List<Map<String, Object>> itemList;
     private Activity activity;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linBtnSection;
         TextView tvSection;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             linBtnSection = itemView.findViewById(R.id.linBtnSection);
@@ -31,7 +32,7 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<SectionRecy
         }
     }
 
-    public SectionRecyclerViewAdapter(Activity activity, List<Map<String,Object>> itemList){
+    public SectionRecyclerViewAdapter(Activity activity, List<Map<String, Object>> itemList) {
         this.activity = activity;
         this.itemList = itemList;
     }
@@ -45,8 +46,8 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<SectionRecy
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
-        final Map<String,Object> obj = itemList.get(i);
-        viewHolder.tvSection.setText((String)obj.get("name"));
+        final Map<String, Object> obj = itemList.get(i);
+        viewHolder.tvSection.setText((String) obj.get("name"));
         viewHolder.linBtnSection.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -54,8 +55,8 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<SectionRecy
                 Thread t = new Thread() {
                     public void run() {
                         Intent data = new Intent();
-                        data.putExtra("name", (String)obj.get("name"));
-                        activity.setResult(Activity.RESULT_OK,data);
+                        data.putExtra("name", (String) obj.get("name"));
+                        activity.setResult(Activity.RESULT_OK, data);
                         activity.finish();
                     }
                 };

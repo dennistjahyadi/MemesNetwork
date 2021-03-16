@@ -1,9 +1,10 @@
 package com.dovoo.memesnetwork.components;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.dovoo.memesnetwork.utils.FontManager;
 
@@ -23,7 +24,7 @@ public class TextViewFaRegular extends AppCompatTextView {
         setDefaultTypeFace(context);
     }
 
-    private void setDefaultTypeFace(Context context){
+    private void setDefaultTypeFace(Context context) {
         this.setTypeface(FontManager.getTypeFace(context, FontManager.faRegular400));
     }
 }

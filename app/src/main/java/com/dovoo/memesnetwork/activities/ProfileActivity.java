@@ -7,11 +7,6 @@ import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.RemoteException;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -30,13 +27,11 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
-import com.android.vending.billing.IInAppBillingService;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.billing.BillingManager;
 import com.dovoo.memesnetwork.utils.AdUtils;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,7 +43,7 @@ import java.util.List;
 public class ProfileActivity extends AppCompatActivity implements PurchasesUpdatedListener, BillingManager.BillingUpdatesListener {
 
     private static final String TAG = "Purchasing";
-    private IInAppBillingService mService;
+    // private IInAppBillingService mService;
 
     private TextView tvBtnLike, tvBtnDislike, tvBtnComment, tvBtnPrivacyPolicy, tvBtnSubscription, tvUsername, tvBtnEditProfile, tvBtnLogout;
     private LinearLayout linBtnBack;
@@ -170,13 +165,13 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
         mServiceConn = new ServiceConnection() {
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                mService = null;
+                //  mService = null;
             }
 
             @Override
             public void onServiceConnected(ComponentName name,
                                            IBinder service) {
-                mService = IInAppBillingService.Stub.asInterface(service);
+                //   mService = IInAppBillingService.Stub.asInterface(service);
                 checkMemberIsPremium();
             }
         };
@@ -228,28 +223,28 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
     public void checkMemberIsPremium() {
         boolean isPremiumMember = false;
 
-        try {
-            Bundle ownedItems = mService.getPurchases(3, getPackageName(), "subs", null);
-            int response = ownedItems.getInt("RESPONSE_CODE");
-            if (response == 0) {
-                ArrayList ownedSkus =
-                        ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
-                ArrayList purchaseDataList =
-                        ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
-
-                for (int i = 0; i < purchaseDataList.size(); ++i) {
-                    String sku = (String) ownedSkus.get(i);
-                    if (sku.equals("premium_member")) {
-                        isPremiumMember = true;
-                    }
-                }
-
-                // if continuationToken != null, call getPurchases again
-                // and pass in the token to retrieve more items
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Bundle ownedItems = mService.getPurchases(3, getPackageName(), "subs", null);
+//            int response = ownedItems.getInt("RESPONSE_CODE");
+//            if (response == 0) {
+//                ArrayList ownedSkus =
+//                        ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+//                ArrayList purchaseDataList =
+//                        ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+//
+//                for (int i = 0; i < purchaseDataList.size(); ++i) {
+//                    String sku = (String) ownedSkus.get(i);
+//                    if (sku.equals("premium_member")) {
+//                        isPremiumMember = true;
+//                    }
+//                }
+//
+//                // if continuationToken != null, call getPurchases again
+//                // and pass in the token to retrieve more items
+//            }
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
         billingManager.updateMemberStatus(getApplicationContext(), isPremiumMember);
 
     }
@@ -278,7 +273,7 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
         GlobalFunc.mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    public void onComplete(Task<Void> task) {
                         GlobalFunc.logout(ProfileActivity.this);
                     }
                 });
@@ -321,6 +316,6 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
             tvBtnSubscription.setText("Help the Developer (Remove Ads)");
             tvBtnSubscription.setEnabled(true);
         }
-        AdUtils.loadAds(getApplicationContext(),mAdView);
+        AdUtils.loadAds(getApplicationContext(), mAdView);
     }
 }

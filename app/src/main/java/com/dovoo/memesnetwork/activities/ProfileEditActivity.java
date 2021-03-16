@@ -1,16 +1,16 @@
 package com.dovoo.memesnetwork.activities;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -19,6 +19,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ import org.json.JSONObject;
 public class ProfileEditActivity extends AppCompatActivity {
 
     private LinearLayout linBtnBack;
-    private TextView tvBtnChangeProfilePic,tvBtnSave;
+    private TextView tvBtnChangeProfilePic, tvBtnSave;
     private TextInputLayout tilUsername;
     private EditText etUsername;
     private String email;
@@ -43,7 +44,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        email = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_EMAIL,"");
+        email = SharedPreferenceUtils.getPrefs(getApplicationContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_EMAIL, "");
 
         loadingBar = findViewById(R.id.loadingBar);
         linBtnBack = findViewById(R.id.linBtnBack);
@@ -62,7 +63,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         tvBtnChangeProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Coming Soon",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -74,7 +75,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         });
     }
 
-    private void doEditProfile(){
+    private void doEditProfile() {
         loadingBar.setVisibility(View.VISIBLE);
         final JSONObject jsonObject = new JSONObject();
         try {

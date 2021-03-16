@@ -3,14 +3,14 @@ package com.dovoo.memesnetwork.adapter.holders;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.components.TextViewFaSolid;
@@ -102,20 +102,18 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
     }
 
 
-    @NonNull
     @Override
     public View getPlayerView() {
         return playerView;
     }
 
-    @NonNull
     @Override
     public PlaybackInfo getCurrentPlaybackInfo() {
         return helper != null ? helper.getLatestPlaybackInfo() : new PlaybackInfo();
     }
 
     @Override
-    public void initialize(@NonNull Container container, @NonNull PlaybackInfo playbackInfo) {
+    public void initialize(Container container, PlaybackInfo playbackInfo) {
         if (helper == null) {
             helper = new ExoPlayerViewHelper(this, mediaUri);
             ((ExoPlayerViewHelper) helper).addEventListener(listener);

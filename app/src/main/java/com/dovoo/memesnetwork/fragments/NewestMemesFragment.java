@@ -7,37 +7,37 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import androidx.core.app.Fragment;
-import androidx.core.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.android.vending.billing.IInAppBillingService;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.dovoo.memesnetwork.MainActivity;
 import com.dovoo.memesnetwork.R;
+import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter;
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
 import com.dovoo.memesnetwork.billing.BillingManager;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager;
-import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
-import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter;
 import com.dovoo.memesnetwork.utils.AdUtils;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -66,7 +66,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
     private PressablePlayerSelector selector;
     private List<DirectLinkItemTest> directLinkItemTestList = new ArrayList<>();
     private ServiceConnection mServiceConn;
-    private IInAppBillingService mService;
+    //private IInAppBillingService mService;
     private BillingManager billingManager;
     private InterstitialAd mInterstitialAd;
 
@@ -99,7 +99,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
             @Override
             public void onAdClosed() {
                 // Code to be executed when the interstitial ad is closed.
-                Toast.makeText(getContext(),"To remove ads, click button remove ads on your profile", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "To remove ads, click button remove ads on your profile", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -114,7 +114,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
         selector = new PressablePlayerSelector(container);
         container.setPlayerSelector(selector);
 
-        adapter = new MemesRecyclerViewAdapter(getContext(), selector, directLinkItemTestList,((MainActivity)getActivity()).loadingBar);
+        adapter = new MemesRecyclerViewAdapter(getContext(), selector, directLinkItemTestList, ((MainActivity) getActivity()).loadingBar);
         container.setAdapter(adapter);
         container.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -126,7 +126,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                       swipeRefreshLayout.setVisibility(View.GONE);
+                        swipeRefreshLayout.setVisibility(View.GONE);
                         fetchData(0);
                     }
                 }
@@ -154,13 +154,13 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
         mServiceConn = new ServiceConnection() {
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                mService = null;
+               // mService = null;
             }
 
             @Override
             public void onServiceConnected(ComponentName name,
                                            IBinder service) {
-                mService = IInAppBillingService.Stub.asInterface(service);
+               // mService = IInAppBillingService.Stub.asInterface(service);
                 checkMemberIsPremium();
             }
         };
@@ -176,28 +176,28 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
     public void checkMemberIsPremium() {
         boolean isPremiumMember = false;
         String packageName = "com.dovoo.memesnetwork";
-        try {
-            Bundle ownedItems = mService.getPurchases(3, packageName, "subs", null);
-            int response = ownedItems.getInt("RESPONSE_CODE");
-            if (response == 0) {
-                ArrayList ownedSkus =
-                        ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
-                ArrayList purchaseDataList =
-                        ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
-
-                for (int i = 0; i < purchaseDataList.size(); ++i) {
-                    String sku = (String) ownedSkus.get(i);
-                    if (sku.equals("premium_member")) {
-                        isPremiumMember = true;
-                    }
-                }
-
-                // if continuationToken != null, call getPurchases again
-                // and pass in the token to retrieve more items
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Bundle ownedItems = mService.getPurchases(3, packageName, "subs", null);
+//            int response = ownedItems.getInt("RESPONSE_CODE");
+//            if (response == 0) {
+//                ArrayList ownedSkus =
+//                        ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+//                ArrayList purchaseDataList =
+//                        ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+//
+//                for (int i = 0; i < purchaseDataList.size(); ++i) {
+//                    String sku = (String) ownedSkus.get(i);
+//                    if (sku.equals("premium_member")) {
+//                        isPremiumMember = true;
+//                    }
+//                }
+//
+//                // if continuationToken != null, call getPurchases again
+//                // and pass in the token to retrieve more items
+//            }
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
         billingManager.updateMemberStatus(getContext(), isPremiumMember);
 
     }
@@ -208,8 +208,8 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
         int max = 100;
         int randomNum = new Random().nextInt((max - min) + 1) + min;
 
-        if(randomNum>30){
-            AdUtils.loadInterstitialAds(getContext(),mInterstitialAd);
+        if (randomNum > 30) {
+            AdUtils.loadInterstitialAds(getContext(), mInterstitialAd);
         }
 
         if (offset == 0) {
@@ -286,7 +286,7 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
     @Override
     public void onResume() {
         super.onResume();
-        AdUtils.loadAds(getContext(),mAdView);
+        AdUtils.loadAds(getContext(), mAdView);
     }
 
     @Override
@@ -300,8 +300,8 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
     @Override
     public void onSubscriptionPurchaseUpdated() {
 
-        AdUtils.loadAds(getContext(),mAdView);
-        AdUtils.loadInterstitialAds(getContext(),mInterstitialAd);
+        AdUtils.loadAds(getContext(), mAdView);
+        AdUtils.loadInterstitialAds(getContext(), mInterstitialAd);
 
     }
 }
