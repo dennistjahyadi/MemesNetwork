@@ -12,7 +12,7 @@
         android:scaleType="centerCrop"
         android:src="@color/grey800" />
 
-    <androidx.constraintlayout.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -56,14 +56,14 @@
                     android:textColor="@color/red500"
                     android:textSize="12sp" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:theme="@style/TextLabel">
 
-                    <android.support.v7.widget.AppCompatEditText
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/etUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/font_medium2" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/btnOk"
@@ -94,7 +94,7 @@
 
         </LinearLayout>
 
-    </androidx.constraintlayout.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:layout_width="match_parent"

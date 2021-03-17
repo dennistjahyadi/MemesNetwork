@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
@@ -121,7 +121,8 @@
                     android:adjustViewBounds="true" />
             </LinearLayout>
 
-            <com.dovoo.memesnetwork.components.TextViewFaSolid
+            <TextView
+                android:textStyle="bold"
                 android:id="@+id/tvIconSound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -180,7 +181,7 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
-                <com.dovoo.memesnetwork.components.TextViewFaRegular
+                <TextView
                     android:id="@+id/tvBtnLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -211,7 +212,7 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
-                <com.dovoo.memesnetwork.components.TextViewFaRegular
+                <TextView
                     android:id="@+id/tvBtnDislike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -242,7 +243,7 @@
                 android:orientation="horizontal">
 
 
-                <com.dovoo.memesnetwork.components.TextViewFaRegular
+                <TextView
                     android:id="@+id/tvBtnComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -274,7 +275,8 @@
                 android:orientation="horizontal">
 
 
-                <com.dovoo.memesnetwork.components.TextViewFaSolid
+                <TextView
+                android:textStyle="bold"
                     android:id="@+id/tvBtnShare"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -287,4 +289,4 @@
         </LinearLayout>
     </FrameLayout>
 
-</androidx.constraintlayout.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

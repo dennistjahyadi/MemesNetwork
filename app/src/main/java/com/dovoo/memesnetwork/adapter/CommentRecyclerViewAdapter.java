@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dovoo.memesnetwork.R;
-import com.dovoo.memesnetwork.components.TextViewFaSolid;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -61,8 +60,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         public final RelativeLayout relativeLayout;
         public final PlayerView playerView;
         public final ImageView mCover;
-        public final TextViewFaSolid tvIconSound;
-        public final TextView tvTitle,tvLabelNoAudio;
+        public final TextView tvTitle,tvLabelNoAudio,tvIconSound;
         public MyViewHolderHeader(View view) {
             super(view);
             relativeLayout = view.findViewById(R.id.relativeLayout);

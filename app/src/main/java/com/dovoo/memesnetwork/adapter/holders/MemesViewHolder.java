@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dovoo.memesnetwork.R;
-import com.dovoo.memesnetwork.components.TextViewFaSolid;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.github.ybq.android.spinkit.SpinKitView;
@@ -43,8 +42,7 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
     public RelativeLayout relativeLayout;
     public LinearLayout linBtnLike, linBtnDislike, linBtnComment;
     public ImageView mCover;
-    public TextViewFaSolid tvIconSound;
-    public TextView tvCategory, tvTitle, tvLabelNoAudio, tvBtnLike, tvBtnDislike, tvTotalLike, tvTotalDislike, tvTotalComment, tvBtnShare;
+     public TextView tvCategory, tvIconSound, tvTitle, tvLabelNoAudio, tvBtnLike, tvBtnDislike, tvTotalLike, tvTotalDislike, tvTotalComment, tvBtnShare;
 
     public SpinKitView loadingBarVideo;
 

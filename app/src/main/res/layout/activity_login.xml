@@ -13,7 +13,7 @@
         android:scaleType="centerCrop"
         android:src="@color/grey800" />
 
-    <androidx.constraintlayout.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -72,13 +72,13 @@
                     android:textColor="@color/red500"
                     android:textSize="12sp" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/TextLabel">
 
-                    <android.support.v7.widget.AppCompatEditText
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/etLogin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -87,15 +87,15 @@
                         android:inputType="textShortMessage"
                         android:textColor="@color/white"
                         android:textSize="@dimen/font_medium2" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/TextLabel">
 
-                    <android.support.v7.widget.AppCompatEditText
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                         android:inputType="textPassword"
                         android:textColor="@color/white"
                         android:textSize="@dimen/font_medium2" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/btnLogin"
@@ -180,7 +180,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-    </androidx.constraintlayout.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"

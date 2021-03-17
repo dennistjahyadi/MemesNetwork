@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
 
-                <com.dovoo.memesnetwork.components.TextViewFaSolid
+                <TextView
+                android:textStyle="bold"
                     android:id="@+id/tvBtnBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,14 +48,14 @@
             </RelativeLayout>
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:theme="@style/TextLabel">
 
-                <android.support.v7.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,16 +64,16 @@
                     android:inputType="textPersonName"
                     android:textColor="@color/white"
                     android:textSize="@dimen/font_medium2" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:theme="@style/TextLabel">
 
-                <android.support.v7.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -81,16 +82,16 @@
                     android:inputType="textEmailAddress"
                     android:textColor="@color/white"
                     android:textSize="@dimen/font_medium2" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:theme="@style/TextLabel">
 
-                <android.support.v7.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -99,16 +100,16 @@
                     android:inputType="textPassword"
                     android:textColor="@color/white"
                     android:textSize="@dimen/font_medium2" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPassword2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:theme="@style/TextLabel">
 
-                <android.support.v7.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etPassword2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,7 +118,7 @@
                     android:inputType="textPassword"
                     android:textColor="@color/white"
                     android:textSize="@dimen/font_medium2" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <Button

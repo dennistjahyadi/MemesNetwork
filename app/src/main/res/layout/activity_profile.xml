@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -14,12 +14,12 @@
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="10dp">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -40,7 +40,8 @@
                     android:orientation="horizontal"
                     android:padding="4dp">
 
-                    <com.dovoo.memesnetwork.components.TextViewFaSolid
+                    <TextView
+                android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/fa_angle_left"
@@ -66,7 +67,7 @@
                     android:text="Edit"
                     android:textColor="@color/white" />
 
-            </android.support.v7.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivProfile"
@@ -207,7 +208,7 @@
                     android:textColor="@color/white" />
 
             </LinearLayout>
-        </androidx.constraintlayout.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -221,4 +222,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
 
-</androidx.constraintlayout.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
