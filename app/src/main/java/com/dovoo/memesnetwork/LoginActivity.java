@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post(Utils.API_URL + "syncusers")
+        AndroidNetworking.post(BuildConfig.API_URL + "syncusers")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
                 .build()

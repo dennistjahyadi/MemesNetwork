@@ -15,6 +15,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.CommentHistoryRecyclerViewAdapter;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
@@ -82,7 +83,7 @@ public class CommentHistoryActivity extends AppCompatActivity {
         Map<String,String> param = new HashMap<>();
         param.put("offset", offset + "");
         param.put("user_id", SharedPreferenceUtils.getPrefs(getApplicationContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID,0)+"");
-        AndroidNetworking.get(Utils.API_URL + "commentsuserhistory")
+        AndroidNetworking.get(BuildConfig.API_URL + "commentsuserhistory")
                 .addQueryParameter(param)
                 .setPriority(Priority.HIGH)
                 .build()

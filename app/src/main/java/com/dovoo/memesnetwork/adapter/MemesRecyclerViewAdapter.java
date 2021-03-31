@@ -292,7 +292,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post(Utils.API_URL + "insertlike")
+        AndroidNetworking.post(BuildConfig.API_URL + "insertlike")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
                 .build()
@@ -350,7 +350,7 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post(Utils.API_URL + "insertlike")
+        AndroidNetworking.post(BuildConfig.API_URL + "insertlike")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
                 .build()

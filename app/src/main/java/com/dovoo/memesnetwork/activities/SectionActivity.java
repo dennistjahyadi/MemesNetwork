@@ -15,6 +15,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.SectionRecyclerViewAdapter;
 import com.dovoo.memesnetwork.utils.AdUtils;
@@ -78,7 +79,7 @@ public class SectionActivity extends AppCompatActivity {
 
     private void fetchData() {
         loadingBar.setVisibility(View.VISIBLE);
-        AndroidNetworking.get(Utils.API_URL + "sections")
+        AndroidNetworking.get(BuildConfig.API_URL + "sections")
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {

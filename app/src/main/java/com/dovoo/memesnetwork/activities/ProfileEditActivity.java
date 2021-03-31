@@ -16,6 +16,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
 import com.dovoo.memesnetwork.utils.Utils;
@@ -85,7 +86,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        AndroidNetworking.post(Utils.API_URL + "editprofile")
+        AndroidNetworking.post(BuildConfig.API_URL + "editprofile")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
                 .build()

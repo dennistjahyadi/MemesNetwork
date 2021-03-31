@@ -19,6 +19,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.LoginActivity;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.CommentRecyclerViewAdapter;
@@ -120,7 +121,7 @@ public class CommentActivity extends AppCompatActivity {
         Map<String, String> param = new HashMap<>();
         param.put("offset", offset + "");
         param.put("meme_id", memeId + "");
-        AndroidNetworking.get(Utils.API_URL + "comments")
+        AndroidNetworking.get(BuildConfig.API_URL + "comments")
                 .addQueryParameter(param)
                 .setPriority(Priority.HIGH)
                 .build()
@@ -172,7 +173,7 @@ public class CommentActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post(Utils.API_URL + "sendcomment")
+        AndroidNetworking.post(BuildConfig.API_URL + "sendcomment")
                 .addJSONObjectBody(jsonObject)
                 .setPriority(Priority.HIGH)
                 .build()

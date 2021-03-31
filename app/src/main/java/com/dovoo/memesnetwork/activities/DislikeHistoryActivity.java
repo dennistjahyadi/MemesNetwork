@@ -13,6 +13,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager;
@@ -105,7 +106,7 @@ public class DislikeHistoryActivity extends AppCompatActivity {
             param.put("post_section", section);
         }
 
-        AndroidNetworking.get(Utils.API_URL + "indexdisliked")
+        AndroidNetworking.get(BuildConfig.API_URL + "indexdisliked")
                 .addQueryParameter(param)
                 .setPriority(Priority.HIGH)
                 .build()

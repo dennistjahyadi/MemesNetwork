@@ -46,11 +46,13 @@
                     android:textColor="@color/white" />
             </LinearLayout>
 
-            <com.dovoo.memesnetwork.components.TextViewChlorinr
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" MemesNetwork "
                 android:textSize="24dp"
+                app:fontFamily="@font/chlorinr"
+                android:fontFamily="@font/chlorinr"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
                 />

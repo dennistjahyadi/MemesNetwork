@@ -12,7 +12,16 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
+
+        debug {
+            buildConfigField "String", "API_URL", '"https://api.memesnetwork.com/api/"'
+            buildConfigField "String", "MOPUB_AD_UNIT_ID", '"b195f8dd8ded45fe847ad89ed1d016da"'
+            buildConfigField "String", "clientId", '"1016402780199-fqinff42oo693meufqji5na1adj53b7v.apps.googleusercontent.com"' // get from console.developer.google.com
+        }
         release {
+            buildConfigField "String", "API_URL", '"https://api.memesnetwork.com/api/"'
+            buildConfigField "String", "MOPUB_AD_UNIT_ID", '"90d50eb73f9941bd83629652b0ad6a4d"'
+            buildConfigField "String", "clientId", '"1016402780199-g60jlvimi8qgs9fh0jnl9dvgvbpo1q8m.apps.googleusercontent.com"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

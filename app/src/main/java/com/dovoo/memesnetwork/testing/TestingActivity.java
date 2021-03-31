@@ -14,6 +14,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
@@ -114,7 +115,7 @@ public class TestingActivity extends AppCompatActivity {
             param.put("post_section", section);
         }
 
-        AndroidNetworking.get(Utils.API_URL + "index")
+        AndroidNetworking.get(BuildConfig.API_URL + "index")
                 .addQueryParameter(param)
                 .setPriority(Priority.HIGH)
                 .build()
