@@ -58,18 +58,18 @@ public class NewestMemesFragment extends Fragment implements BillingManager.Bill
 
     private FrameLayout loadingBar;
     private String section = null;
-    private AdView mAdView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private FloatingActionButton fab;
     private Container container;
     private MyLinearLayoutManager layoutManager;
     private MemesRecyclerViewAdapter adapter;
     private PressablePlayerSelector selector;
     private List<DirectLinkItemTest> directLinkItemTestList = new ArrayList<>();
-    private ServiceConnection mServiceConn;
     //private IInAppBillingService mService;
     private BillingManager billingManager;
     private InterstitialAd mInterstitialAd;
+    private ServiceConnection mServiceConn;
+    private AdView mAdView;
+    private FloatingActionButton fab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
