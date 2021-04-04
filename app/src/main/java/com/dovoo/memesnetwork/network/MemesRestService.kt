@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 interface MemesRestService {
 
-    @GET("/index")
+    @GET("v1/fetch-memes")
     open fun fetchMemes(
         @Query("offset") offset: Int,
         @Query("user_id") userId: Int,

@@ -6,5 +6,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 class MemesResponse(
     var memes: ArrayList<Memes>
-): Parcelable {
+): BaseResponse() {
 }

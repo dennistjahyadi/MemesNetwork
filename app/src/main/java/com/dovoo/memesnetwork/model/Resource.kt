@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-data class Resource<out T>(val status: Status, val data: T?, val error: ErrorBean?) :
+data class Resource<out T: Parcelable>(val status: Status, val data: T?, val error: ErrorResponse?) :
     Parcelable {
     companion object {
         fun <T : Parcelable> init(): Resource<T> {
@@ -16,11 +16,11 @@ data class Resource<out T>(val status: Status, val data: T?, val error: ErrorBea
             return Resource(Status.CACHE, data, null)
         }
 
-        fun <T> success(data: T?): Resource<T> {
+        fun <T: Parcelable> success(data: T?): Resource<T> {
             return Resource(Status.SUCCESS, data, null)
         }
 
-        fun <T> error(error: ErrorBean): Resource<T> {
+        fun <T: Parcelable> error(error: ErrorResponse): Resource<T> {
             return Resource(Status.ERROR, null, error)
         }
 

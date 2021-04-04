@@ -3,6 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        memesnetwork_release {
+            storeFile file('/Users/dennistjahyadi/Documents/workspaces/MemesNetwork/memesnetwork.jks')
+            storePassword 'memesnetwork'
+            keyAlias 'memesnetwork'
+            keyPassword 'memesnetwork'
+        }
+    }
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.dovoo.memesnetwork"
@@ -15,12 +23,12 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField "String", "API_URL", '"https://api.memesnetwork.com/api"'
+            buildConfigField "String", "API_URL", '"http://localhost:3000/api/"'
             buildConfigField "String", "MOPUB_AD_UNIT_ID", '"b195f8dd8ded45fe847ad89ed1d016da"'
             buildConfigField "String", "clientId", '"1016402780199-fqinff42oo693meufqji5na1adj53b7v.apps.googleusercontent.com"' // get from console.developer.google.com
         }
         release {
-            buildConfigField "String", "API_URL", '"https://api.memesnetwork.com/api"'
+            buildConfigField "String", "API_URL", '"https://api.memesnetwork.com/api/"'
             buildConfigField "String", "MOPUB_AD_UNIT_ID", '"90d50eb73f9941bd83629652b0ad6a4d"'
             buildConfigField "String", "clientId", '"1016402780199-g60jlvimi8qgs9fh0jnl9dvgvbpo1q8m.apps.googleusercontent.com"'
             minifyEnabled false
@@ -63,21 +71,18 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
     implementation "com.squareup.okhttp3:okhttp:4.0.1"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.8'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
     implementation 'io.fotoapparat:fotoapparat:2.7.0'
 
     implementation "im.ene.toro3:toro:${latest_release}"
     implementation "im.ene.toro3:toro-ext-exoplayer:${latest_release}"  // to get ExoPlayer support
-    implementation 'com.google.android.exoplayer:exoplayer:r2.13.2'
+    implementation 'com.google.android.exoplayer:exoplayer:2.10.3'
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
 
     implementation 'com.google.android.gms:play-services-ads:19.7.0'
     implementation 'com.android.billingclient:billing:3.0.0'
     implementation 'com.github.kk121:File-Loader:1.2'
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation "androidx.core:core-ktx:"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -93,10 +98,15 @@ dependencies {
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 
     // Testing Navigation
-    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
 }
 repositories {
     mavenCentral()

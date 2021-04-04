@@ -1,13 +1,15 @@
 package com.dovoo.memesnetwork.network
 
+import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
-import com.dovoo.memesnetwork.model.ErrorBean
+import com.dovoo.memesnetwork.model.BaseResponse
+import com.dovoo.memesnetwork.model.ErrorResponse
 import com.dovoo.memesnetwork.model.Resource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DefaultCallback<T>(protected val data: MutableLiveData<Resource<T>>) : Callback<T> {
+class DefaultCallback<T: BaseResponse>(protected val data: MutableLiveData<Resource<T>>) : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
         try {
             if (call.isCanceled) {
@@ -18,18 +20,18 @@ class DefaultCallback<T>(protected val data: MutableLiveData<Resource<T>>) : Cal
                 data.postValue(Resource.success(resp))
 
             } else {
-                val error = ErrorBean(response.errorBody().toString())
+                val error = ErrorResponse(response.errorBody().toString())
                 data.postValue(Resource.error(error))
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            val error = ErrorBean(e.message)
+            val error = ErrorResponse(e.message)
             data.postValue(Resource.error(error))
         }
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
-        val error = ErrorBean(t.message)
+        val error = ErrorResponse(t.message)
         data.postValue(Resource.error(error))
     }
 }

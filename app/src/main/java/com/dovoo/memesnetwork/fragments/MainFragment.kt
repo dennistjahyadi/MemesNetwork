@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import com.dovoo.memesnetwork.DefaultActivity
 import com.dovoo.memesnetwork.MainActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter
@@ -56,7 +58,7 @@ class MainFragment : Fragment() {
             context,
             selector,
             directLinkItemTestList,
-            (activity as MainActivity?)!!.loadingBar
+            FrameLayout(requireContext())
         )
         container.adapter = adapter
         container.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
