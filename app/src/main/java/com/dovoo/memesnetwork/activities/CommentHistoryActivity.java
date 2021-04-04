@@ -11,20 +11,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.CommentHistoryRecyclerViewAdapter;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
-import com.dovoo.memesnetwork.utils.Utils;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,37 +73,37 @@ public class CommentHistoryActivity extends AppCompatActivity {
         Map<String,String> param = new HashMap<>();
         param.put("offset", offset + "");
         param.put("user_id", SharedPreferenceUtils.getPrefs(getApplicationContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID,0)+"");
-        AndroidNetworking.get(BuildConfig.API_URL + "commentsuserhistory")
-                .addQueryParameter(param)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        try {
-                            JSONArray result = response.getJSONArray("data");
-                            String currentDatetime = response.getString("current_datetime");
-
-                            for (int i = 0; i < result.length(); i++) {
-
-                                itemList.add(Utils.toMap(result.getJSONObject(i),currentDatetime));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        loadingBar.setVisibility(View.GONE);
-                        commentHistoryRecyclerViewAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
-                        System.out.print("a");
-                        loadingBar.setVisibility(View.GONE);
-
-                    }
-                });
+//        AndroidNetworking.get(BuildConfig.API_URL + "commentsuserhistory")
+//                .addQueryParameter(param)
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        // do anything with response
+//                        try {
+//                            JSONArray result = response.getJSONArray("data");
+//                            String currentDatetime = response.getString("current_datetime");
+//
+//                            for (int i = 0; i < result.length(); i++) {
+//
+//                                itemList.add(Utils.toMap(result.getJSONObject(i),currentDatetime));
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        loadingBar.setVisibility(View.GONE);
+//                        commentHistoryRecyclerViewAdapter.notifyDataSetChanged();
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError error) {
+//                        // handle error
+//                        System.out.print("a");
+//                        loadingBar.setVisibility(View.GONE);
+//
+//                    }
+//                });
     }
 }

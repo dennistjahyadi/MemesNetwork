@@ -5,13 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.LoginActivity;
 import com.dovoo.memesnetwork.R;
@@ -31,7 +26,6 @@ import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder;
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
-import com.dovoo.memesnetwork.utils.Utils;
 import com.krishna.fileloader.FileLoader;
 import com.krishna.fileloader.listener.FileRequestListener;
 import com.krishna.fileloader.pojo.FileResponse;
@@ -292,48 +286,48 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post(BuildConfig.API_URL + "insertlike")
-                .addJSONObjectBody(jsonObject)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        try {
-                            Integer totalLike = response.getInt("total_like");
-                            Integer totalDislike = response.getInt("total_dislike");
-
-                            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                            viewHolder.tvTotalLike.setText(totalLike + "");
-                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-                            viewHolder.tvTotalDislike.setText(totalDislike + "");
-                            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                            viewHolder.linBtnLike.setEnabled(false);
-                            viewHolder.linBtnDislike.setEnabled(true);
-                            directLinkVideoItem.getData().put("is_liked", 1);
-                            String totLike = (String) directLinkVideoItem.getData().get("total_like");
-                            directLinkVideoItem.getData().put("total_like", (Integer.parseInt(totLike)+1)+"");
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        mLoadingBar.setVisibility(View.GONE);
-
-
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        // handle error
-                        System.out.print("error");
-                        mLoadingBar.setVisibility(View.GONE);
-                        viewHolder.linBtnLike.setEnabled(true);
-                        viewHolder.linBtnDislike.setEnabled(true);
-                        Toast.makeText(mContext, "Fail", Toast.LENGTH_LONG).show();
-                    }
-                });
+//        AndroidNetworking.post(BuildConfig.API_URL + "insertlike")
+//                .addJSONObjectBody(jsonObject)
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        // do anything with response
+//                        try {
+//                            Integer totalLike = response.getInt("total_like");
+//                            Integer totalDislike = response.getInt("total_dislike");
+//
+//                            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+//                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+//                            viewHolder.tvTotalLike.setText(totalLike + "");
+//                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+//                            viewHolder.tvTotalDislike.setText(totalDislike + "");
+//                            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+//                            viewHolder.linBtnLike.setEnabled(false);
+//                            viewHolder.linBtnDislike.setEnabled(true);
+//                            directLinkVideoItem.getData().put("is_liked", 1);
+//                            String totLike = (String) directLinkVideoItem.getData().get("total_like");
+//                            directLinkVideoItem.getData().put("total_like", (Integer.parseInt(totLike)+1)+"");
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        mLoadingBar.setVisibility(View.GONE);
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError anError) {
+//                        // handle error
+//                        System.out.print("error");
+//                        mLoadingBar.setVisibility(View.GONE);
+//                        viewHolder.linBtnLike.setEnabled(true);
+//                        viewHolder.linBtnDislike.setEnabled(true);
+//                        Toast.makeText(mContext, "Fail", Toast.LENGTH_LONG).show();
+//                    }
+//                });
     }
 
     private void doDislike(final MemesViewHolder viewHolder, final DirectLinkItemTest directLinkVideoItem) {
@@ -350,46 +344,46 @@ public class MemesRecyclerViewAdapter extends RecyclerView.Adapter<MemesViewHold
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post(BuildConfig.API_URL + "insertlike")
-                .addJSONObjectBody(jsonObject)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        try {
-                            Integer totalLike = response.getInt("total_like");
-                            Integer totalDislike = response.getInt("total_dislike");
-
-                            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-                            viewHolder.tvTotalLike.setText(totalLike + "");
-                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                            viewHolder.tvTotalDislike.setText(totalDislike + "");
-                            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-                            viewHolder.linBtnLike.setEnabled(true);
-                            viewHolder.linBtnDislike.setEnabled(false);
-                            directLinkVideoItem.getData().put("is_liked", 0);
-                            String totDislike = (String) directLinkVideoItem.getData().get("total_dislike");
-                            directLinkVideoItem.getData().put("total_dislike", (Integer.parseInt(totDislike)+1)+"");
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        mLoadingBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        // handle error
-                        System.out.print("error");
-                        mLoadingBar.setVisibility(View.GONE);
-                        viewHolder.linBtnLike.setEnabled(true);
-                        viewHolder.linBtnDislike.setEnabled(true);
-                        Toast.makeText(mContext, "Fail", Toast.LENGTH_LONG).show();
-
-                    }
-                });
+//        AndroidNetworking.post(BuildConfig.API_URL + "insertlike")
+//                .addJSONObjectBody(jsonObject)
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        // do anything with response
+//                        try {
+//                            Integer totalLike = response.getInt("total_like");
+//                            Integer totalDislike = response.getInt("total_dislike");
+//
+//                            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+//                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+//                            viewHolder.tvTotalLike.setText(totalLike + "");
+//                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+//                            viewHolder.tvTotalDislike.setText(totalDislike + "");
+//                            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
+//                            viewHolder.linBtnLike.setEnabled(true);
+//                            viewHolder.linBtnDislike.setEnabled(false);
+//                            directLinkVideoItem.getData().put("is_liked", 0);
+//                            String totDislike = (String) directLinkVideoItem.getData().get("total_dislike");
+//                            directLinkVideoItem.getData().put("total_dislike", (Integer.parseInt(totDislike)+1)+"");
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        mLoadingBar.setVisibility(View.GONE);
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError anError) {
+//                        // handle error
+//                        System.out.print("error");
+//                        mLoadingBar.setVisibility(View.GONE);
+//                        viewHolder.linBtnLike.setEnabled(true);
+//                        viewHolder.linBtnDislike.setEnabled(true);
+//                        Toast.makeText(mContext, "Fail", Toast.LENGTH_LONG).show();
+//
+//                    }
+//                });
     }
 }

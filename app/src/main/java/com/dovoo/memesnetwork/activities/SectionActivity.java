@@ -1,35 +1,22 @@
 package com.dovoo.memesnetwork.activities;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.SectionRecyclerViewAdapter;
 import com.dovoo.memesnetwork.utils.AdUtils;
-import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
-import com.dovoo.memesnetwork.utils.Utils;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,35 +66,35 @@ public class SectionActivity extends AppCompatActivity {
 
     private void fetchData() {
         loadingBar.setVisibility(View.VISIBLE);
-        AndroidNetworking.get(BuildConfig.API_URL + "sections")
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        // do anything with response
-                        try {
-                            Map<String,Object> map = new HashMap<>();
-                            map.put("name","ALL");
-                            itemList.add(map);
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject result = response.getJSONObject(i);
-                                itemList.add(Utils.toMap(result));
-                            }
-
-                            sectionRecyclerViewAdapter.notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        loadingBar.setVisibility(View.GONE);
-
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
-                        loadingBar.setVisibility(View.GONE);
-                    }
-                });
+//        AndroidNetworking.get(BuildConfig.API_URL + "sections")
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsJSONArray(new JSONArrayRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        // do anything with response
+//                        try {
+//                            Map<String,Object> map = new HashMap<>();
+//                            map.put("name","ALL");
+//                            itemList.add(map);
+//                            for (int i = 0; i < response.length(); i++) {
+//                                JSONObject result = response.getJSONObject(i);
+//                                itemList.add(Utils.toMap(result));
+//                            }
+//
+//                            sectionRecyclerViewAdapter.notifyDataSetChanged();
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        loadingBar.setVisibility(View.GONE);
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError error) {
+//                        // handle error
+//                        loadingBar.setVisibility(View.GONE);
+//                    }
+//                });
     }
 }

@@ -92,7 +92,7 @@ class MainFragment : Fragment() {
 
                 }
                 Status.ERROR -> {
-
+                    System.out.println(it.error?.message)
                 }
             }
         })

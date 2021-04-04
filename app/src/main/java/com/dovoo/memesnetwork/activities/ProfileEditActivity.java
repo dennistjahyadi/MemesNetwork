@@ -12,14 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
-import com.dovoo.memesnetwork.utils.Utils;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
@@ -86,32 +80,32 @@ public class ProfileEditActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        AndroidNetworking.post(BuildConfig.API_URL + "editprofile")
-                .addJSONObjectBody(jsonObject)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        try {
-                            JSONObject data = response.getJSONObject("data");
-                            SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_NAME, data.getString("username"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        finish();
-                        loadingBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        // handle error
-                        System.out.print("error");
-                        Toast.makeText(getApplicationContext(), anError.getErrorBody(), Toast.LENGTH_SHORT).show();
-                        tilUsername.setError(anError.getErrorBody());
-                        loadingBar.setVisibility(View.GONE);
-                    }
-                });
+//        AndroidNetworking.post(BuildConfig.API_URL + "editprofile")
+//                .addJSONObjectBody(jsonObject)
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        // do anything with response
+//                        try {
+//                            JSONObject data = response.getJSONObject("data");
+//                            SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_NAME, data.getString("username"));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        finish();
+//                        loadingBar.setVisibility(View.GONE);
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError anError) {
+//                        // handle error
+//                        System.out.print("error");
+//                        Toast.makeText(getApplicationContext(), anError.getErrorBody(), Toast.LENGTH_SHORT).show();
+//                        tilUsername.setError(anError.getErrorBody());
+//                        loadingBar.setVisibility(View.GONE);
+//                    }
+//                });
     }
 }

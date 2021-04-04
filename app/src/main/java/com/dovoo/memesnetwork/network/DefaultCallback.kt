@@ -25,13 +25,13 @@ class DefaultCallback<T: BaseResponse>(protected val data: MutableLiveData<Resou
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            val error = ErrorResponse(e.message)
+            val error = ErrorResponse(e.cause)
             data.postValue(Resource.error(error))
         }
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
-        val error = ErrorResponse(t.message)
+        val error = ErrorResponse(t)
         data.postValue(Resource.error(error))
     }
 }

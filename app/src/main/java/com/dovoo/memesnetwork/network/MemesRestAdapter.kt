@@ -11,7 +11,7 @@ object MemesRestAdapter {
     private fun getRestService(url: String): MemesRestService {
         val retrofit = Retrofit.Builder()
             .baseUrl(url)
-            //.client(getOkHttpClient())
+            .client(getOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(MemesRestService::class.java)

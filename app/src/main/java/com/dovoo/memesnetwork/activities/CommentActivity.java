@@ -8,18 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.dovoo.memesnetwork.BuildConfig;
 import com.dovoo.memesnetwork.LoginActivity;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.CommentRecyclerViewAdapter;
@@ -27,11 +21,8 @@ import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
 import com.dovoo.memesnetwork.utils.AdUtils;
 import com.dovoo.memesnetwork.utils.GlobalFunc;
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils;
-import com.dovoo.memesnetwork.utils.Utils;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,7 +62,7 @@ public class CommentActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         rvComment = findViewById(R.id.rvComment);
         mAdView = findViewById(R.id.adView);
-        AdUtils.loadAds(getApplicationContext(),mAdView);
+        AdUtils.loadAds(getApplicationContext(), mAdView);
 
 
         etComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -121,45 +112,45 @@ public class CommentActivity extends AppCompatActivity {
         Map<String, String> param = new HashMap<>();
         param.put("offset", offset + "");
         param.put("meme_id", memeId + "");
-        AndroidNetworking.get(BuildConfig.API_URL + "comments")
-                .addQueryParameter(param)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        try {
-                            JSONArray result = response.getJSONArray("data");
-                            String currentDatetime = response.getString("current_datetime");
-                            for (int i = 0; i < result.length(); i++) {
-                                itemList.add(Utils.toMap(result.getJSONObject(i),currentDatetime));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        if (scrollToLastComment) {
-                            rvComment.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Call smooth scroll
-                                    rvComment.smoothScrollToPosition(1);
-                                }
-                            });
-                        }
-                        loadingBar.setVisibility(View.GONE);
-
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
-                        System.out.print("a");
-                        loadingBar.setVisibility(View.GONE);
-
-                    }
-                });
+//        AndroidNetworking.get(BuildConfig.API_URL + "comments")
+//                .addQueryParameter(param)
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        // do anything with response
+//                        try {
+//                            JSONArray result = response.getJSONArray("data");
+//                            String currentDatetime = response.getString("current_datetime");
+//                            for (int i = 0; i < result.length(); i++) {
+//                                itemList.add(Utils.toMap(result.getJSONObject(i),currentDatetime));
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        if (scrollToLastComment) {
+//                            rvComment.post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    // Call smooth scroll
+//                                    rvComment.smoothScrollToPosition(1);
+//                                }
+//                            });
+//                        }
+//                        loadingBar.setVisibility(View.GONE);
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError error) {
+//                        // handle error
+//                        System.out.print("a");
+//                        loadingBar.setVisibility(View.GONE);
+//
+//                    }
+//                });
     }
 
     public void sendComment() {
@@ -173,31 +164,31 @@ public class CommentActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post(BuildConfig.API_URL + "sendcomment")
-                .addJSONObjectBody(jsonObject)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-
-                        commentRecyclerViewAdapter.notifyDataSetChanged();
-                        loadingBar.setVisibility(View.GONE);
-                        btnSend.setEnabled(true);
-                        etComment.setText("");
-                        Utils.hideKeyboard(CommentActivity.this);
-                        fetchData(0, true);
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
-                        loadingBar.setVisibility(View.GONE);
-                        btnSend.setEnabled(true);
-                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_LONG).show();
-                    }
-                });
+//        AndroidNetworking.post(BuildConfig.API_URL + "sendcomment")
+//                .addJSONObjectBody(jsonObject)
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        // do anything with response
+//
+//                        commentRecyclerViewAdapter.notifyDataSetChanged();
+//                        loadingBar.setVisibility(View.GONE);
+//                        btnSend.setEnabled(true);
+//                        etComment.setText("");
+//                        Utils.hideKeyboard(CommentActivity.this);
+//                        fetchData(0, true);
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError error) {
+//                        // handle error
+//                        loadingBar.setVisibility(View.GONE);
+//                        btnSend.setEnabled(true);
+//                        Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_LONG).show();
+//                    }
+//                });
     }
 
     @Override

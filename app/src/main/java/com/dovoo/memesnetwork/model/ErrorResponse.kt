@@ -9,7 +9,7 @@ open class ErrorResponse(
     var mThrowable: Throwable? = null,
     var message: String? = null
 ) : BaseResponse() {
-    constructor(t: Throwable) : this() {
+    constructor(t: Throwable?) : this() {
         mThrowable = t
         mUnparseable = false
     }

@@ -41,6 +41,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 }
 ext {
     latest_snapshot = '3.7.0.2901-SNAPSHOT' // TODO check above for latest version
@@ -67,12 +68,10 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.amitshekhar.android:android-networking:1.0.2'
-    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
-    implementation "com.squareup.okhttp3:okhttp:4.0.1"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'io.fotoapparat:fotoapparat:2.7.0'
+//    implementation 'org.conscrypt:conscrypt-android:2.2.1'
 
     implementation "im.ene.toro3:toro:${latest_release}"
     implementation "im.ene.toro3:toro-ext-exoplayer:${latest_release}"  // to get ExoPlayer support
