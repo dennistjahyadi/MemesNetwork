@@ -73,56 +73,17 @@ class MainFragment : Fragment() {
         generalViewModel.memesHome.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
-                    it.data.memes
 
                     // do anything with response
                     try {
-//                        for (i in 0 until it.data?.memes.size()!! ) {
-//                            val result: JSONObject = response.getJSONObject(i)
-//                            val meme =
-//                            val id = result.getInt("id")
-//                            val title = result.getString("title")
-//                            val type = result.getString("type")
-//                            val imagesObject = JSONObject(result.getString("images"))
-//                            val coverUrl = imagesObject.getJSONObject("image700").getString("url")
-//                            val category = result.getString("post_section")
-//                            var videoUrl: String? = null
-//                            var isVideo = false
-//                            var hasAudio = false
-//                            if (type.equals("animated", ignoreCase = true)) {
-//                                isVideo = true
-//                                videoUrl = imagesObject.getJSONObject("image460sv").getString("url")
-//                                hasAudio = if (imagesObject.getJSONObject("image460sv")
-//                                        .getInt("hasAudio") == 1
-//                                ) true else false
-//                            }
-//                            val width = imagesObject.getJSONObject("image700").getInt("width")
-//                            val height = imagesObject.getJSONObject("image700").getInt("height")
-//                            val data: MutableMap<String, Any> = HashMap()
-//                            data["total_like"] = result["total_like"]
-//                            data["total_dislike"] = result["total_dislike"]
-//                            data["total_comment"] = result["total_comment"]
-//                            data["is_liked"] = result["is_liked"]
-//                            directLinkItemTestList.add(
-//                                DirectLinkItemTest(
-//                                    id,
-//                                    category,
-//                                    title,
-//                                    videoUrl,
-//                                    data,
-//                                    Picasso.get(),
-//                                    coverUrl,
-//                                    width,
-//                                    height,
-//                                    hasAudio,
-//                                    isVideo
-//                                )
-//                            )
-//                        }
-//                        adapter.notifyDataSetChanged()
-//                        swipeRefreshLayout.isEnabled = true
-//                        swipeRefreshLayout.isRefreshing = false
-//                        swipeRefreshLayout.visibility = View.VISIBLE
+                        it.data?.memes?.forEach { meme ->
+                            val directLinkItem = DirectLinkItemTest(meme, Picasso.get())
+                            directLinkItemTestList.add(directLinkItem)
+                        }
+                        adapter.notifyDataSetChanged()
+                        swipeRefreshLayout.isEnabled = true
+                        swipeRefreshLayout.isRefreshing = false
+                        swipeRefreshLayout.visibility = View.VISIBLE
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
