@@ -55,7 +55,7 @@ class MainFragment : Fragment() {
         container.playerSelector = selector
 
         adapter = MemesRecyclerViewAdapter(
-            context,
+            requireContext(),
             selector,
             directLinkItemTestList,
             FrameLayout(requireContext())

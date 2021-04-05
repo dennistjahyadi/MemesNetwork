@@ -21,7 +21,7 @@ class Memes(
     @Parcelize
     class MemesImage(
         var image700: Image700,
-        var image460sv: Image460sv
+        var image460sv: Image460sv?
     ):Parcelable
 
     @Parcelize

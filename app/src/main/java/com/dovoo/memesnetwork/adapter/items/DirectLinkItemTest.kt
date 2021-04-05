@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso
 import java.util.HashMap
 
 class DirectLinkItemTest {
-    private var mDirectUrl: String
+    private var mDirectUrl: String?
     private var mTitle: String
     private var mImageLoader: Picasso
     private var mCoverUrl: String
@@ -54,7 +54,7 @@ class DirectLinkItemTest {
         var hasAudio = false
         if (meme.type.equals("animated", ignoreCase = true)) {
             isVideo = true
-            hasAudio = meme.images.image460sv.hasAudio == 1
+            hasAudio = meme.images.image460sv?.hasAudio == 1
         }
         val mData: MutableMap<String, Any> = HashMap()
         mData["total_like"] = meme.total_like
@@ -63,7 +63,7 @@ class DirectLinkItemTest {
         id = meme.id
         mWidth = meme.images.image700.width
         mHeight = meme.images.image700.height
-        mDirectUrl = meme.images.image460sv.url
+        mDirectUrl = meme.images.image460sv?.url
         mTitle = meme.title
         mImageLoader = imageLoader
         mCoverUrl = meme.images.image700.url
@@ -73,7 +73,7 @@ class DirectLinkItemTest {
         this.data = mData
     }
 
-    fun getmDirectUrl(): String {
+    fun getmDirectUrl(): String? {
         return mDirectUrl
     }
 
