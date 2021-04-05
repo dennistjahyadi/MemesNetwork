@@ -40,9 +40,9 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
 
     PlayerView playerView;
     public RelativeLayout relativeLayout;
-    public LinearLayout linBtnLike, linBtnDislike, linBtnComment;
+    public LinearLayout linBtnLike, linBtnComment;
     public ImageView mCover;
-     public TextView tvCategory, tvIconSound, tvTitle, tvLabelNoAudio, tvBtnLike, tvBtnDislike, tvTotalLike, tvTotalDislike, tvTotalComment, tvBtnShare;
+     public TextView tvCategory, tvIconSound, tvTitle, tvLabelNoAudio, tvBtnLike, tvTotalLike, tvTotalComment, tvBtnShare;
 
     public SpinKitView loadingBarVideo;
 
@@ -53,13 +53,10 @@ public class MemesViewHolder extends RecyclerView.ViewHolder implements ToroPlay
         playerView = itemView.findViewById(R.id.playerView);
         relativeLayout = itemView.findViewById(R.id.relativeLayout);
         tvTotalLike = itemView.findViewById(R.id.tvTotalLike);
-        tvTotalDislike = itemView.findViewById(R.id.tvTotalDislike);
         tvTotalComment = itemView.findViewById(R.id.tvTotalComment);
         tvBtnLike = itemView.findViewById(R.id.tvBtnLike);
         loadingBarVideo = itemView.findViewById(R.id.loadingBarVideo);
-        tvBtnDislike = itemView.findViewById(R.id.tvBtnDislike);
         linBtnLike = itemView.findViewById(R.id.linBtnLike);
-        linBtnDislike = itemView.findViewById(R.id.linBtnDislike);
         linBtnComment = itemView.findViewById(R.id.linBtnComment);
         tvBtnShare = itemView.findViewById(R.id.tvBtnShare);
         tvTitle = itemView.findViewById(R.id.tvTitle);

@@ -97,13 +97,11 @@ class MemesRecyclerViewAdapter(
             viewHolder.tvIconSound.visibility = View.GONE
         }
         viewHolder.tvTotalLike.text = totalLike.toString()
-        viewHolder.tvTotalDislike.text = totalDislike.toString()
         viewHolder.tvTotalComment.text = totalComment.toString()
         if (directLinkVideoItem.data!!["is_liked"] is Int) {
             val isLiked = directLinkVideoItem.data!!["is_liked"] as Int?
             if (isLiked == 1) {
                 viewHolder.linBtnLike.isEnabled = false
-                viewHolder.linBtnDislike.isEnabled = true
                 viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700))
                 viewHolder.tvTotalLike.setTextColor(
                     ContextCompat.getColor(
@@ -111,43 +109,15 @@ class MemesRecyclerViewAdapter(
                         R.color.pink700
                     )
                 )
-                viewHolder.tvBtnDislike.setTextColor(
-                    ContextCompat.getColor(
-                        mContext,
-                        R.color.white
-                    )
-                )
-                viewHolder.tvTotalDislike.setTextColor(
-                    ContextCompat.getColor(
-                        mContext,
-                        R.color.white
-                    )
-                )
             } else {
                 viewHolder.linBtnLike.isEnabled = true
-                viewHolder.linBtnDislike.isEnabled = false
                 viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
                 viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
-                viewHolder.tvBtnDislike.setTextColor(
-                    ContextCompat.getColor(
-                        mContext,
-                        R.color.pink700
-                    )
-                )
-                viewHolder.tvTotalDislike.setTextColor(
-                    ContextCompat.getColor(
-                        mContext,
-                        R.color.pink700
-                    )
-                )
             }
         } else {
             viewHolder.linBtnLike.isEnabled = true
-            viewHolder.linBtnDislike.isEnabled = true
             viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
             viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
-            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
-            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
         }
         viewHolder.tvBtnShare.setOnClickListener(View.OnClickListener {
             if (ContextCompat.checkSelfPermission(
@@ -236,19 +206,7 @@ class MemesRecyclerViewAdapter(
                 doLike(viewHolder, directLinkVideoItem)
             }
         }
-        viewHolder.linBtnDislike.setOnClickListener {
-            if (!getPrefs(mContext).getBoolean(
-                    SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
-                    false
-                )
-            ) {
-                val i = Intent(mContext, LoginActivity::class.java)
-                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                mContext.startActivity(i)
-            } else {
-                doDislike(viewHolder, directLinkVideoItem)
-            }
-        }
+
         viewHolder.bind(directLinkVideoItem)
     }
 
@@ -259,7 +217,6 @@ class MemesRecyclerViewAdapter(
     private fun doLike(viewHolder: MemesViewHolder, directLinkVideoItem: DirectLinkItemTest) {
         mLoadingBar.visibility = View.VISIBLE
         viewHolder.linBtnLike.isEnabled = false
-        viewHolder.linBtnDislike.isEnabled = false
         val userId = getPrefs(mContext).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
         val jsonObject = JSONObject()
         try {
@@ -285,8 +242,6 @@ class MemesRecyclerViewAdapter(
 //                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
 //                            viewHolder.tvTotalLike.setText(totalLike + "");
 //                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-//                            viewHolder.tvTotalDislike.setText(totalDislike + "");
-//                            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
 //                            viewHolder.linBtnLike.setEnabled(false);
 //                            viewHolder.linBtnDislike.setEnabled(true);
 //                            directLinkVideoItem.getData().put("is_liked", 1);
@@ -316,7 +271,6 @@ class MemesRecyclerViewAdapter(
     private fun doDislike(viewHolder: MemesViewHolder, directLinkVideoItem: DirectLinkItemTest) {
         mLoadingBar.visibility = View.VISIBLE
         viewHolder.linBtnLike.isEnabled = false
-        viewHolder.linBtnDislike.isEnabled = false
         val userId = getPrefs(mContext).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
         val jsonObject = JSONObject()
         try {
@@ -342,8 +296,6 @@ class MemesRecyclerViewAdapter(
 //                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
 //                            viewHolder.tvTotalLike.setText(totalLike + "");
 //                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-//                            viewHolder.tvTotalDislike.setText(totalDislike + "");
-//                            viewHolder.tvTotalDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
 //                            viewHolder.linBtnLike.setEnabled(true);
 //                            viewHolder.linBtnDislike.setEnabled(false);
 //                            directLinkVideoItem.getData().put("is_liked", 0);
