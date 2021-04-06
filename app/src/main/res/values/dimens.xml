@@ -12,4 +12,5 @@
     <dimen name="app_bar_height">250dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">196dp</dimen>
+    <dimen name="margin_row">8dp</dimen>
 </resources>

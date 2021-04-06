@@ -107,7 +107,7 @@
                     android:layout_height="45dp"
                     android:layout_margin="4dp"
                     android:layout_weight="0.5"
-                    android:background="@color/grey900">
+                    android:background="@color/backgroundMain">
 
                     <TextView
                         android:id="@+id/tvBtnLike"
@@ -124,7 +124,7 @@
                     android:layout_height="45dp"
                     android:layout_margin="4dp"
                     android:layout_weight="0.5"
-                    android:background="@color/grey900">
+                    android:background="@color/backgroundMain">
 
                     <TextView
                         android:id="@+id/tvBtnDislike"
@@ -142,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_margin="4dp"
-                android:background="@color/grey900"
+                android:background="@color/backgroundMain"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
                 <TextView
@@ -160,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_margin="4dp"
-                android:background="@color/grey900"
+                android:background="@color/backgroundMain"
                 app:layout_constraintTop_toBottomOf="@+id/linComment">
 
                 <TextView
@@ -178,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_margin="4dp"
-                android:background="@color/grey900"
+                android:background="@color/backgroundMain"
                 app:layout_constraintTop_toBottomOf="@+id/linPrivacyPolicy">
 
                 <TextView
@@ -196,7 +196,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_margin="4dp"
-                android:background="@color/grey900"
+                android:background="@color/backgroundMain"
                 app:layout_constraintTop_toBottomOf="@+id/linSubscription">
 
                 <TextView

@@ -102,7 +102,7 @@ class MemesRecyclerViewAdapter(
             val isLiked = directLinkVideoItem.data!!["is_liked"] as Int?
             if (isLiked == 1) {
                 viewHolder.linBtnLike.isEnabled = false
-                viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700))
+                viewHolder.ivBtnLike.setImageResource(R.drawable.ic_thumbs_up_active)
                 viewHolder.tvTotalLike.setTextColor(
                     ContextCompat.getColor(
                         mContext,
@@ -111,15 +111,15 @@ class MemesRecyclerViewAdapter(
                 )
             } else {
                 viewHolder.linBtnLike.isEnabled = true
-                viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
+                viewHolder.ivBtnLike.setImageResource(R.drawable.ic_thumbs_up)
                 viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
             }
         } else {
             viewHolder.linBtnLike.isEnabled = true
-            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
+            viewHolder.ivBtnLike.setImageResource(R.drawable.ic_thumbs_up)
             viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
         }
-        viewHolder.tvBtnShare.setOnClickListener(View.OnClickListener {
+        viewHolder.ivBtnShare.setOnClickListener(View.OnClickListener {
             if (ContextCompat.checkSelfPermission(
                     mContext,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -129,7 +129,7 @@ class MemesRecyclerViewAdapter(
                     .show()
                 return@OnClickListener
             }
-            viewHolder.tvBtnShare.isEnabled = false
+            viewHolder.ivBtnShare.isEnabled = false
             mLoadingBar.visibility = View.VISIBLE
             val isVideo = directLinkVideoItem.getmDirectUrl() != null
             var theUrl: String? = directLinkVideoItem.getmCoverUrl()
@@ -170,12 +170,12 @@ class MemesRecyclerViewAdapter(
                         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         mContext.startActivity(Intent.createChooser(share, "Share :"))
                         mLoadingBar.visibility = View.GONE
-                        viewHolder.tvBtnShare.isEnabled = true
+                        viewHolder.ivBtnShare.isEnabled = true
                     }
 
                     override fun onError(request: FileLoadRequest, t: Throwable) {
                         mLoadingBar.visibility = View.GONE
-                        viewHolder.tvBtnShare.isEnabled = true
+                        viewHolder.ivBtnShare.isEnabled = true
                         Toast.makeText(mContext, "Cannot sharing file", Toast.LENGTH_LONG).show()
                     }
                 })

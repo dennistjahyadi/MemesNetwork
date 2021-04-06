@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="30dp"
-    android:background="@color/grey900"
+    android:layout_marginBottom="@dimen/margin_row"
+    android:background="@color/backgroundMain"
     android:orientation="vertical"
     android:paddingTop="5dp"
     android:paddingBottom="15dp">
@@ -60,15 +59,15 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textIsSelectable="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginRight="12dp"
                 android:layout_marginBottom="2dp"
+                android:padding="8dp"
                 android:text="title"
                 android:textColor="@color/white"
+                android:textIsSelectable="true"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -83,15 +82,13 @@
         android:layout_marginBottom="8dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linTop">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/grey900">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -122,7 +119,6 @@
             </LinearLayout>
 
             <TextView
-                android:textStyle="bold"
                 android:id="@+id/tvIconSound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -130,7 +126,8 @@
                 android:layout_margin="20dp"
                 android:text="@string/fa_volume_mute"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvLabelNoAudio"
@@ -138,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="25dp"
-                android:text="No Sound"
+                android:text="@string/no_sound"
                 android:textColor="@color/white"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -150,8 +147,8 @@
             style="@style/SpinKitView.Large.Wave"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:alpha="0.85"
             android:layout_gravity="center"
+            android:alpha="0.85"
             app:SpinKit_Color="@color/white" />
     </FrameLayout>
 
@@ -162,7 +159,6 @@
         android:layout_marginTop="15dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linMiddle">
 
@@ -170,23 +166,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="3">
 
             <LinearLayout
                 android:id="@+id/linBtnLike"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="4dp"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="4dp">
 
-                <TextView
+                <ImageView
                     android:id="@+id/tvBtnLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/fa_thumbs_up"
+                    android:src="@drawable/ic_thumbs_up"
                     android:textColor="@color/white"
                     android:textSize="22dp" />
 
@@ -194,44 +189,38 @@
                     android:id="@+id/tvTotalLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@id/tvBtnLike"
+                    android:layout_marginStart="8dp"
                     android:text="0"
                     android:textColor="@color/white"
-                    android:textSize="20dp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linBtnComment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/linBtnDislike"
-                android:padding="4dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="4dp">
 
 
-                <TextView
+                <ImageView
                     android:id="@+id/tvBtnComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/fa_comment"
+                    android:src="@drawable/ic_comment_dots"
                     android:textColor="@color/white"
-                    android:textSize="26dp" />
+                    android:textSize="26sp" />
 
                 <TextView
                     android:id="@+id/tvTotalComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@id/tvBtnComment"
+                    android:layout_marginStart="8dp"
                     android:text="0"
                     android:textColor="@color/white"
-                    android:textSize="20dp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -240,20 +229,19 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/linBtnDislike"
                 android:layout_weight="1"
-                android:padding="4dp"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="4dp">
 
-
-                <TextView
-                android:textStyle="bold"
+                <ImageView
                     android:id="@+id/tvBtnShare"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="@string/fa_alt_share"
+                    android:src="@drawable/ic_share"
                     android:textColor="@color/white"
-                    android:textSize="26dp" />
+                    android:textSize="26dp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
         </LinearLayout>

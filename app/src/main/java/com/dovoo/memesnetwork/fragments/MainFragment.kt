@@ -96,7 +96,7 @@ class MainFragment : Fragment() {
                 }
             }
         })
-
+        fetchData(0)
 
         return view
     }

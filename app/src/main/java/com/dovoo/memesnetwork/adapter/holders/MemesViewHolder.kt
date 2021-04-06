@@ -40,10 +40,10 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
     var tvIconSound: TextView
     var tvTitle: TextView
     var tvLabelNoAudio: TextView
-    var tvBtnLike: TextView
+    var ivBtnLike: ImageView
     var tvTotalLike: TextView
     var tvTotalComment: TextView
-    var tvBtnShare: TextView
+    var ivBtnShare: ImageView
     var loadingBarVideo: SpinKitView
     var listener: Playable.EventListener? = null
     override fun getPlayerView(): View {
@@ -148,11 +148,11 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
         relativeLayout = itemView.findViewById(R.id.relativeLayout)
         tvTotalLike = itemView.findViewById(R.id.tvTotalLike)
         tvTotalComment = itemView.findViewById(R.id.tvTotalComment)
-        tvBtnLike = itemView.findViewById(R.id.tvBtnLike)
+        ivBtnLike = itemView.findViewById(R.id.tvBtnLike)
         loadingBarVideo = itemView.findViewById(R.id.loadingBarVideo)
         linBtnLike = itemView.findViewById(R.id.linBtnLike)
         linBtnComment = itemView.findViewById(R.id.linBtnComment)
-        tvBtnShare = itemView.findViewById(R.id.tvBtnShare)
+        ivBtnShare = itemView.findViewById(R.id.tvBtnShare)
         tvTitle = itemView.findViewById(R.id.tvTitle)
         tvCategory = itemView.findViewById(R.id.tvCategory)
         tvLabelNoAudio = itemView.findViewById(R.id.tvLabelNoAudio)
