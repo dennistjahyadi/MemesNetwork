@@ -14,8 +14,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_comment_dots" />
-                            <entry key="sourceFile" value="$USER_HOME$/Downloads/comment-dots.svg" />
+                            <entry key="outputName" value="ic_plus" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/plus.svg" />
                           </map>
                         </option>
                       </PersistentState>

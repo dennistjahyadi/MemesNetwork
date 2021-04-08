@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.dovoo.memesnetwork.DefaultActivity
@@ -35,6 +38,8 @@ class MainFragment : Fragment() {
     private lateinit var layoutManager: MyLinearLayoutManager
     private lateinit var adapter: MemesRecyclerViewAdapter
     private lateinit var selector: PressablePlayerSelector
+    private lateinit var ivBtnProfile: ImageView
+    private lateinit var linBtnSection: LinearLayout
     private val directLinkItemTestList: ArrayList<DirectLinkItemTest> = ArrayList()
     val generalViewModel: GeneralViewModel by viewModels()
 
@@ -47,6 +52,8 @@ class MainFragment : Fragment() {
 
         container = view.findViewById(R.id.player_container)
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+        linBtnSection = view.findViewById(R.id.linBtnSection)
+        ivBtnProfile = view.findViewById(R.id.ivBtnProfile)
 
         layoutManager = MyLinearLayoutManager(context)
 
@@ -96,6 +103,11 @@ class MainFragment : Fragment() {
                 }
             }
         })
+        ivBtnProfile.setOnClickListener {
+//            findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+            findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
+        }
+
         fetchData(0)
 
         return view

@@ -20,21 +20,11 @@
         android:orientation="horizontal"
         android:padding="4dp">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fa_laugh_squint"
-            android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:src="@drawable/ic_filter" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="2dp"
-            android:text="section"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
     </LinearLayout>
 
     <TextView
@@ -47,15 +37,14 @@
         android:textSize="24dp"
         app:fontFamily="@font/chlorinr" />
 
-    <TextView
-        android:id="@+id/tvBtnProfile"
+    <ImageView
+        android:id="@+id/ivBtnProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="16dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
         android:padding="4dp"
-        android:text="@string/fa_user_circle"
-        android:textColor="@color/white"
-        android:textSize="24dp" />
+        android:src="@drawable/ic_user_circle"
+        android:textColor="@color/white" />
 
 </androidx.appcompat.widget.Toolbar>
