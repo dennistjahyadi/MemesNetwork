@@ -5,17 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.dovoo.memesnetwork.R
+import com.dovoo.memesnetwork.databinding.FragmentAddMemeBinding
+import com.dovoo.memesnetwork.databinding.FragmentProfileBinding
 
 class ProfileFragment: Fragment() {
+
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_profile, container, false)
-
-        return view
+    ): View {
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        binding.linBtnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        return binding.root
     }
 }

@@ -19,6 +19,9 @@ import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager
+import com.dovoo.memesnetwork.databinding.CustomToolbarHomeBinding
+import com.dovoo.memesnetwork.databinding.FragmentAddMemeBinding
+import com.dovoo.memesnetwork.databinding.FragmentMainBinding
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
@@ -31,15 +34,13 @@ import org.json.JSONObject
 import java.util.*
 
 class MainFragment : Fragment() {
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
 
     private var section: String? = null
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var container: Container
     private lateinit var layoutManager: MyLinearLayoutManager
     private lateinit var adapter: MemesRecyclerViewAdapter
     private lateinit var selector: PressablePlayerSelector
-    private lateinit var ivBtnProfile: ImageView
-    private lateinit var linBtnSection: LinearLayout
     private val directLinkItemTestList: ArrayList<DirectLinkItemTest> = ArrayList()
     val generalViewModel: GeneralViewModel by viewModels()
 
@@ -48,18 +49,13 @@ class MainFragment : Fragment() {
         viewGroup: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_main, viewGroup, false)
-
-        container = view.findViewById(R.id.player_container)
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
-        linBtnSection = view.findViewById(R.id.linBtnSection)
-        ivBtnProfile = view.findViewById(R.id.ivBtnProfile)
+        _binding = FragmentMainBinding.inflate(inflater, viewGroup, false)
 
         layoutManager = MyLinearLayoutManager(context)
 
-        selector = PressablePlayerSelector(container)
-        container.layoutManager = layoutManager
-        container.playerSelector = selector
+        selector = PressablePlayerSelector(binding.playerContainer)
+        binding.playerContainer.layoutManager = layoutManager
+        binding.playerContainer.playerSelector = selector
 
         adapter = MemesRecyclerViewAdapter(
             requireContext(),
@@ -67,15 +63,15 @@ class MainFragment : Fragment() {
             directLinkItemTestList,
             FrameLayout(requireContext())
         )
-        container.adapter = adapter
-        container.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+        binding.playerContainer.adapter = adapter
+        binding.playerContainer.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int) {
                 fetchData(totalItemsCount)
             }
         })
-        swipeRefreshLayout.setOnRefreshListener(
+        binding.swipeRefreshLayout.setOnRefreshListener(
             OnRefreshListener {
-                swipeRefreshLayout.setVisibility(View.GONE)
+                binding.swipeRefreshLayout.setVisibility(View.GONE)
                 fetchData(0)
             }
         )
@@ -90,9 +86,9 @@ class MainFragment : Fragment() {
                             directLinkItemTestList.add(directLinkItem)
                         }
                         adapter.notifyDataSetChanged()
-                        swipeRefreshLayout.isEnabled = true
-                        swipeRefreshLayout.isRefreshing = false
-                        swipeRefreshLayout.visibility = View.VISIBLE
+                        binding.swipeRefreshLayout.isEnabled = true
+                        binding.swipeRefreshLayout.isRefreshing = false
+                        binding.swipeRefreshLayout.visibility = View.VISIBLE
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
@@ -103,14 +99,18 @@ class MainFragment : Fragment() {
                 }
             }
         })
-        ivBtnProfile.setOnClickListener {
+        binding.includeToolbar.ivBtnProfile.setOnClickListener {
 //            findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
             findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
         }
 
+        binding.fabAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_addMemeFragment)
+        }
+
         fetchData(0)
 
-        return view
+        return binding.root
     }
 
     private fun fetchData(offset: Int) {
