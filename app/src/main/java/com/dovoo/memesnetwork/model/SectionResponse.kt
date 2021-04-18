@@ -4,6 +4,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class SectionResponse(
-    var sections: ArrayList<Memes>
+    var sections: ArrayList<Section>
 ): BaseResponse() {
 }

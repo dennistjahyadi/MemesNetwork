@@ -1,5 +1,6 @@
 package com.dovoo.memesnetwork.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.dovoo.memesnetwork.DefaultActivity
@@ -48,7 +50,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         viewGroup: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, viewGroup, false)
 
         layoutManager = MyLinearLayoutManager(context)
@@ -95,7 +97,7 @@ class MainFragment : Fragment() {
 
                 }
                 Status.ERROR -> {
-                    System.out.println(it.error?.message)
+                    System.out.println("BBBBB: "+it.error?.message)
                 }
             }
         })
@@ -108,9 +110,17 @@ class MainFragment : Fragment() {
             findNavController().navigate(R.id.action_mainFragment_to_addMemeFragment)
         }
 
-        fetchData(0)
+        binding.includeToolbar.linBtnFilter.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_filterFragment)
+        }
+
+        if(directLinkItemTestList.isEmpty()) fetchData(0)
 
         return binding.root
+    }
+
+    private fun setFragmentResult(){
+
     }
 
     private fun fetchData(offset: Int) {

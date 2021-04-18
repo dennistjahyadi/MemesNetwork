@@ -1,7 +1,6 @@
 package com.dovoo.memesnetwork.adapter
 
-import android.app.Activity
-import android.content.Intent
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +9,22 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.FilterRecyclerViewAdapter.MyViewHolder
+import com.dovoo.memesnetwork.model.Section
 
 class FilterRecyclerViewAdapter(
-    private val activity: Activity,
-    private val itemList: List<Map<String, Any>>
+    private val context: Context,
+    private val itemList: List<Section>,
+    private val onClickListener: View.OnClickListener
 ) : RecyclerView.Adapter<MyViewHolder>() {
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var linBtnSection: LinearLayout
         var tvSection: TextView
+        lateinit var data: Section
 
         init {
-            linBtnSection = itemView.findViewById(R.id.linBtnSection)
+            linBtnSection = itemView.findViewById(R.id.linBtnFilter)
             tvSection = itemView.findViewById(R.id.tvSection)
+            linBtnSection.tag = this
         }
     }
 
@@ -33,18 +36,9 @@ class FilterRecyclerViewAdapter(
 
     override fun onBindViewHolder(viewHolder: MyViewHolder, i: Int) {
         val obj = itemList[i]
-        viewHolder.tvSection.text = obj["name"] as String?
-        viewHolder.linBtnSection.setOnClickListener {
-            val t: Thread = object : Thread() {
-                override fun run() {
-                    val data = Intent()
-                    data.putExtra("name", obj["name"] as String?)
-                    activity.setResult(Activity.RESULT_OK, data)
-                    activity.finish()
-                }
-            }
-            t.start()
-        }
+        viewHolder.data = obj
+        viewHolder.tvSection.text = obj.name
+        viewHolder.linBtnSection.setOnClickListener(onClickListener)
     }
 
     override fun getItemCount(): Int {

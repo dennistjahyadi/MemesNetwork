@@ -12,11 +12,10 @@
     app:title="">
 
     <LinearLayout
-        android:id="@+id/linBtnSection"
+        android:id="@+id/linBtnFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|start"
-        android:clickable="true"
+        android:layout_gravity="start"
         android:orientation="horizontal"
         android:padding="4dp">
 

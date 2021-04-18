@@ -48,7 +48,7 @@ public class SectionActivity extends AppCompatActivity {
         linBtnBack = findViewById(R.id.linBtnBack);
         loadingBar = findViewById(R.id.loadingBar);
 
-        sectionRecyclerViewAdapter = new FilterRecyclerViewAdapter(this, itemList);
+//        sectionRecyclerViewAdapter = new FilterRecyclerViewAdapter(this, itemList, sectionO);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvSection.setAdapter(sectionRecyclerViewAdapter);
         rvSection.setLayoutManager(layoutManager);

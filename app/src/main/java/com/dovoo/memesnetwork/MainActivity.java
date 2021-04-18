@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        linBtnSection = findViewById(R.id.linBtnSection);
+        linBtnSection = findViewById(R.id.linBtnFilter);
         tvBtnProfile = findViewById(R.id.tvBtnProfile);
         navigationView = findViewById(R.id.nav_view);
         loadingBar = findViewById(R.id.loadingBar);

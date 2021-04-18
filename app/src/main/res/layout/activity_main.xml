@@ -21,7 +21,7 @@
             app:title="">
 
             <LinearLayout
-                android:id="@+id/linBtnSection"
+                android:id="@+id/linBtnFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
