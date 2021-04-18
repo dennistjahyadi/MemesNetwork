@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dovoo.memesnetwork.R;
-import com.dovoo.memesnetwork.adapter.SectionRecyclerViewAdapter;
+import com.dovoo.memesnetwork.adapter.FilterRecyclerViewAdapter;
 import com.dovoo.memesnetwork.utils.AdUtils;
 import com.google.android.gms.ads.AdView;
 
@@ -23,7 +23,7 @@ import java.util.Map;
 public class SectionActivity extends AppCompatActivity {
     private RecyclerView rvSection;
     private Toolbar toolbar;
-    private SectionRecyclerViewAdapter sectionRecyclerViewAdapter;
+    private FilterRecyclerViewAdapter sectionRecyclerViewAdapter;
     private LinearLayout linBtnBack;
     private List<Map<String, Object>> itemList = new ArrayList<>();
     private AdView mAdView;
@@ -48,7 +48,7 @@ public class SectionActivity extends AppCompatActivity {
         linBtnBack = findViewById(R.id.linBtnBack);
         loadingBar = findViewById(R.id.loadingBar);
 
-        sectionRecyclerViewAdapter = new SectionRecyclerViewAdapter(this, itemList);
+        sectionRecyclerViewAdapter = new FilterRecyclerViewAdapter(this, itemList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvSection.setAdapter(sectionRecyclerViewAdapter);
         rvSection.setLayoutManager(layoutManager);
