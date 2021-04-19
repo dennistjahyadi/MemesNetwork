@@ -8,7 +8,6 @@ import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
@@ -16,6 +15,7 @@ import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager
 import com.dovoo.memesnetwork.databinding.FragmentMainBinding
 import com.dovoo.memesnetwork.model.Status
+import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
@@ -55,7 +55,8 @@ class MainFragment : Fragment() {
             FrameLayout(requireContext())
         )
         binding.playerContainer.adapter = adapter
-        binding.playerContainer.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+        binding.playerContainer.addOnScrollListener(object :
+            EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int) {
                 fetchData(totalItemsCount)
             }
@@ -84,14 +85,15 @@ class MainFragment : Fragment() {
 
                 }
                 Status.ERROR -> {
-                    println("BBBBB: "+it.error?.message)
+                    println("BBBBB: " + it.error?.message)
                 }
-                else -> {}
+                else -> {
+                }
             }
         })
         binding.includeToolbar.ivBtnProfile.setOnClickListener {
-//            findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
-            findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
+            if (GlobalFunc.isLogin(requireContext())) findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
+            else findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
         }
 
         binding.fabAdd.setOnClickListener {
@@ -102,12 +104,13 @@ class MainFragment : Fragment() {
             findNavController().navigate(R.id.action_mainFragment_to_filterFragment)
         }
 
-        if(directLinkItemTestList.isEmpty()) fetchData(0)
+        if (directLinkItemTestList.isEmpty()) fetchData(0)
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("selectedSection")?.observe(viewLifecycleOwner, {
-            selectedSection = it
-            fetchData(0)
-        })
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("selectedSection")
+            ?.observe(viewLifecycleOwner, {
+                selectedSection = it
+                fetchData(0)
+            })
 
         return binding.root
     }
