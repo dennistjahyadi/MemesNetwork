@@ -25,8 +25,8 @@ class FilterFragment : Fragment() {
 
     val sectionClickListener = View.OnClickListener {
         var data = (it.tag as FilterRecyclerViewAdapter.MyViewHolder).data
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("data", data)
-        findNavController().navigateUp()
+        findNavController().previousBackStackEntry?.savedStateHandle?.set("selectedSection", data.name)
+        findNavController().popBackStack()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

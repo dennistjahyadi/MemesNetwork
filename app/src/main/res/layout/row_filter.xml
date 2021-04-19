@@ -24,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/white"
-            android:textIsSelectable="true"
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>

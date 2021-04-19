@@ -3,7 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="backgroundMain">@color/grey900</color>
+    <color name="backgroundMain">@color/black</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="toolbar_color">#FFFFFF</color>
@@ -51,4 +51,7 @@
     <color name="green700">#388E3C</color>
     <color name="lightgreen700">#689F38</color>
     <color name="lime700">#AFB42B</color>
+
+    <color name="line_separator">@color/grey900</color>
+
 </resources>

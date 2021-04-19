@@ -68,7 +68,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             tvLabelNoAudio = view.findViewById(R.id.tvLabelNoAudio);
             playerView = view.findViewById(R.id.playerView);
             mCover = view.findViewById(R.id.cover);
-            tvIconSound = view.findViewById(R.id.tvIconSound);
+            tvIconSound = view.findViewById(R.id.ivIconSound);
             playerView.setPlayer(player);
 
         }

@@ -37,7 +37,7 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
     var linBtnComment: LinearLayout
     var mCover: ImageView
     var tvCategory: TextView
-    var tvIconSound: TextView
+    var ivIconSound: ImageView
     var tvTitle: TextView
     var tvLabelNoAudio: TextView
     var ivBtnLike: ImageView
@@ -70,10 +70,10 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
             mCover.visibility = View.GONE
             if (playerView.player != null) {
                 if (GlobalFunc.isMute) {
-                    tvIconSound.text = itemView.resources.getText(R.string.fa_volume_mute)
+                    ivIconSound.setImageResource(R.drawable.ic_volume_mute)
                     playerView.player.audioComponent!!.volume = 0f
                 } else {
-                    tvIconSound.text = itemView.resources.getText(R.string.fa_volume_up)
+                    ivIconSound.setImageResource(R.drawable.ic_volume_up)
                     playerView.player.audioComponent!!.volume = 1f
                 }
                 if (playerView.player.repeatMode != Player.REPEAT_MODE_ALL) {
@@ -157,21 +157,22 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
         tvCategory = itemView.findViewById(R.id.tvCategory)
         tvLabelNoAudio = itemView.findViewById(R.id.tvLabelNoAudio)
         mCover = itemView.findViewById(R.id.cover)
-        tvIconSound = itemView.findViewById(R.id.tvIconSound)
+        ivIconSound = itemView.findViewById(R.id.ivIconSound)
         playerView.setOnTouchListener(OnTouchListener { _, event ->
             if (playerView.player == null) {
                 return@OnTouchListener false
             }
+            playerView.performClick()
             if (event.action == MotionEvent.ACTION_UP) {
                 Handler(Looper.getMainLooper()).post {
                     if (GlobalFunc.isMute) {
                         playerView.player.audioComponent!!.volume = 1f
-                        tvIconSound.text = itemView.context.resources.getText(R.string.fa_volume_up)
+                        ivIconSound.setImageResource(R.drawable.ic_volume_up)
                         GlobalFunc.isMute = false
                     } else {
                         playerView.player.audioComponent!!.volume = 0f
-                        tvIconSound.text =
-                            itemView.context.resources.getText(R.string.fa_volume_mute)
+                        ivIconSound.setImageResource(R.drawable.ic_volume_mute)
+
                         GlobalFunc.isMute = true
                     }
                 }

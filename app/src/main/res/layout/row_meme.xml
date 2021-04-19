@@ -4,17 +4,14 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_row"
+    android:layout_marginTop="@dimen/margin_row"
     android:background="@color/backgroundMain"
-    android:orientation="vertical"
-    android:paddingTop="5dp"
-    android:paddingBottom="15dp">
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/linTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -118,16 +115,12 @@
                     android:adjustViewBounds="true" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvIconSound"
+            <ImageView
+                android:id="@+id/ivIconSound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="20dp"
-                android:text="@string/fa_volume_mute"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:layout_margin="20dp"/>
 
             <TextView
                 android:id="@+id/tvLabelNoAudio"
@@ -246,5 +239,14 @@
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        android:layout_marginVertical="@dimen/margin_row"
+        android:background="@color/line_separator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linBottom" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

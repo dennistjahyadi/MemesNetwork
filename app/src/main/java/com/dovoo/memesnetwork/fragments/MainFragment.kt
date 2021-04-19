@@ -1,45 +1,34 @@
 package com.dovoo.memesnetwork.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.dovoo.memesnetwork.DefaultActivity
-import com.dovoo.memesnetwork.MainActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager
-import com.dovoo.memesnetwork.databinding.CustomToolbarHomeBinding
-import com.dovoo.memesnetwork.databinding.FragmentAddMemeBinding
 import com.dovoo.memesnetwork.databinding.FragmentMainBinding
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.squareup.picasso.Picasso
-import im.ene.toro.widget.Container
 import im.ene.toro.widget.PressablePlayerSelector
 import org.json.JSONException
-import org.json.JSONObject
 import java.util.*
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
-    private var section: String? = null
+    private var selectedSection: String? = null
     private lateinit var layoutManager: MyLinearLayoutManager
     private lateinit var adapter: MemesRecyclerViewAdapter
     private lateinit var selector: PressablePlayerSelector
@@ -71,12 +60,10 @@ class MainFragment : Fragment() {
                 fetchData(totalItemsCount)
             }
         })
-        binding.swipeRefreshLayout.setOnRefreshListener(
-            OnRefreshListener {
-                binding.swipeRefreshLayout.setVisibility(View.GONE)
-                fetchData(0)
-            }
-        )
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.visibility = View.GONE
+            fetchData(0)
+        }
         generalViewModel.memesHome.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -97,8 +84,9 @@ class MainFragment : Fragment() {
 
                 }
                 Status.ERROR -> {
-                    System.out.println("BBBBB: "+it.error?.message)
+                    println("BBBBB: "+it.error?.message)
                 }
+                else -> {}
             }
         })
         binding.includeToolbar.ivBtnProfile.setOnClickListener {
@@ -116,11 +104,12 @@ class MainFragment : Fragment() {
 
         if(directLinkItemTestList.isEmpty()) fetchData(0)
 
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("selectedSection")?.observe(viewLifecycleOwner, {
+            selectedSection = it
+            fetchData(0)
+        })
+
         return binding.root
-    }
-
-    private fun setFragmentResult(){
-
     }
 
     private fun fetchData(offset: Int) {
@@ -128,7 +117,7 @@ class MainFragment : Fragment() {
             directLinkItemTestList.clear()
         }
         val userId = getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
-        generalViewModel.fetchMemesHome(offset, userId, section)
+        generalViewModel.fetchMemesHome(offset, userId, selectedSection)
     }
 
     override fun onDestroyView() {

@@ -24,13 +24,14 @@ class FilterRecyclerViewAdapter(
         init {
             linBtnSection = itemView.findViewById(R.id.linBtnFilter)
             tvSection = itemView.findViewById(R.id.tvSection)
-            linBtnSection.tag = this
+            itemView.tag = this
         }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MyViewHolder {
         val view =
             LayoutInflater.from(viewGroup.context).inflate(R.layout.row_filter, viewGroup, false)
+        view.setOnClickListener(onClickListener)
         return MyViewHolder(view)
     }
 
@@ -38,7 +39,6 @@ class FilterRecyclerViewAdapter(
         val obj = itemList[i]
         viewHolder.data = obj
         viewHolder.tvSection.text = obj.name
-        viewHolder.linBtnSection.setOnClickListener(onClickListener)
     }
 
     override fun getItemCount(): Int {

@@ -85,16 +85,16 @@ class MemesRecyclerViewAdapter(
         if (directLinkVideoItem.isVideo) {
             //video
             if (directLinkVideoItem.isHasAudio) {
-                viewHolder.tvIconSound.visibility = View.VISIBLE
+                viewHolder.ivIconSound.visibility = View.VISIBLE
                 viewHolder.tvLabelNoAudio.visibility = View.GONE
             } else {
                 viewHolder.tvLabelNoAudio.visibility = View.VISIBLE
-                viewHolder.tvIconSound.visibility = View.GONE
+                viewHolder.ivIconSound.visibility = View.GONE
             }
         } else {
             //photo
             viewHolder.tvLabelNoAudio.visibility = View.GONE
-            viewHolder.tvIconSound.visibility = View.GONE
+            viewHolder.ivIconSound.visibility = View.GONE
         }
         viewHolder.tvTotalLike.text = totalLike.toString()
         viewHolder.tvTotalComment.text = totalComment.toString()
