@@ -14,7 +14,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dovoo.memesnetwork.LoginActivity;
 import com.dovoo.memesnetwork.R;
 import com.dovoo.memesnetwork.adapter.CommentRecyclerViewAdapter;
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener;
@@ -70,8 +69,8 @@ public class CommentActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
                     if (!SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false)) {
-                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(i);
+//                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+//                        startActivity(i);
                     }
                 }
             }

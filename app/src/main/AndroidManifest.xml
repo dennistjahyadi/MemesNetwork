@@ -38,11 +38,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Fullscreen"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
-        <activity
             android:name=".testing.TestingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"

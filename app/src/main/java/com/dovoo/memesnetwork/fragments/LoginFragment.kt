@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.dovoo.memesnetwork.DefaultActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.databinding.FragmentLoginBinding
 import com.dovoo.memesnetwork.utils.GlobalFunc
@@ -13,17 +14,19 @@ import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.removeAllPrefs
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import org.json.JSONException
 import org.json.JSONObject
+
 
 class LoginFragment: Fragment(), View.OnClickListener {
     private val RC_SIGN_IN = 1
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private var mGoogleSignInClient: GoogleSignInClient? = null
+    lateinit var mGoogleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +35,7 @@ class LoginFragment: Fragment(), View.OnClickListener {
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GlobalFunc.mGoogleSignInClient
+        mGoogleSignInClient = (activity as DefaultActivity).mGoogleSignInClient
         binding.signInButton.setOnClickListener(this)
         return binding.root
     }

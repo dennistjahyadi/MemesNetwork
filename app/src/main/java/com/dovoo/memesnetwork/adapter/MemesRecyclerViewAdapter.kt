@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.dovoo.memesnetwork.BuildConfig
-import com.dovoo.memesnetwork.LoginActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.activities.CommentActivity
 import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
@@ -35,13 +34,12 @@ import java.io.File
 
 class MemesRecyclerViewAdapter(
     private val mContext: Context, private val selector: PressablePlayerSelector?, //
-    private val directLinkItemTestList: List<DirectLinkItemTest>, loadingBar: FrameLayout
+    private val directLinkItemTestList: List<DirectLinkItemTest>,var mLoadingBar: FrameLayout?
 ) : RecyclerView.Adapter<MemesViewHolder>() {
     var finalWidth // default phone width
             : Float
     var finalHeight: Float
     var maxHeightVideo: Float
-    private val mLoadingBar: FrameLayout
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemesViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(MemesViewHolder.LAYOUT_RES, parent, false)
@@ -130,7 +128,7 @@ class MemesRecyclerViewAdapter(
                 return@OnClickListener
             }
             viewHolder.ivBtnShare.isEnabled = false
-            mLoadingBar.visibility = View.VISIBLE
+            mLoadingBar?.visibility = View.VISIBLE
             val isVideo = directLinkVideoItem.getmDirectUrl() != null
             var theUrl: String? = directLinkVideoItem.getmCoverUrl()
             if (directLinkVideoItem.getmDirectUrl() != null) {
@@ -169,12 +167,12 @@ class MemesRecyclerViewAdapter(
                         share.putExtra(Intent.EXTRA_STREAM, uri)
                         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         mContext.startActivity(Intent.createChooser(share, "Share :"))
-                        mLoadingBar.visibility = View.GONE
+                        mLoadingBar?.visibility = View.GONE
                         viewHolder.ivBtnShare.isEnabled = true
                     }
 
                     override fun onError(request: FileLoadRequest, t: Throwable) {
-                        mLoadingBar.visibility = View.GONE
+                        mLoadingBar?.visibility = View.GONE
                         viewHolder.ivBtnShare.isEnabled = true
                         Toast.makeText(mContext, "Cannot sharing file", Toast.LENGTH_LONG).show()
                     }
@@ -199,9 +197,9 @@ class MemesRecyclerViewAdapter(
                     false
                 )
             ) {
-                val i = Intent(mContext, LoginActivity::class.java)
-                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                mContext.startActivity(i)
+//                val i = Intent(mContext, LoginActivity::class.java)
+//                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                mContext.startActivity(i)
             } else {
                 doLike(viewHolder, directLinkVideoItem)
             }
@@ -215,7 +213,7 @@ class MemesRecyclerViewAdapter(
     }
 
     private fun doLike(viewHolder: MemesViewHolder, directLinkVideoItem: DirectLinkItemTest) {
-        mLoadingBar.visibility = View.VISIBLE
+        mLoadingBar?.visibility = View.VISIBLE
         viewHolder.linBtnLike.isEnabled = false
         val userId = getPrefs(mContext).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
         val jsonObject = JSONObject()
@@ -251,7 +249,7 @@ class MemesRecyclerViewAdapter(
 //                        } catch (JSONException e) {
 //                            e.printStackTrace();
 //                        }
-//                        mLoadingBar.setVisibility(View.GONE);
+//                        mLoadingBar?.setVisibility(View.GONE);
 //
 //
 //                    }
@@ -260,7 +258,7 @@ class MemesRecyclerViewAdapter(
 //                    public void onError(ANError anError) {
 //                        // handle error
 //                        System.out.print("error");
-//                        mLoadingBar.setVisibility(View.GONE);
+//                        mLoadingBar?.setVisibility(View.GONE);
 //                        viewHolder.linBtnLike.setEnabled(true);
 //                        viewHolder.linBtnDislike.setEnabled(true);
 //                        Toast.makeText(mContext, "Fail", Toast.LENGTH_LONG).show();
@@ -269,7 +267,7 @@ class MemesRecyclerViewAdapter(
     }
 
     private fun doDislike(viewHolder: MemesViewHolder, directLinkVideoItem: DirectLinkItemTest) {
-        mLoadingBar.visibility = View.VISIBLE
+        mLoadingBar?.visibility = View.VISIBLE
         viewHolder.linBtnLike.isEnabled = false
         val userId = getPrefs(mContext).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
         val jsonObject = JSONObject()
@@ -305,14 +303,14 @@ class MemesRecyclerViewAdapter(
 //                        } catch (JSONException e) {
 //                            e.printStackTrace();
 //                        }
-//                        mLoadingBar.setVisibility(View.GONE);
+//                        mLoadingBar?.setVisibility(View.GONE);
 //                    }
 //
 //                    @Override
 //                    public void onError(ANError anError) {
 //                        // handle error
 //                        System.out.print("error");
-//                        mLoadingBar.setVisibility(View.GONE);
+//                        mLoadingBar?.setVisibility(View.GONE);
 //                        viewHolder.linBtnLike.setEnabled(true);
 //                        viewHolder.linBtnDislike.setEnabled(true);
 //                        Toast.makeText(mContext, "Fail", Toast.LENGTH_LONG).show();
@@ -326,6 +324,5 @@ class MemesRecyclerViewAdapter(
         finalHeight = mContext.resources.displayMetrics.heightPixels.toFloat()
         maxHeightVideo =
             mContext.resources.displayMetrics.heightPixels.toFloat() * 0.8f // set default maximum video size in phone
-        mLoadingBar = loadingBar
     }
 }

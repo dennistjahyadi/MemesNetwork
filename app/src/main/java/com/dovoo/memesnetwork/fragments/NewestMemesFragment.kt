@@ -98,7 +98,7 @@ class NewestMemesFragment : Fragment(), BillingUpdatesListener {
             requireContext(),
             selector,
             directLinkItemTestList,
-            (activity as MainActivity?)!!.loadingBar
+            null
         )
         container.setAdapter(adapter)
         layoutManager?.let {

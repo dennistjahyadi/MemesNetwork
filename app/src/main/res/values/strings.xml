@@ -29,4 +29,7 @@
     <string name="add_content">Add Content</string>
     <string name="filter">Filter</string>
     <string name="search">Search</string>
+    <string name="logout_msg">Do you want to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

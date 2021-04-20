@@ -151,11 +151,11 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
 
             @Override
             public void onClick(View view) {
-                if (GlobalFunc.mGoogleSignInClient != null) {
-                    doGoogleLogout();
-                } else {
-                    GlobalFunc.logout(ProfileActivity.this);
-                }
+//                if (GlobalFunc.mGoogleSignInClient != null) {
+//                    doGoogleLogout();
+//                } else {
+//                    GlobalFunc.logout(ProfileActivity.this);
+//                }
             }
         });
 
@@ -270,13 +270,13 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
     }
 
     private void doGoogleLogout() {
-        GlobalFunc.mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(Task<Void> task) {
-                        GlobalFunc.logout(ProfileActivity.this);
-                    }
-                });
+//        GlobalFunc.mGoogleSignInClient.signOut()
+//                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(Task<Void> task) {
+//                        GlobalFunc.logout(ProfileActivity.this);
+//                    }
+//                });
     }
 
     @Override
