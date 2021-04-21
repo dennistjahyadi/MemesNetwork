@@ -1,7 +1,6 @@
 package com.dovoo.memesnetwork.network
 
-import com.dovoo.memesnetwork.model.MemesResponse
-import com.dovoo.memesnetwork.model.SectionResponse
+import com.dovoo.memesnetwork.model.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -22,6 +21,9 @@ interface MemesRestService {
     ): Call<SectionResponse>
 
     @POST("v1/login")
-    fun login()
+    fun login(request: LoginRequest): Call<LoginResponse>
+
+    @POST("v1/update-username")
+    fun updateUsername(request: UpdateUsernameRequest): Call<UpdateUsernameResponse>
 
 }

@@ -1,11 +1,8 @@
 package com.dovoo.memesnetwork.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dovoo.memesnetwork.model.MemesResponse
-import com.dovoo.memesnetwork.model.Resource
-import com.dovoo.memesnetwork.model.SectionResponse
+import com.dovoo.memesnetwork.model.*
 import com.dovoo.memesnetwork.network.DefaultCallback
 import com.dovoo.memesnetwork.network.MemesRestAdapter
 
@@ -18,6 +15,10 @@ class GeneralViewModel : ViewModel() {
 
     var sections = MutableLiveData<Resource<SectionResponse>>()
 
+    var updateUsernameListener = MutableLiveData<Resource<UpdateUsernameResponse>>()
+
+    var loginListener = MutableLiveData<Resource<LoginResponse>>()
+
     fun fetchMemesHome(offset: Int, userId: Int, postSection: String?) {
         // Do an asynchronous operation to fetch users.
         val call = adapter.fetchMemes(offset, userId, postSection)
@@ -27,6 +28,18 @@ class GeneralViewModel : ViewModel() {
     fun fetchSections(offset: Int, limit: Int?, filter: String?){
         val call = adapter.fetchSections(offset, limit, filter)
         call.enqueue(DefaultCallback(sections))
+    }
+
+    fun login(email: String){
+        val loginRequest = LoginRequest(email)
+        val call = adapter.login(loginRequest)
+        call.enqueue(DefaultCallback(loginListener))
+    }
+
+    fun updateUsername(userId: Int, username: String){
+        val updateUsernameRequest = UpdateUsernameRequest(userId, username)
+        val call = adapter.updateUsername(updateUsernameRequest)
+        call.enqueue(DefaultCallback(updateUsernameListener))
     }
 
 }

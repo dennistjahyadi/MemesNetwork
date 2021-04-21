@@ -5,12 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.dovoo.memesnetwork.DefaultActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.databinding.FragmentLoginBinding
+import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.GlobalFunc
+import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.removeAllPrefs
+import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -21,12 +27,14 @@ import org.json.JSONException
 import org.json.JSONObject
 
 
-class LoginFragment: Fragment(), View.OnClickListener {
+class LoginFragment : Fragment(), View.OnClickListener {
     private val RC_SIGN_IN = 1
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     lateinit var mGoogleSignInClient: GoogleSignInClient
+
+    val generalViewModel: GeneralViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +45,7 @@ class LoginFragment: Fragment(), View.OnClickListener {
 
         mGoogleSignInClient = (activity as DefaultActivity).mGoogleSignInClient
         binding.signInButton.setOnClickListener(this)
+        loginListener()
         return binding.root
     }
 
@@ -58,13 +67,35 @@ class LoginFragment: Fragment(), View.OnClickListener {
         }
     }
 
+    private fun loginListener() {
+        generalViewModel.loginListener.observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.user?.let { user ->
+                        SharedPreferenceUtils.saveUserPrefs(
+                            requireContext(),
+                            user.username,
+                            user.id,
+                            user.email
+                        )
+                        user.username?.let { username ->
+                            Toast.makeText(requireContext(), "Welcome $username :)", Toast.LENGTH_LONG).show()
+                        } ?: run {
+                            findNavController().navigate(R.id.action_loginFragment_to_insertUsernameFragment)
+                        }
+                    }
+                }
+                Status.ERROR -> {
+                    println("bbbbb: login: " + it.error?.message)
+                }
+            }
+        })
+    }
+
     private fun syncDatabase(account: GoogleSignInAccount) {
         val email = account.email
-        val jsonObject = JSONObject()
-        try {
-            jsonObject.put("email", email)
-        } catch (e: JSONException) {
-            e.printStackTrace()
+        email?.let {
+            generalViewModel.login(email)
         }
 //        AndroidNetworking.post(BuildConfig.API_URL + "syncusers")
 //                .addJSONObjectBody(jsonObject)

@@ -54,6 +54,14 @@ object SharedPreferenceUtils {
     }
 
     @JvmStatic
+    fun saveUserPrefs(context: Context, username: String?, userId: Int, email: String){
+        setPrefs(context, PREFERENCES_USER_NAME, username);
+        setPrefs(context, PREFERENCES_USER_ID, userId);
+        setPrefs(context, PREFERENCES_USER_EMAIL, email);
+        setPrefs(context, PREFERENCES_USER_IS_LOGIN, true);
+    }
+
+    @JvmStatic
     fun removeUserPrefs(context: Context) {
         val prefsEditor = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE).edit()
         prefsEditor.remove(PREFERENCES_USER_IS_LOGIN)
