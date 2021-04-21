@@ -21,4 +21,7 @@ interface MemesRestService {
         @Query("filter") filter: String?
     ): Call<SectionResponse>
 
+    @POST("v1/login")
+    fun login()
+
 }
