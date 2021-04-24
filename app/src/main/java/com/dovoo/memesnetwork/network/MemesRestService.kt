@@ -21,9 +21,9 @@ interface MemesRestService {
     ): Call<SectionResponse>
 
     @POST("v1/login")
-    fun login(request: LoginRequest): Call<LoginResponse>
+    fun login(@Body request: LoginRequest): Call<LoginResponse>
 
     @POST("v1/update-username")
-    fun updateUsername(request: UpdateUsernameRequest): Call<UpdateUsernameResponse>
+    fun updateUsername(@Body request: UpdateUsernameRequest): Call<UpdateUsernameResponse>
 
 }

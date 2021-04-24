@@ -106,13 +106,21 @@ class MainFragment : Fragment() {
 
         if (directLinkItemTestList.isEmpty()) fetchData(0)
 
+        onResult()
+
+        return binding.root
+    }
+
+    private fun onResult(){
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("selectedSection")
             ?.observe(viewLifecycleOwner, {
                 selectedSection = it
                 fetchData(0)
             })
-
-        return binding.root
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("loginSuccess")
+            ?.observe(viewLifecycleOwner, {
+                if(it) fetchData(0)
+            })
     }
 
     private fun fetchData(offset: Int) {

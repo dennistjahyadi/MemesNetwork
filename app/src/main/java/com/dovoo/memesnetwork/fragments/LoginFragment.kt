@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.dovoo.memesnetwork.DefaultActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.databinding.FragmentLoginBinding
+import com.dovoo.memesnetwork.model.LoginResponse
+import com.dovoo.memesnetwork.model.Resource
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
@@ -36,6 +39,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     val generalViewModel: GeneralViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,17 +51,21 @@ class LoginFragment : Fragment(), View.OnClickListener {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         mGoogleSignInClient = (activity as DefaultActivity).mGoogleSignInClient
+        mGoogleSignInClient.revokeAccess()
         binding.signInButton.setOnClickListener(this)
         loginListener()
+        onResult()
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        val account = GoogleSignIn.getLastSignedInAccount(requireContext())
-        updateUI(account)
+    fun onResult(){
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("insertUsernameSuccess")
+            ?.observe(viewLifecycleOwner, {
+                if(it) {
+                    findNavController().previousBackStackEntry?.savedStateHandle?.set("loginSuccess", true)
+                    findNavController().popBackStack()
+                }
+            })
     }
 
     private fun updateUI(account: GoogleSignInAccount?) {
@@ -68,6 +79,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     private fun loginListener() {
+        generalViewModel.loginListener = MutableLiveData<Resource<LoginResponse>>()
         generalViewModel.loginListener.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -78,11 +90,15 @@ class LoginFragment : Fragment(), View.OnClickListener {
                             user.id,
                             user.email
                         )
-                        user.username?.let { username ->
-                            Toast.makeText(requireContext(), "Welcome $username :)", Toast.LENGTH_LONG).show()
-                        } ?: run {
+
+                        if(user.username.isNullOrEmpty()){
                             findNavController().navigate(R.id.action_loginFragment_to_insertUsernameFragment)
+                        }else{
+                            Toast.makeText(requireContext(), "Welcome ${user.username} :)", Toast.LENGTH_LONG).show()
+                            findNavController().previousBackStackEntry?.savedStateHandle?.set("loginSuccess", true)
+                            findNavController().popBackStack()
                         }
+
                     }
                 }
                 Status.ERROR -> {

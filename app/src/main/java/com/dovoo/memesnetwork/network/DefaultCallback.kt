@@ -16,8 +16,14 @@ class DefaultCallback<T: BaseResponse>(protected val data: MutableLiveData<Resou
                 return
             }
             if (response.isSuccessful) {
+
                 val resp = response.body()
-                data.postValue(Resource.success(resp))
+                if(resp?.status=="OK"){
+                    data.postValue(Resource.success(resp))
+                }else{
+                    val error = ErrorResponse(resp?.message)
+                    data.postValue(Resource.error(error))
+                }
 
             } else {
                 val error = ErrorResponse(response.errorBody().toString())

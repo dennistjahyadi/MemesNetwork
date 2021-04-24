@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,92 +12,100 @@
         android:scaleType="centerCrop"
         android:src="@color/grey800" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvSubTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Pick an username"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/mainLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/mainLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginTop="@dimen/dimen_64">
+
+            <TextView
+                android:id="@+id/tvSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Pick an username"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/mainLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
+                android:id="@+id/mainLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/tvErrors"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text=""
-                    android:textColor="@color/red500"
-                    android:textSize="12sp" />
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:visibility="visible">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilUsername"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:theme="@style/TextLabel">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etUsername"
+                    <TextView
+                        android:id="@+id/tvErrors"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Username"
-                        android:inputType="textPersonName"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font_medium2" />
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textColor="@color/red500"
+                        android:textSize="12sp" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:theme="@style/TextLabel">
 
-                <Button
-                    android:id="@+id/btnOk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/btn_enabled"
-                    android:clickable="true"
-                    android:enabled="true"
-                    android:gravity="center"
-                    android:layout_gravity="center_horizontal"
-                    android:padding="12dp"
-                    android:text="OK"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/font_medium2"
-                    android:textStyle="bold" />
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etUsername"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Username"
+                            android:inputType="textPersonName"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/font_medium2" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/btnOk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/btn_enabled"
+                        android:clickable="true"
+                        android:enabled="true"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="OK"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/font_medium2"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <include
+        layout="@layout/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/progress_bar" />
-</FrameLayout>
+        android:layout_height="match_parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.databinding.FragmentInsertUsernameBinding
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
@@ -25,6 +28,10 @@ class InsertUsernameFragment : Fragment() {
     ): View? {
         _binding = FragmentInsertUsernameBinding.inflate(inflater, container, false)
         updateUsernameListener()
+
+        binding.btnOk.setOnClickListener {
+            updateUsername()
+        }
         return binding.root
     }
 
@@ -32,10 +39,13 @@ class InsertUsernameFragment : Fragment() {
         generalViewModel.updateUsernameListener.observe(viewLifecycleOwner, {
             when(it.status){
                 Status.SUCCESS -> {
-
+                    SharedPreferenceUtils.insertUsernamePrefs(requireContext(), it.data?.user?.username)
+                    Toast.makeText(requireContext(), "Welcome ${it.data?.user?.username} :)", Toast.LENGTH_LONG).show()
+                    findNavController().getBackStackEntry(R.id.mainFragment).savedStateHandle.set("loginSuccess", true)
+                    findNavController().popBackStack(R.id.mainFragment, false)
                 }
                 Status.ERROR -> {
-
+                    Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
                 }
             }
         })
@@ -47,6 +57,5 @@ class InsertUsernameFragment : Fragment() {
             -1
         )
         generalViewModel.updateUsername(userId, binding.etUsername.text.toString())
-
     }
 }

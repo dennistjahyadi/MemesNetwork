@@ -26,13 +26,22 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        checkUsername()
         binding.linBtnBack.setOnClickListener {
             findNavController().popBackStack()
         }
         binding.tvBtnLogout.setOnClickListener {
             doGoogleLogout()
         }
+
         return binding.root
+    }
+
+    private fun checkUsername(){
+        val username = SharedPreferenceUtils.getPrefs(requireContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_NAME, null)
+        if(username.isNullOrEmpty()){
+            findNavController().navigate(R.id.action_profileFragment_to_insertUsernameFragment)
+        }
     }
 
     private fun doGoogleLogout() {

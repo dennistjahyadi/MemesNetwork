@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class UpdateUsernameRequest(
-    var userId: Int,
+    var user_id: Int,
     var username: String
 ):Parcelable {
 }
