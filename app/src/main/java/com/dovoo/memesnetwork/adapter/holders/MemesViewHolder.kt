@@ -46,6 +46,7 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
     var ivBtnShare: ImageView
     var loadingBarVideo: SpinKitView
     var listener: Playable.EventListener? = null
+    lateinit var data: DirectLinkItemTest
     override fun getPlayerView(): View {
         return playerView
     }

@@ -42,4 +42,12 @@ class GeneralViewModel : ViewModel() {
         call.enqueue(DefaultCallback(updateUsernameListener))
     }
 
+    fun insertLike(memeId: Int, userId: Int, liked: Int): MutableLiveData<Resource<InsertLikeResponse>>{
+        val insertLikeRequest = InsertLikeRequest(memeId, userId, liked)
+        val call = adapter.insertLike(insertLikeRequest)
+        var insertLikeListener = MutableLiveData<Resource<InsertLikeResponse>>()
+        call.enqueue(DefaultCallback(insertLikeListener))
+        return insertLikeListener
+    }
+
 }

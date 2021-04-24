@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter
+import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager
@@ -34,6 +36,36 @@ class MainFragment : Fragment() {
     private lateinit var selector: PressablePlayerSelector
     private val directLinkItemTestList: ArrayList<DirectLinkItemTest> = ArrayList()
     val generalViewModel: GeneralViewModel by viewModels()
+
+    val likeOnClickListener = View.OnClickListener {
+        val memesViewHolder = it.tag as MemesViewHolder
+        if (!getPrefs(requireContext()).getBoolean(
+                SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
+                false
+            )
+        ) {
+//                val i = Intent(mContext, LoginActivity::class.java)
+//                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                mContext.startActivity(i)
+        } else {
+            val isLiked = memesViewHolder.data.data!!["is_liked"] as Int
+            doLike(memesViewHolder.data.id, isLiked, memesViewHolder.ivBtnLike)
+        }
+    }
+
+    private fun doLike(memeId: Int, liked: Int, ivLike: ImageView){
+        val userId = getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
+        generalViewModel.insertLike(memeId, userId, liked).observe(viewLifecycleOwner, {
+            when(it.status){
+                Status.SUCCESS -> {
+
+                }
+                Status.ERROR -> {
+
+                }
+            }
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

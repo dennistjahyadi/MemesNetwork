@@ -33,8 +33,11 @@ import org.json.JSONObject
 import java.io.File
 
 class MemesRecyclerViewAdapter(
-    private val mContext: Context, private val selector: PressablePlayerSelector?, //
-    private val directLinkItemTestList: List<DirectLinkItemTest>,var mLoadingBar: FrameLayout?
+    private val mContext: Context,
+    private val selector: PressablePlayerSelector?, //
+    private val directLinkItemTestList: List<DirectLinkItemTest>,
+    var mLoadingBar: FrameLayout?,
+    val likeOnClickListener: View.OnClickListener
 ) : RecyclerView.Adapter<MemesViewHolder>() {
     var finalWidth // default phone width
             : Float
@@ -52,6 +55,7 @@ class MemesRecyclerViewAdapter(
 
         // public static BaseVideoItem currentVideoItem;
         val directLinkVideoItem = directLinkItemTestList[position]
+        viewHolder.data = directLinkVideoItem
         if (directLinkVideoItem.getmHeight() > directLinkVideoItem.getmWidth()) {
             // if video is potrait
             val ratio = directLinkVideoItem.getmHeight().toFloat() / directLinkVideoItem.getmWidth()
@@ -191,6 +195,7 @@ class MemesRecyclerViewAdapter(
             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             mContext.startActivity(i)
         }
+        viewHolder.linBtnLike.setOnClickListener(likeOnClickListener)
         viewHolder.linBtnLike.setOnClickListener {
             if (!getPrefs(mContext).getBoolean(
                     SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
