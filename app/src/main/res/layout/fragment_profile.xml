@@ -64,11 +64,18 @@
                 android:layout_height="96dp"
                 android:layout_marginTop="80dp"
                 android:src="@drawable/funny_user2"
-                app:civ_border_color="@color/white"
+                app:civ_border_color="@color/black"
                 app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="@+id/toolbar"
                 app:layout_constraintStart_toStartOf="@+id/toolbar"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_edit"
+                ads:layout_constraintBottom_toBottomOf="@id/ivProfile"
+                ads:layout_constraintRight_toRightOf="@id/ivProfile" />
 
             <TextView
                 android:id="@+id/tvUsername"
@@ -106,22 +113,6 @@
                         android:text="Likes"
                         android:textColor="@color/white" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="4dp"
-                    android:layout_weight="0.5"
-                    android:background="@color/backgroundMain">
-
-                    <TextView
-                        android:id="@+id/tvBtnDislike"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="Dislikes"
-                        android:textColor="@color/white" />
                 </LinearLayout>
 
             </LinearLayout>
