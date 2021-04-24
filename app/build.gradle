@@ -107,6 +107,11 @@ dependencies {
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
 
+    //firebase storage
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

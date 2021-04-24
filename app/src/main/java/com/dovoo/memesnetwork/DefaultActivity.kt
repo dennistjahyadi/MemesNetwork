@@ -14,14 +14,20 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 
-class DefaultActivity: AppCompatActivity() {
+class DefaultActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private val ACTIVITY_RESULT_SECTION = 2
+    lateinit var storage: FirebaseStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_default)
+        storage = Firebase.storage
+
         if (ContextCompat.checkSelfPermission(
                 applicationContext,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE

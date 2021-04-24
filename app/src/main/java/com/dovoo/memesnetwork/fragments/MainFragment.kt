@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -44,24 +45,60 @@ class MainFragment : Fragment() {
                 false
             )
         ) {
-//                val i = Intent(mContext, LoginActivity::class.java)
-//                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                mContext.startActivity(i)
+            findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
         } else {
-            val isLiked = memesViewHolder.data.data!!["is_liked"] as Int
-            doLike(memesViewHolder.data.id, isLiked, memesViewHolder.ivBtnLike)
+            doLike(
+                memesViewHolder.data.id,
+                memesViewHolder.data,
+                memesViewHolder.ivBtnLike,
+                memesViewHolder.tvTotalLike
+            )
         }
     }
 
-    private fun doLike(memeId: Int, liked: Int, ivLike: ImageView){
-        val userId = getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
-        generalViewModel.insertLike(memeId, userId, liked).observe(viewLifecycleOwner, {
-            when(it.status){
+    private fun doLike(
+        memeId: Int,
+        data: DirectLinkItemTest,
+        ivLike: ImageView,
+        tvTotalLike: TextView
+    ) {
+        val userId =
+            getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
+        var isLiked = data.data!!["is_liked"] as Int
+        val mutableData = data.data!!.toMutableMap()
+
+        if (isLiked == 1) {
+            isLiked = 0
+            ivLike.setImageResource(R.drawable.ic_thumbs_up)
+
+        } else {
+            isLiked = 1
+            ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
+        }
+        ivLike.isEnabled = false
+        mutableData.put("is_liked", isLiked)
+        val totLike = mutableData["total_like"] as String
+        mutableData.put("total_like", (totLike.toInt() + 1).toString())
+        tvTotalLike.text = mutableData["total_like"] as String
+
+        generalViewModel.insertLike(memeId, userId, isLiked).observe(viewLifecycleOwner, {
+            when (it.status) {
                 Status.SUCCESS -> {
+                    ivLike.isEnabled = true
 
                 }
                 Status.ERROR -> {
-
+                    ivLike.isEnabled = true
+                    if (isLiked == 1) {
+                        ivLike.setImageResource(R.drawable.ic_thumbs_up)
+                        mutableData.put("is_liked", 0)
+                    } else {
+                        ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
+                        mutableData.put("is_liked", 1)
+                    }
+                    val totLike2 = mutableData["total_like"] as String
+                    mutableData.put("total_like", (totLike2.toInt() - 1).toString())
+                    tvTotalLike.text = mutableData["total_like"] as String
                 }
             }
         })
@@ -84,7 +121,8 @@ class MainFragment : Fragment() {
             requireContext(),
             selector,
             directLinkItemTestList,
-            FrameLayout(requireContext())
+            FrameLayout(requireContext()),
+            likeOnClickListener
         )
         binding.playerContainer.adapter = adapter
         binding.playerContainer.addOnScrollListener(object :
@@ -143,7 +181,7 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    private fun onResult(){
+    private fun onResult() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("selectedSection")
             ?.observe(viewLifecycleOwner, {
                 selectedSection = it
@@ -151,7 +189,7 @@ class MainFragment : Fragment() {
             })
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("loginSuccess")
             ?.observe(viewLifecycleOwner, {
-                if(it) fetchData(0)
+                if (it) fetchData(0)
             })
     }
 

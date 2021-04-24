@@ -32,4 +32,6 @@
     <string name="logout_msg">Do you want to logout?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
 </resources>
