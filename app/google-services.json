@@ -1,0 +1,41 @@
+{
+  "project_info": {
+    "project_number": "1016402780199",
+    "firebase_url": "https://memes-network-1554020980788.firebaseio.com",
+    "project_id": "memes-network-1554020980788",
+    "storage_bucket": "memes-network-1554020980788.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016402780199:android:ac9b982dd40acbe1",
+        "android_client_info": {
+          "package_name": "com.dovoo.memesnetwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016402780199-26o0trprdjeff4c21ss39pticq1qshpk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMqfcKsRRSb-ewVczMLzZYHbEgGr2jpnU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016402780199-26o0trprdjeff4c21ss39pticq1qshpk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-4908922088432819~3422409226"
+    }
+  ],
+  "configuration_version": "1"
+}
