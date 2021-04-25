@@ -94,12 +94,12 @@ class NewestMemesFragment : Fragment(), BillingUpdatesListener {
         container.setLayoutManager(layoutManager)
         selector = PressablePlayerSelector(container)
         container.setPlayerSelector(selector)
-        adapter = MemesRecyclerViewAdapter(
-            requireContext(),
-            selector,
-            directLinkItemTestList,
-            null
-        )
+//        adapter = MemesRecyclerViewAdapter(
+//            requireContext(),
+//            selector,
+//            directLinkItemTestList,
+//            null
+//        )
         container.setAdapter(adapter)
         layoutManager?.let {
             container.addOnScrollListener(object : EndlessRecyclerViewScrollListener(it) {

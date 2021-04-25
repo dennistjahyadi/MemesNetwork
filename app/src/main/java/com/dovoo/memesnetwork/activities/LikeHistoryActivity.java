@@ -64,7 +64,7 @@ public class LikeHistoryActivity extends AppCompatActivity {
         selector = new PressablePlayerSelector(container);
         container.setPlayerSelector(selector);
 
-        adapter = new MemesRecyclerViewAdapter(getApplicationContext(), selector, directLinkItemTestList, loadingBar);
+//        adapter = new MemesRecyclerViewAdapter(getApplicationContext(), selector, directLinkItemTestList, loadingBar);
         container.setAdapter(adapter);
         container.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
