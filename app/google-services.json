@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1016402780199-vjncq1jg4ncv98c900odcrl6u7fl8ab9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dovoo.memesnetwork",
+            "certificate_hash": "cbfea4f21248326ff95dc3c105f154631a986189"
+          }
+        },
+        {
           "client_id": "1016402780199-26o0trprdjeff4c21ss39pticq1qshpk.apps.googleusercontent.com",
           "client_type": 3
         }

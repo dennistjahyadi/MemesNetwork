@@ -5,20 +5,25 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.dovoo.memesnetwork.DefaultActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.databinding.FragmentProfileBinding
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
+import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -29,6 +34,7 @@ class ProfileFragment : Fragment() {
     private val RESULT_LOAD_IMG = 0X123
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    val generalViewModel: GeneralViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +59,10 @@ class ProfileFragment : Fragment() {
     }
 
     private fun checkUsername(){
-        val username = SharedPreferenceUtils.getPrefs(requireContext()).getString(SharedPreferenceUtils.PREFERENCES_USER_NAME, null)
+        val username = SharedPreferenceUtils.getPrefs(requireContext()).getString(
+            SharedPreferenceUtils.PREFERENCES_USER_NAME,
+            null
+        )
         if(username.isNullOrEmpty()){
             findNavController().navigate(R.id.action_profileFragment_to_insertUsernameFragment)
         }
@@ -86,23 +95,39 @@ class ProfileFragment : Fragment() {
         // Create a storage reference from our app
         val storageRef = (activity as DefaultActivity).storage.reference
 
-        val profilePicRef = storageRef.child("profilepicture/"+ UUID.randomUUID())
+        val profilePicRef = storageRef.child("profilepicture/" + UUID.randomUUID())
 
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos)
 
         var uploadTask = profilePicRef.putBytes(baos.toByteArray())
-        uploadTask.addOnFailureListener {
 
-        }.addOnSuccessListener { taskSnapshot ->
-
+        uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
+                }
+            }
+            profilePicRef.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downloadUri = task.result
+                updateProfilePicDb(downloadUri.toString())
+            } else {
+                // Handle failures
+                // ...
+            }
         }
+    }
+
+    private fun updateProfilePicDb(url:String){
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==RESULT_LOAD_IMG && resultCode == Activity.RESULT_OK){
+
             val myOptions = RequestOptions()
                 .fitCenter() // or centerCrop
                 .override(800, 800)
@@ -111,10 +136,21 @@ class ProfileFragment : Fragment() {
                 .asBitmap()
                 .apply(myOptions)
                 .load(data?.data)
-                .into(binding.ivProfile)
-            val bitmap = (binding.ivProfile.drawable as BitmapDrawable).bitmap
-            binding.ivProfile.setImageResource(R.drawable.funny_user2)
-            uploadProfilePic(bitmap)
+                .into(object: CustomTarget<Bitmap>(){
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap>?
+                    ) {
+                        uploadProfilePic(resource)
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+
+
         }
     }
 }

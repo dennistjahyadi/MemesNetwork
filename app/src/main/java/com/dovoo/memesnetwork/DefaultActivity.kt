@@ -1,16 +1,12 @@
 package com.dovoo.memesnetwork
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -19,8 +15,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
-import java.io.ByteArrayOutputStream
 import java.util.*
+
 
 class DefaultActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -32,6 +28,7 @@ class DefaultActivity : AppCompatActivity() {
         setContentView(R.layout.activity_default)
         FirebaseApp.initializeApp(this)
         storage = Firebase.storage("gs://memes-network-1554020980788.appspot.com")
+//        storage = FirebaseStorage.getInstance()
 
         if (ContextCompat.checkSelfPermission(
                 applicationContext,
@@ -55,13 +52,11 @@ class DefaultActivity : AppCompatActivity() {
         MobileAds.initialize(this, resources.getString(R.string.admob_app_id))
     }
 
-
-
     fun uploadProfilePicUri(uri: Uri){
         // Create a storage reference from our app
         val storageRef = storage.reference
 
-        val profilePicRef = storageRef.child("profilepicture/"+UUID.randomUUID())
+        val profilePicRef = storageRef.child("profilepicture/" + UUID.randomUUID())
 
         var uploadTask = profilePicRef.putFile(uri)
         uploadTask.addOnFailureListener {
