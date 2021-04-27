@@ -84,11 +84,13 @@ class LoginFragment : Fragment(), View.OnClickListener {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.user?.let { user ->
+                        generalViewModel.currentUser = user
                         SharedPreferenceUtils.saveUserPrefs(
                             requireContext(),
                             user.username,
                             user.id,
-                            user.email
+                            user.email,
+                            user.photo_url
                         )
 
                         if(user.username.isNullOrEmpty()){

@@ -34,4 +34,11 @@
     <string name="no">No</string>
     <string name="following">Following</string>
     <string name="followers">Followers</string>
+    <string name="uploading">Uploading..</string>
+    <string name="edit">Edit</string>
+    <string name="likes">Likes</string>
+    <string name="comments">Comments</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="help_the_developer_remove_ads">Help the Developer (Remove Ads)</string>
+    <string name="logout">Logout</string>
 </resources>

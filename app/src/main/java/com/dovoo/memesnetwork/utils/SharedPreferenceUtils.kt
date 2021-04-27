@@ -54,11 +54,12 @@ object SharedPreferenceUtils {
     }
 
     @JvmStatic
-    fun saveUserPrefs(context: Context, username: String?, userId: Int, email: String){
-        setPrefs(context, PREFERENCES_USER_NAME, username);
-        setPrefs(context, PREFERENCES_USER_ID, userId);
-        setPrefs(context, PREFERENCES_USER_EMAIL, email);
-        setPrefs(context, PREFERENCES_USER_IS_LOGIN, true);
+    fun saveUserPrefs(context: Context, username: String?, userId: Int, email: String, photoUrl: String?){
+        setPrefs(context, PREFERENCES_USER_NAME, username)
+        setPrefs(context, PREFERENCES_USER_ID, userId)
+        setPrefs(context, PREFERENCES_USER_EMAIL, email)
+        setPrefs(context, PREFERENCES_USER_PHOTO_URL, photoUrl)
+        setPrefs(context, PREFERENCES_USER_IS_LOGIN, true)
     }
 
     @JvmStatic

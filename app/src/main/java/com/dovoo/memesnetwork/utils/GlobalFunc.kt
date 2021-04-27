@@ -26,4 +26,10 @@ object GlobalFunc {
 //        )
         return GoogleSignIn.getLastSignedInAccount(context) != null
     }
+
+    fun getLoggedInUserId(context: Context): Int{
+        val userId = SharedPreferenceUtils.getPrefs(context)
+            .getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
+        return userId
+    }
 }

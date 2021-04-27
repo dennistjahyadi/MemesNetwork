@@ -9,6 +9,8 @@ import com.dovoo.memesnetwork.network.MemesRestAdapter
 
 class GeneralViewModel : ViewModel() {
 
+    var currentUser: User? = null
+
     private val adapter = MemesRestAdapter.apiRestService
 
     var memesHome = MutableLiveData<Resource<MemesResponse>>()
@@ -45,9 +47,17 @@ class GeneralViewModel : ViewModel() {
     fun insertLike(memeId: Int, userId: Int, liked: Int): MutableLiveData<Resource<InsertLikeResponse>>{
         val insertLikeRequest = InsertLikeRequest(memeId, userId, liked)
         val call = adapter.insertLike(insertLikeRequest)
-        var insertLikeListener = MutableLiveData<Resource<InsertLikeResponse>>()
+        val insertLikeListener = MutableLiveData<Resource<InsertLikeResponse>>()
         call.enqueue(DefaultCallback(insertLikeListener))
         return insertLikeListener
+    }
+
+    fun updateProfilePic(userId: Int, url: String): MutableLiveData<Resource<UpdateProfilePicResponse>>{
+        val updateProfilePicRequest = UpdateProfilePicRequest(userId, url)
+        val call = adapter.updateProfilePic(updateProfilePicRequest)
+        val updateProfilePicListener = MutableLiveData<Resource<UpdateProfilePicResponse>>()
+        call.enqueue(DefaultCallback(updateProfilePicListener))
+        return updateProfilePicListener
     }
 
 }

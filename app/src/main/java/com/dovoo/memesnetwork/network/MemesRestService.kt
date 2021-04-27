@@ -26,6 +26,10 @@ interface MemesRestService {
     @POST("v1/update-username")
     fun updateUsername(@Body request: UpdateUsernameRequest): Call<UpdateUsernameResponse>
 
+
+    @POST("v1/update-profile-pic")
+    fun updateProfilePic(@Body request: UpdateProfilePicRequest): Call<UpdateProfilePicResponse>
+
     @POST("v1/insert-like")
     fun insertLike(@Body request: InsertLikeRequest): Call<InsertLikeResponse>
 

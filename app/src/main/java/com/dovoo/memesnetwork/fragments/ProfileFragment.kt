@@ -4,9 +4,7 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,11 +20,11 @@ import com.bumptech.glide.request.transition.Transition
 import com.dovoo.memesnetwork.DefaultActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.databinding.FragmentProfileBinding
+import com.dovoo.memesnetwork.model.Status
+import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
-import com.google.android.gms.tasks.OnCompleteListener
 import java.io.ByteArrayOutputStream
-import java.util.*
 
 
 class ProfileFragment : Fragment() {
@@ -54,28 +52,36 @@ class ProfileFragment : Fragment() {
             photoPickerIntent.type = "image/*"
             startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG)
         }
+        val photoUrl = SharedPreferenceUtils.getPrefs(requireContext()).getString(
+            SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL,
+            null
+        )
+
+        Glide.with(requireContext())
+            .load(photoUrl)
+            .into(binding.ivProfile)
+
 
         return binding.root
     }
 
-    private fun checkUsername(){
+    private fun checkUsername() {
         val username = SharedPreferenceUtils.getPrefs(requireContext()).getString(
             SharedPreferenceUtils.PREFERENCES_USER_NAME,
             null
         )
-        if(username.isNullOrEmpty()){
+        if (username.isNullOrEmpty()) {
             findNavController().navigate(R.id.action_profileFragment_to_insertUsernameFragment)
-        }
+        } else binding.tvUsername.text = username
     }
 
     private fun doGoogleLogout() {
-
         (activity as DefaultActivity).mGoogleSignInClient.signOut()
-            .addOnCompleteListener(activity as DefaultActivity, OnCompleteListener<Void?> {
+            .addOnCompleteListener(activity as DefaultActivity) {
                 if (it.isComplete) {
                     showDialogLogout()
                 }
-            })
+            }
     }
 
     fun showDialogLogout() {
@@ -91,11 +97,11 @@ class ProfileFragment : Fragment() {
         builder.show()
     }
 
-    fun uploadProfilePic(bitmap: Bitmap){
+    fun uploadProfilePic(bitmap: Bitmap) {
         // Create a storage reference from our app
         val storageRef = (activity as DefaultActivity).storage.reference
-
-        val profilePicRef = storageRef.child("profilepicture/" + UUID.randomUUID())
+        val userId = GlobalFunc.getLoggedInUserId(requireContext())
+        val profilePicRef = storageRef.child("profilepicture/${userId}")
 
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos)
@@ -107,6 +113,7 @@ class ProfileFragment : Fragment() {
                 task.exception?.let {
                     throw it
                 }
+                showLoadingUpload(false)
             }
             profilePicRef.downloadUrl
         }.addOnCompleteListener { task ->
@@ -114,20 +121,42 @@ class ProfileFragment : Fragment() {
                 val downloadUri = task.result
                 updateProfilePicDb(downloadUri.toString())
             } else {
-                // Handle failures
-                // ...
+                showLoadingUpload(false)
             }
         }
     }
 
-    private fun updateProfilePicDb(url:String){
+    private fun updateProfilePicDb(url: String) {
+        generalViewModel.updateProfilePic(GlobalFunc.getLoggedInUserId(requireContext()), url)
+            .observe(viewLifecycleOwner, {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        SharedPreferenceUtils.setPrefs(
+                            requireContext(),
+                            SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL,
+                            it.data?.user?.photo_url
+                        )
 
+                        Glide.with(requireContext())
+                            .load(it.data?.user?.photo_url)
+                            .into(binding.ivProfile)
+                        showLoadingUpload(false)
+                    }
+                    Status.ERROR -> {
+                        showLoadingUpload(false)
+                    }
+                }
+            })
+    }
+
+    private fun showLoadingUpload(show: Boolean) {
+        binding.loadingUpload.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==RESULT_LOAD_IMG && resultCode == Activity.RESULT_OK){
-
+        if (requestCode == RESULT_LOAD_IMG && resultCode == Activity.RESULT_OK) {
+            showLoadingUpload(true)
             val myOptions = RequestOptions()
                 .fitCenter() // or centerCrop
                 .override(800, 800)
@@ -136,7 +165,7 @@ class ProfileFragment : Fragment() {
                 .asBitmap()
                 .apply(myOptions)
                 .load(data?.data)
-                .into(object: CustomTarget<Bitmap>(){
+                .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(
                         resource: Bitmap,
                         transition: Transition<in Bitmap>?
@@ -145,7 +174,7 @@ class ProfileFragment : Fragment() {
                     }
 
                     override fun onLoadCleared(placeholder: Drawable?) {
-                        TODO("Not yet implemented")
+
                     }
 
                 })
