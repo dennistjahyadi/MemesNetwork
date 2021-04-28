@@ -130,9 +130,11 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        ads:layout_constraintTop_toBottomOf="@id/separator1" />
+        ads:layout_constraintTop_toBottomOf="@id/separator1"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/grey700" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

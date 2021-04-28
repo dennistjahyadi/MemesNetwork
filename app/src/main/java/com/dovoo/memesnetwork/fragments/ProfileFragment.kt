@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
@@ -24,6 +25,7 @@ import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import java.io.ByteArrayOutputStream
 
 
@@ -33,6 +35,20 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     val generalViewModel: GeneralViewModel by viewModels()
+    val listFragment: ArrayList<Fragment> = ArrayList()
+    private lateinit var profileViewPagerAdapter: ProfileViewPagerAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initFragments()
+        profileViewPagerAdapter = ProfileViewPagerAdapter(this, listFragment)
+    }
+
+    private fun initFragments() {
+        listFragment.add(MyMemesFragment())
+        listFragment.add(LikedMemesFragment())
+        listFragment.add(MyCommentsFragment())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +57,17 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         checkUsername()
+
+        binding.viewPager.adapter = profileViewPagerAdapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Memes"
+                1 -> tab.text = "Liked"
+                2 -> tab.text = "Comments"
+                else -> tab.text = "unknown"
+            }
+        }.attach()
+
         binding.linBtnBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -56,10 +83,10 @@ class ProfileFragment : Fragment() {
             SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL,
             null
         )
-
         Glide.with(requireContext())
             .load(photoUrl)
             .into(binding.ivProfile)
+
 
 
         return binding.root
@@ -182,4 +209,16 @@ class ProfileFragment : Fragment() {
 
         }
     }
+
+    class ProfileViewPagerAdapter(fragment: Fragment, val listFragment: ArrayList<Fragment>) :
+        FragmentStateAdapter(fragment) {
+
+        override fun getItemCount(): Int = listFragment.size
+
+        override fun createFragment(position: Int): Fragment {
+            return listFragment[position]
+        }
+
+    }
+
 }

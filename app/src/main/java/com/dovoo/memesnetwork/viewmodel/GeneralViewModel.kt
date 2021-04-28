@@ -15,6 +15,8 @@ class GeneralViewModel : ViewModel() {
 
     var memesHome = MutableLiveData<Resource<MemesResponse>>()
 
+    var likedMemes = MutableLiveData<Resource<MemesResponse>>()
+
     var sections = MutableLiveData<Resource<SectionResponse>>()
 
     var updateUsernameListener = MutableLiveData<Resource<UpdateUsernameResponse>>()
@@ -25,6 +27,11 @@ class GeneralViewModel : ViewModel() {
         // Do an asynchronous operation to fetch users.
         val call = adapter.fetchMemes(offset, userId, postSection)
         call.enqueue(DefaultCallback(memesHome))
+    }
+
+    fun fetchLikedMemes(offset: Int, userId: Int){
+        val call = adapter.fetchLikedMemes(offset, userId)
+        call.enqueue(DefaultCallback(likedMemes))
     }
 
     fun fetchSections(offset: Int, limit: Int?, filter: String?){
