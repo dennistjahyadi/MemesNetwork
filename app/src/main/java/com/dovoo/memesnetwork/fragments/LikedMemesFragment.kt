@@ -1,82 +1,65 @@
 package com.dovoo.memesnetwork.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.R
-import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter
-import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
-import com.dovoo.memesnetwork.components.MyLinearLayoutManager
 import com.dovoo.memesnetwork.databinding.FragmentLikedMemesBinding
+import com.dovoo.memesnetwork.model.Memes
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.squareup.picasso.Picasso
-import im.ene.toro.widget.PressablePlayerSelector
 import org.json.JSONException
-import java.util.ArrayList
+import java.util.*
 
 class LikedMemesFragment : Fragment() {
     private var _binding: FragmentLikedMemesBinding? = null
     private val binding get() = _binding!!
     val generalViewModel: GeneralViewModel by viewModels()
-    private val directLinkItemTestList: ArrayList<DirectLinkItemTest> = ArrayList()
-    private lateinit var adapter: MemesRecyclerViewAdapter
-    private lateinit var layoutManager: MyLinearLayoutManager
-    private lateinit var selector: PressablePlayerSelector
+    private val memesList: ArrayList<DirectLinkItemTest> = ArrayList()
+    lateinit var adapter: LikedMemesAdapter
 
-    val likeOnClickListener = View.OnClickListener {
-        val memesViewHolder = it.tag as MemesViewHolder
-        if (!SharedPreferenceUtils.getPrefs(requireContext()).getBoolean(
-                SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
-                false
-            )
-        ) {
-            findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
-        } else {
-            doLike(
-                memesViewHolder.data.id,
-                memesViewHolder.data,
-                memesViewHolder.ivBtnLike,
-                memesViewHolder.tvTotalLike
-            )
-        }
+    val memesOnClickListener = View.OnClickListener {
+        val memesViewHolder = it.tag as LikedMemesAdapter.LikedMemesViewHolder
+
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        adapter = LikedMemesAdapter(requireContext(), memesList, memesOnClickListener)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLikedMemesBinding.inflate(inflater, container, false)
+        val layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
 
-        layoutManager = MyLinearLayoutManager(context)
-
-        selector = PressablePlayerSelector(binding.playerContainer)
-        binding.playerContainer.layoutManager = layoutManager
-        binding.playerContainer.playerSelector = selector
-        adapter = MemesRecyclerViewAdapter(
-            requireContext(),
-            selector,
-            directLinkItemTestList,
-            FrameLayout(requireContext()),
-            likeOnClickListener
-        )
-        binding.playerContainer.adapter = adapter
-        binding.playerContainer.addOnScrollListener(object :
-            EndlessRecyclerViewScrollListener(layoutManager) {
+        val endlessSrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int) {
                 fetchData(totalItemsCount)
             }
-        })
+        }
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.removeOnScrollListener(endlessSrollListener)
+        binding.recyclerView.addOnScrollListener(endlessSrollListener)
+
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.visibility = View.GONE
             fetchData(0)
@@ -88,8 +71,7 @@ class LikedMemesFragment : Fragment() {
                     // do anything with response
                     try {
                         it.data?.memes?.forEach { meme ->
-                            val directLinkItem = DirectLinkItemTest(meme, Picasso.get())
-                            directLinkItemTestList.add(directLinkItem)
+                            memesList.add(DirectLinkItemTest(meme, Picasso.get()))
                         }
                         adapter.notifyDataSetChanged()
                         binding.swipeRefreshLayout.isEnabled = true
@@ -107,14 +89,14 @@ class LikedMemesFragment : Fragment() {
                 }
             }
         })
-        if (directLinkItemTestList.isEmpty()) fetchData(0)
+        if (memesList.isEmpty()) fetchData(0)
         return binding.root
     }
 
 
     private fun fetchData(offset: Int) {
         if (offset == 0) {
-            directLinkItemTestList.clear()
+            memesList.clear()
         }
         val userId = SharedPreferenceUtils.getPrefs(requireContext())
             .getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
@@ -168,5 +150,44 @@ class LikedMemesFragment : Fragment() {
                 }
             }
         })
+    }
+
+    class LikedMemesAdapter(
+        val context: Context,
+        val memesList: List<DirectLinkItemTest>,
+        val onClickListener: View.OnClickListener
+    ) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        class LikedMemesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val ivImage: ImageView
+            lateinit var data: Memes
+
+            init {
+                ivImage = itemView.findViewById(R.id.iv_image)
+                itemView.tag = this
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(
+                R.layout.view_liked_memes_item,
+                parent,
+                false
+            )
+            return LikedMemesViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            holder as LikedMemesViewHolder
+            val data = memesList[position]
+            holder.itemView.setOnClickListener(onClickListener)
+            Glide.with(context).load(data.getmCoverUrl()).centerCrop().into(holder.ivImage)
+        }
+
+        override fun getItemCount(): Int {
+            return memesList.size
+        }
+
     }
 }
