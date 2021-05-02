@@ -59,12 +59,13 @@ class ProfileFragment : Fragment() {
         checkUsername()
 
         binding.viewPager.adapter = profileViewPagerAdapter
+        binding.viewPager.offscreenPageLimit = 1
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Memes"
-                1 -> tab.text = "Liked"
-                2 -> tab.text = "Comments"
-                else -> tab.text = "unknown"
+                0 -> tab.text = getString(R.string.my_memes)
+                1 -> tab.text = getString(R.string.liked)
+                2 -> tab.text = getString(R.string.comments)
+                else -> tab.text = getString(R.string.unknown)
             }
         }.attach()
 

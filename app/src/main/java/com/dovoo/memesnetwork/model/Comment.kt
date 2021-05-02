@@ -12,6 +12,6 @@ class Comment(
     var comment_id: Int?,
     var created_at: String?,
     var updated_at: String?,
-    var current_datetime: String
+    var current_datetime: String?
 ): Parcelable {
 }

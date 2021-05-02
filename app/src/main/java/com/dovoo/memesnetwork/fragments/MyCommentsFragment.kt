@@ -65,7 +65,6 @@ class MyCommentsFragment : Fragment() {
         }
 
         if(commentList.isEmpty()) fetchComments(0)
-
         return binding.root
     }
 
@@ -74,15 +73,21 @@ class MyCommentsFragment : Fragment() {
         generalViewModel.fetchComments(offset, GlobalFunc.getLoggedInUserId(requireContext()), null).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
-                    it.data?.comments?.let {
-                        commentList.addAll(it)
+                    it.data?.comments?.let { comments ->
+                        comments.forEach {  comment ->
+                            comment.current_datetime = it.data.current_datetime
+                        }
+                        commentList.addAll(comments)
+                        binding.swipeRefreshLayout.isEnabled = true
+                        binding.swipeRefreshLayout.isRefreshing = false
+                        binding.swipeRefreshLayout.visibility = View.VISIBLE
+                        adapter.notifyDataSetChanged()
                     }
-                    adapter.notifyDataSetChanged()
+                }
+                Status.ERROR -> {
                     binding.swipeRefreshLayout.isEnabled = true
                     binding.swipeRefreshLayout.isRefreshing = false
                     binding.swipeRefreshLayout.visibility = View.VISIBLE
-                }
-                Status.ERROR -> {
                     println("bbbbb")
                 }
             }
@@ -137,11 +142,12 @@ class MyCommentsFragment : Fragment() {
                         currentTimeMiliseconds,
                         DateUtils.MINUTE_IN_MILLIS
                     )
-                    holder.tvCreatedDate.setText(thedate)
+                    holder.tvCreatedDate.text = thedate
                 } else {
-                    holder.tvCreatedDate.setText("")
+                    holder.tvCreatedDate.text = ""
                 }
             } catch (e: ParseException) {
+                holder.tvCreatedDate.text = ""
                 e.printStackTrace()
             }
         }

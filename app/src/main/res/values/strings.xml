@@ -41,4 +41,7 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="help_the_developer_remove_ads">Help the Developer (Remove Ads)</string>
     <string name="logout">Logout</string>
+    <string name="my_memes">My Memes</string>
+    <string name="liked">Liked</string>
+    <string name="unknown">unknown</string>
 </resources>
