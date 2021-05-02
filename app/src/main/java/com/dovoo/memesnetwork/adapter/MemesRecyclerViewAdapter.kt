@@ -21,15 +21,11 @@ import com.dovoo.memesnetwork.activities.CommentActivity
 import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.utils.GlobalFunc
-import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
-import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
 import com.krishna.fileloader.FileLoader
 import com.krishna.fileloader.listener.FileRequestListener
 import com.krishna.fileloader.pojo.FileResponse
 import com.krishna.fileloader.request.FileLoadRequest
 import im.ene.toro.widget.PressablePlayerSelector
-import org.json.JSONException
-import org.json.JSONObject
 import java.io.File
 
 class MemesRecyclerViewAdapter(
@@ -103,23 +99,12 @@ class MemesRecyclerViewAdapter(
         if (directLinkVideoItem.data!!["is_liked"] is Int) {
             val isLiked = directLinkVideoItem.data!!["is_liked"] as Int?
             if (isLiked == 1) {
-                viewHolder.linBtnLike.isEnabled = false
                 viewHolder.ivBtnLike.setImageResource(R.drawable.ic_thumbs_up_active)
-                viewHolder.tvTotalLike.setTextColor(
-                    ContextCompat.getColor(
-                        mContext,
-                        R.color.pink700
-                    )
-                )
             } else {
-                viewHolder.linBtnLike.isEnabled = true
                 viewHolder.ivBtnLike.setImageResource(R.drawable.ic_thumbs_up)
-                viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
             }
         } else {
-            viewHolder.linBtnLike.isEnabled = true
             viewHolder.ivBtnLike.setImageResource(R.drawable.ic_thumbs_up)
-            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white))
         }
         viewHolder.ivBtnShare.setOnClickListener(View.OnClickListener {
             if (ContextCompat.checkSelfPermission(
@@ -196,132 +181,12 @@ class MemesRecyclerViewAdapter(
             mContext.startActivity(i)
         }
         viewHolder.linBtnLike.setOnClickListener(likeOnClickListener)
-        viewHolder.linBtnLike.setOnClickListener {
-            if (!getPrefs(mContext).getBoolean(
-                    SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
-                    false
-                )
-            ) {
-//                val i = Intent(mContext, LoginActivity::class.java)
-//                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                mContext.startActivity(i)
-            } else {
-                doLike(viewHolder, directLinkVideoItem)
-            }
-        }
 
         viewHolder.bind(directLinkVideoItem)
     }
 
     override fun getItemCount(): Int {
         return directLinkItemTestList.size
-    }
-
-    private fun doLike(viewHolder: MemesViewHolder, directLinkVideoItem: DirectLinkItemTest) {
-        mLoadingBar?.visibility = View.VISIBLE
-        viewHolder.linBtnLike.isEnabled = false
-        val userId = getPrefs(mContext).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
-        val jsonObject = JSONObject()
-        try {
-            jsonObject.put("meme_id", directLinkVideoItem.id)
-            jsonObject.put("user_id", userId)
-            jsonObject.put("like", 1)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        //        AndroidNetworking.post(BuildConfig.API_URL + "insertlike")
-//                .addJSONObjectBody(jsonObject)
-//                .setPriority(Priority.HIGH)
-//                .build()
-//                .getAsJSONObject(new JSONObjectRequestListener() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        // do anything with response
-//                        try {
-//                            Integer totalLike = response.getInt("total_like");
-//                            Integer totalDislike = response.getInt("total_dislike");
-//
-//                            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-//                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-//                            viewHolder.tvTotalLike.setText(totalLike + "");
-//                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-//                            viewHolder.linBtnLike.setEnabled(false);
-//                            viewHolder.linBtnDislike.setEnabled(true);
-//                            directLinkVideoItem.getData().put("is_liked", 1);
-//                            String totLike = (String) directLinkVideoItem.getData().get("total_like");
-//                            directLinkVideoItem.getData().put("total_like", (Integer.parseInt(totLike)+1)+"");
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        mLoadingBar?.setVisibility(View.GONE);
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(ANError anError) {
-//                        // handle error
-//                        System.out.print("error");
-//                        mLoadingBar?.setVisibility(View.GONE);
-//                        viewHolder.linBtnLike.setEnabled(true);
-//                        viewHolder.linBtnDislike.setEnabled(true);
-//                        Toast.makeText(mContext, "Fail", Toast.LENGTH_LONG).show();
-//                    }
-//                });
-    }
-
-    private fun doDislike(viewHolder: MemesViewHolder, directLinkVideoItem: DirectLinkItemTest) {
-        mLoadingBar?.visibility = View.VISIBLE
-        viewHolder.linBtnLike.isEnabled = false
-        val userId = getPrefs(mContext).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
-        val jsonObject = JSONObject()
-        try {
-            jsonObject.put("meme_id", directLinkVideoItem.id)
-            jsonObject.put("user_id", userId)
-            jsonObject.put("like", 0)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        //        AndroidNetworking.post(BuildConfig.API_URL + "insertlike")
-//                .addJSONObjectBody(jsonObject)
-//                .setPriority(Priority.HIGH)
-//                .build()
-//                .getAsJSONObject(new JSONObjectRequestListener() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        // do anything with response
-//                        try {
-//                            Integer totalLike = response.getInt("total_like");
-//                            Integer totalDislike = response.getInt("total_dislike");
-//
-//                            viewHolder.tvBtnLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-//                            viewHolder.tvBtnDislike.setTextColor(ContextCompat.getColor(mContext, R.color.pink700));
-//                            viewHolder.tvTotalLike.setText(totalLike + "");
-//                            viewHolder.tvTotalLike.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-//                            viewHolder.linBtnLike.setEnabled(true);
-//                            viewHolder.linBtnDislike.setEnabled(false);
-//                            directLinkVideoItem.getData().put("is_liked", 0);
-//                            String totDislike = (String) directLinkVideoItem.getData().get("total_dislike");
-//                            directLinkVideoItem.getData().put("total_dislike", (Integer.parseInt(totDislike)+1)+"");
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        mLoadingBar?.setVisibility(View.GONE);
-//                    }
-//
-//                    @Override
-//                    public void onError(ANError anError) {
-//                        // handle error
-//                        System.out.print("error");
-//                        mLoadingBar?.setVisibility(View.GONE);
-//                        viewHolder.linBtnLike.setEnabled(true);
-//                        viewHolder.linBtnDislike.setEnabled(true);
-//                        Toast.makeText(mContext, "Fail", Toast.LENGTH_LONG).show();
-//
-//                    }
-//                });
     }
 
     init {

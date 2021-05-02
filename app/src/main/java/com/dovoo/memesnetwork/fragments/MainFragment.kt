@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -51,7 +52,8 @@ class MainFragment : Fragment() {
                 memesViewHolder.data.id,
                 memesViewHolder.data,
                 memesViewHolder.ivBtnLike,
-                memesViewHolder.tvTotalLike
+                memesViewHolder.tvTotalLike,
+                memesViewHolder.linBtnLike
             )
         }
     }
@@ -60,7 +62,8 @@ class MainFragment : Fragment() {
         memeId: Int,
         data: DirectLinkItemTest,
         ivLike: ImageView,
-        tvTotalLike: TextView
+        tvTotalLike: TextView,
+        linBtnLike: LinearLayout
     ) {
         val userId =
             getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
@@ -70,25 +73,25 @@ class MainFragment : Fragment() {
         if (isLiked == 1) {
             isLiked = 0
             ivLike.setImageResource(R.drawable.ic_thumbs_up)
-
         } else {
             isLiked = 1
             ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
         }
-        ivLike.isEnabled = false
+        linBtnLike.isEnabled = false
         mutableData.put("is_liked", isLiked)
-        val totLike = mutableData["total_like"] as String
-        mutableData.put("total_like", (totLike.toInt() + 1).toString())
-        tvTotalLike.text = mutableData["total_like"] as String
+        val totLike = mutableData["total_like"] as Int
+
+        mutableData.put("total_like", if(isLiked==1) totLike+1 else totLike-1)
+        tvTotalLike.text = (mutableData["total_like"]  as Int).toString()
+        data.data = mutableData
 
         generalViewModel.insertLike(memeId, userId, isLiked).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
-                    ivLike.isEnabled = true
-
+                    linBtnLike.isEnabled = true
                 }
                 Status.ERROR -> {
-                    ivLike.isEnabled = true
+                    linBtnLike.isEnabled = true
                     if (isLiked == 1) {
                         ivLike.setImageResource(R.drawable.ic_thumbs_up)
                         mutableData.put("is_liked", 0)
@@ -96,9 +99,10 @@ class MainFragment : Fragment() {
                         ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
                         mutableData.put("is_liked", 1)
                     }
-                    val totLike2 = mutableData["total_like"] as String
-                    mutableData.put("total_like", (totLike2.toInt() - 1).toString())
-                    tvTotalLike.text = mutableData["total_like"] as String
+                    val totLike2 = mutableData["total_like"] as Int
+                    mutableData.put("total_like", (totLike2 - 1))
+                    tvTotalLike.text = (mutableData["total_like"] as Int).toString()
+                    data.data = mutableData
                 }
             }
         })

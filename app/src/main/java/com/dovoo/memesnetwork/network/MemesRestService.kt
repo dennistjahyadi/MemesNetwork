@@ -49,7 +49,7 @@ interface MemesRestService {
     @POST("v1/update-profile-pic")
     fun updateProfilePic(@Body request: UpdateProfilePicRequest): Call<UpdateProfilePicResponse>
 
-    @POST("v1/insert-like")
+    @POST("v1/insert-likes")
     fun insertLike(@Body request: InsertLikeRequest): Call<InsertLikeResponse>
 
 }
