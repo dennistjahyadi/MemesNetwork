@@ -33,7 +33,8 @@ class MemesRecyclerViewAdapter(
     private val selector: PressablePlayerSelector?, //
     private val directLinkItemTestList: List<DirectLinkItemTest>,
     var mLoadingBar: FrameLayout?,
-    val likeOnClickListener: View.OnClickListener
+    val likeOnClickListener: View.OnClickListener,
+    val onItemClickListener: View.OnClickListener
 ) : RecyclerView.Adapter<MemesViewHolder>() {
     var finalWidth // default phone width
             : Float
@@ -167,19 +168,9 @@ class MemesRecyclerViewAdapter(
                     }
                 })
         })
-        viewHolder.linBtnComment.setOnClickListener {
-            GlobalFunc.currentVideoItem = directLinkVideoItem
-            val i = Intent(mContext, CommentActivity::class.java)
-            i.putExtra("meme_id", directLinkVideoItem.id)
-            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            mContext.startActivity(i)
-        }
-        viewHolder.tvTitle.setOnClickListener {
-            GlobalFunc.currentVideoItem = directLinkVideoItem
-            val i = Intent(mContext, CommentActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            mContext.startActivity(i)
-        }
+
+       // viewHolder.tvTitle.setOnClickListener(onItemClickListener)
+        viewHolder.linBtnComment.setOnClickListener(onItemClickListener)
         viewHolder.linBtnLike.setOnClickListener(likeOnClickListener)
 
         viewHolder.bind(directLinkVideoItem)

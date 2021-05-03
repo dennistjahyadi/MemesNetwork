@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -56,6 +57,12 @@ class MainFragment : Fragment() {
                 memesViewHolder.linBtnLike
             )
         }
+    }
+
+    val itemOnClickListener = View.OnClickListener {
+        val memesViewHolder = it.tag as MemesViewHolder
+        val bundle = bundleOf("meme_id" to memesViewHolder.data.id)
+        findNavController().navigate(R.id.action_mainFragment_to_memesDetailFragment, bundle)
     }
 
     private fun doLike(
@@ -126,7 +133,8 @@ class MainFragment : Fragment() {
             selector,
             directLinkItemTestList,
             FrameLayout(requireContext()),
-            likeOnClickListener
+            likeOnClickListener,
+            itemOnClickListener
         )
         binding.playerContainer.adapter = adapter
         binding.playerContainer.addOnScrollListener(object :

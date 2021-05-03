@@ -83,7 +83,7 @@ public class CommentActivity extends AppCompatActivity {
         });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        commentRecyclerViewAdapter = new CommentRecyclerViewAdapter(getApplicationContext(), itemList, GlobalFunc.currentVideoItem);
+       // commentRecyclerViewAdapter = new CommentRecyclerViewAdapter(getApplicationContext(), itemList, GlobalFunc.currentVideoItem);
         rvComment.setLayoutManager(linearLayoutManager);
         rvComment.setAdapter(commentRecyclerViewAdapter);
         rvComment.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
