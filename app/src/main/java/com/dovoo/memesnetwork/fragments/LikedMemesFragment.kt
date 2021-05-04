@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
@@ -21,7 +20,6 @@ import com.dovoo.memesnetwork.model.Memes
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
-import com.squareup.picasso.Picasso
 import org.json.JSONException
 import java.util.*
 
@@ -71,7 +69,7 @@ class LikedMemesFragment : Fragment() {
                     // do anything with response
                     try {
                         it.data?.memes?.forEach { meme ->
-                            memesList.add(DirectLinkItemTest(meme, Picasso.get()))
+                            memesList.add(DirectLinkItemTest(meme))
                         }
                         adapter.notifyDataSetChanged()
                         binding.swipeRefreshLayout.isEnabled = true
@@ -112,8 +110,7 @@ class LikedMemesFragment : Fragment() {
         val userId =
             SharedPreferenceUtils.getPrefs(requireContext())
                 .getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
-        var isLiked = data.data!!["is_liked"] as Int
-        val mutableData = data.data!!.toMutableMap()
+        var isLiked = data.isLiked
 
         if (isLiked == 1) {
             isLiked = 0
@@ -124,10 +121,10 @@ class LikedMemesFragment : Fragment() {
             ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
         }
         ivLike.isEnabled = false
-        mutableData.put("is_liked", isLiked)
-        val totLike = mutableData["total_like"] as String
-        mutableData.put("total_like", (totLike.toInt() + 1).toString())
-        tvTotalLike.text = mutableData["total_like"] as String
+        data.isLiked = isLiked
+        val totLike = data.totalLike
+        data.totalLike = (totLike + 1)
+        tvTotalLike.text = data.totalLike.toString()
 
         generalViewModel.insertLike(memeId, userId, isLiked).observe(viewLifecycleOwner, {
             when (it.status) {
@@ -139,14 +136,14 @@ class LikedMemesFragment : Fragment() {
                     ivLike.isEnabled = true
                     if (isLiked == 1) {
                         ivLike.setImageResource(R.drawable.ic_thumbs_up)
-                        mutableData.put("is_liked", 0)
+                        data.isLiked = 0
                     } else {
                         ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
-                        mutableData.put("is_liked", 1)
+                        data.isLiked = 1
                     }
-                    val totLike2 = mutableData["total_like"] as String
-                    mutableData.put("total_like", (totLike2.toInt() - 1).toString())
-                    tvTotalLike.text = mutableData["total_like"] as String
+                    val totLike2 = data.totalLike
+                    data.totalLike = (totLike2 - 1)
+                    tvTotalLike.text = data.totalLike.toString()
                 }
             }
         })

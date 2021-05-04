@@ -52,4 +52,6 @@ interface MemesRestService {
     @POST("v1/insert-likes")
     fun insertLike(@Body request: InsertLikeRequest): Call<InsertLikeResponse>
 
+    @POST("v1/insert-comments")
+    fun sendComments(@Body request: SendCommentRequest): Call<SendCommentResponse>
 }

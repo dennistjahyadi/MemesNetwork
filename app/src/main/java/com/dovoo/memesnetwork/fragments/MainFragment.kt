@@ -61,7 +61,8 @@ class MainFragment : Fragment() {
 
     val itemOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MemesViewHolder
-        val bundle = bundleOf("meme_id" to memesViewHolder.data.id)
+        val bundle = bundleOf("meme_id" to memesViewHolder.data.id,
+                                "item" to memesViewHolder.data)
         findNavController().navigate(R.id.action_mainFragment_to_memesDetailFragment, bundle)
     }
 
@@ -74,8 +75,7 @@ class MainFragment : Fragment() {
     ) {
         val userId =
             getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
-        var isLiked = data.data!!["is_liked"] as Int
-        val mutableData = data.data!!.toMutableMap()
+        var isLiked = data.isLiked
 
         if (isLiked == 1) {
             isLiked = 0
@@ -85,12 +85,10 @@ class MainFragment : Fragment() {
             ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
         }
         linBtnLike.isEnabled = false
-        mutableData.put("is_liked", isLiked)
-        val totLike = mutableData["total_like"] as Int
-
-        mutableData.put("total_like", if(isLiked==1) totLike+1 else totLike-1)
-        tvTotalLike.text = (mutableData["total_like"]  as Int).toString()
-        data.data = mutableData
+        data.isLiked = isLiked
+        val totLike = data.totalLike
+        data.totalLike = if(isLiked==1) totLike+1 else totLike-1
+        tvTotalLike.text = (data.totalLike).toString()
 
         generalViewModel.insertLike(memeId, userId, isLiked).observe(viewLifecycleOwner, {
             when (it.status) {
@@ -101,15 +99,14 @@ class MainFragment : Fragment() {
                     linBtnLike.isEnabled = true
                     if (isLiked == 1) {
                         ivLike.setImageResource(R.drawable.ic_thumbs_up)
-                        mutableData.put("is_liked", 0)
+                        data.isLiked = 0
                     } else {
                         ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
-                        mutableData.put("is_liked", 1)
+                        data.isLiked = 1
                     }
-                    val totLike2 = mutableData["total_like"] as Int
-                    mutableData.put("total_like", (totLike2 - 1))
-                    tvTotalLike.text = (mutableData["total_like"] as Int).toString()
-                    data.data = mutableData
+                    val totLike2 = data.totalLike
+                    data.totalLike = (totLike2 - 1)
+                    tvTotalLike.text = (data.totalLike).toString()
                 }
             }
         })
@@ -150,11 +147,10 @@ class MainFragment : Fragment() {
         generalViewModel.memesHome.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
-
                     // do anything with response
                     try {
                         it.data?.memes?.forEach { meme ->
-                            val directLinkItem = DirectLinkItemTest(meme, Picasso.get())
+                            val directLinkItem = DirectLinkItemTest(meme)
                             directLinkItemTestList.add(directLinkItem)
                         }
                         adapter.notifyDataSetChanged()

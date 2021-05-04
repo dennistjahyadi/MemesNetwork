@@ -15,8 +15,6 @@ object GlobalFunc {
     @JvmField
     var isMute = false
 
-
-
     @JvmStatic
     fun isLogin(context: Context): Boolean {
 

@@ -69,7 +69,7 @@ class MyMemesFragment : Fragment() {
                     // do anything with response
                     try {
                         it.data?.memes?.forEach { meme ->
-                            memesList.add(DirectLinkItemTest(meme, Picasso.get()))
+                            memesList.add(DirectLinkItemTest(meme))
                         }
                         adapter.notifyDataSetChanged()
                         binding.swipeRefreshLayout.isEnabled = true

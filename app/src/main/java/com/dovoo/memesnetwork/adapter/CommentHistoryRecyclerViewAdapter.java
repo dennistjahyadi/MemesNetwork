@@ -112,7 +112,7 @@ public class CommentHistoryRecyclerViewAdapter extends RecyclerView.Adapter<Comm
 
                         int width = imagesObject.getJSONObject("image700").getInt("width");
                         int height = imagesObject.getJSONObject("image700").getInt("height");
-                        GlobalFunc.currentVideoItem = new DirectLinkItemTest(id, category, title, videoUrl, null,  Picasso.get(), coverUrl, width, height, hasAudio, isVideo);
+                        GlobalFunc.currentVideoItem = new DirectLinkItemTest(id, category, title, videoUrl, coverUrl, width, height, hasAudio, isVideo, 0, 0, null);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

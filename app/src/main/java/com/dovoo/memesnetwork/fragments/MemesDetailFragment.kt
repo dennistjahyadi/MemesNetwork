@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.CommentRecyclerViewAdapter
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.databinding.FragmentMemesDetailsBinding
 import com.dovoo.memesnetwork.model.Comment
@@ -20,6 +22,7 @@ import com.dovoo.memesnetwork.utils.AdUtils.loadAds
 import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
+import com.dovoo.memesnetwork.utils.Utils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import java.util.*
 
@@ -31,6 +34,9 @@ class MemesDetailFragment: Fragment() {
     val memeId by lazy {
         arguments?.getInt("meme_id")
     }
+    val currentVideoItem by lazy {
+        arguments?.getParcelable<DirectLinkItemTest>("item")
+    }
 
     val generalViewModel: GeneralViewModel by viewModels()
 
@@ -38,7 +44,7 @@ class MemesDetailFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMemesDetailsBinding.inflate(inflater, container, false)
         loadAds(requireContext(), binding.adView)
 
@@ -57,7 +63,7 @@ class MemesDetailFragment: Fragment() {
         val linearLayoutManager = LinearLayoutManager(requireContext())
         commentRecyclerViewAdapter = CommentRecyclerViewAdapter(
             requireContext(), commentList,
-            GlobalFunc.currentVideoItem!!
+            currentVideoItem!!
         )
         binding.rvComment.layoutManager = linearLayoutManager
         binding.rvComment.adapter = commentRecyclerViewAdapter
@@ -86,7 +92,7 @@ class MemesDetailFragment: Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.comments?.let { comments ->
-                        comments.forEach {  comment ->
+                        comments.forEach { comment ->
                             comment.current_datetime = it.data.current_datetime
                         }
                         commentList.addAll(comments)
@@ -102,7 +108,29 @@ class MemesDetailFragment: Fragment() {
     }
 
     private fun sendComment(){
-
+        binding.btnSend.isEnabled = false
+        binding.progressBar.loadingBar.visibility = View.VISIBLE
+        val messages = binding.etComment.text.toString()
+        generalViewModel.sendComment(
+            currentVideoItem!!.id, GlobalFunc.getLoggedInUserId(
+                requireContext()
+            ), messages, null
+        ).observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.btnSend.isEnabled = true
+                    binding.progressBar.loadingBar.visibility = View.GONE
+                    binding.etComment.setText("")
+                    Utils.hideKeyboard(requireActivity())
+                    fetchComments(0)
+                }
+                Status.ERROR -> {
+                    binding.btnSend.isEnabled = true
+                    binding.progressBar.loadingBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
     }
 
 }

@@ -38,36 +38,44 @@ class GeneralViewModel : ViewModel() {
         call.enqueue(DefaultCallback(myMemes))
     }
 
-    fun fetchLikedMemes(offset: Int, userId: Int){
+    fun fetchLikedMemes(offset: Int, userId: Int) {
         val call = adapter.fetchLikedMemes(offset, userId)
         call.enqueue(DefaultCallback(likedMemes))
     }
 
-    fun fetchComments(offset: Int, userId: Int?, memeId: Int?): MutableLiveData<Resource<CommentResponse>>{
+    fun fetchComments(
+        offset: Int,
+        userId: Int?,
+        memeId: Int?
+    ): MutableLiveData<Resource<CommentResponse>> {
         val call = adapter.fetchComments(offset, userId, memeId)
         var commentResponse = MutableLiveData<Resource<CommentResponse>>()
         call.enqueue(DefaultCallback(commentResponse))
         return commentResponse
     }
 
-    fun fetchSections(offset: Int, limit: Int?, filter: String?){
+    fun fetchSections(offset: Int, limit: Int?, filter: String?) {
         val call = adapter.fetchSections(offset, limit, filter)
         call.enqueue(DefaultCallback(sections))
     }
 
-    fun login(email: String){
+    fun login(email: String) {
         val loginRequest = LoginRequest(email)
         val call = adapter.login(loginRequest)
         call.enqueue(DefaultCallback(loginListener))
     }
 
-    fun updateUsername(userId: Int, username: String){
+    fun updateUsername(userId: Int, username: String) {
         val updateUsernameRequest = UpdateUsernameRequest(userId, username)
         val call = adapter.updateUsername(updateUsernameRequest)
         call.enqueue(DefaultCallback(updateUsernameListener))
     }
 
-    fun insertLike(memeId: Int, userId: Int, liked: Int): MutableLiveData<Resource<InsertLikeResponse>>{
+    fun insertLike(
+        memeId: Int,
+        userId: Int,
+        liked: Int
+    ): MutableLiveData<Resource<InsertLikeResponse>> {
         val insertLikeRequest = InsertLikeRequest(memeId, userId, liked)
         val call = adapter.insertLike(insertLikeRequest)
         val insertLikeListener = MutableLiveData<Resource<InsertLikeResponse>>()
@@ -75,12 +83,28 @@ class GeneralViewModel : ViewModel() {
         return insertLikeListener
     }
 
-    fun updateProfilePic(userId: Int, url: String): MutableLiveData<Resource<UpdateProfilePicResponse>>{
+    fun updateProfilePic(
+        userId: Int,
+        url: String
+    ): MutableLiveData<Resource<UpdateProfilePicResponse>> {
         val updateProfilePicRequest = UpdateProfilePicRequest(userId, url)
         val call = adapter.updateProfilePic(updateProfilePicRequest)
         val updateProfilePicListener = MutableLiveData<Resource<UpdateProfilePicResponse>>()
         call.enqueue(DefaultCallback(updateProfilePicListener))
         return updateProfilePicListener
+    }
+
+    fun sendComment(
+        memeId: Int,
+        userId: Int,
+        messages: String,
+        commentId: Int?
+    ): MutableLiveData<Resource<SendCommentResponse>> {
+        val request = SendCommentRequest(memeId, userId, messages, commentId)
+        val call = adapter.sendComments(request)
+        val listener = MutableLiveData<Resource<SendCommentResponse>>()
+        call.enqueue(DefaultCallback(listener))
+        return listener
     }
 
 }

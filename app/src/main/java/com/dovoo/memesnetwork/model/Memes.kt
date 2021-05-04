@@ -2,6 +2,7 @@ package com.dovoo.memesnetwork.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import java.util.HashMap
 
 @Parcelize
 class Memes(
@@ -48,5 +49,26 @@ class Memes(
         var url: String
     ):Parcelable
 
+    fun getData(): MutableMap<String, Any>{
+        val mData: MutableMap<String, Any> = HashMap()
+        mData["total_like"] = total_like
+        mData["total_comment"] = total_comment
+        mData["is_liked"] = is_liked?:0
+        return mData
+    }
+
+    fun isVideo(): Boolean{
+        if (type.equals("animated", ignoreCase = true)) {
+            return true
+        }
+        return false
+    }
+
+    fun hasAudio(): Boolean{
+        if (type.equals("animated", ignoreCase = true)) {
+            return images.image460sv?.hasAudio == 1
+        }
+        return false
+    }
 
 }

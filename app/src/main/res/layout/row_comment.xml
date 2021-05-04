@@ -11,9 +11,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/grey700"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/linTop"
@@ -91,6 +91,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/paddingBottom"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toBottomOf="@id/linMiddle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

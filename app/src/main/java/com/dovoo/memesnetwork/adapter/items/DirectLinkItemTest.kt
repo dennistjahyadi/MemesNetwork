@@ -1,77 +1,46 @@
 package com.dovoo.memesnetwork.adapter.items
 
 import android.graphics.Rect
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.model.Memes
 import com.squareup.picasso.Picasso
-import java.util.HashMap
+import kotlinx.android.parcel.Parcelize
 
-class DirectLinkItemTest {
-    private var mDirectUrl: String?
-    private var mTitle: String
-    private var mImageLoader: Picasso
-    private var mCoverUrl: String
-    private var mCategory: String
-    var id: Int
-    var isHasAudio = false
-    var isVideo = true
-    var data: Map<String, Any>? = null
+@Parcelize
+class DirectLinkItemTest(
+    var id: Int,
+    var mCategory: String,
+    var mTitle: String,
+    var mDirectUrl: String?,
+    var mCoverUrl: String,
+    var mWidth: Int,
+    var mHeight: Int,
+    var isHasAudio: Boolean = false,
+    var isVideo: Boolean = true,
+    var totalLike: Int = 0,
+    var totalComment: Int = 0,
+    var isLiked: Int?
+) : Parcelable {
     private val mCurrentViewRect = Rect()
-    private var mWidth: Int
-    private var mHeight: Int
 
-    constructor(
-        id: Int,
-        category: String,
-        title: String,
-        directUrl: String,
-        data: Map<String, Any>?,
-        imageLoader: Picasso,
-        coverUrl: String,
-        width: Int,
-        height: Int,
-        hasAudio: Boolean,
-        isVideo: Boolean
-    ) {
-        this.id = id
-        mWidth = width
-        mHeight = height
-        mDirectUrl = directUrl
-        mTitle = title
-        mImageLoader = imageLoader
-        mCoverUrl = coverUrl
-        isHasAudio = hasAudio
-        this.isVideo = isVideo
-        mCategory = category
-        this.data = data
-    }
-
-    constructor(meme: Memes, imageLoader: Picasso) {
-        var isVideo = false
-        var hasAudio = false
-        if (meme.type.equals("animated", ignoreCase = true)) {
-            isVideo = true
-            hasAudio = meme.images.image460sv?.hasAudio == 1
-        }
-        val mData: MutableMap<String, Any> = HashMap()
-        mData["total_like"] = meme.total_like
-        mData["total_comment"] = meme.total_comment
-        mData["is_liked"] = meme.is_liked?:0
-        id = meme.id
-        mWidth = meme.images.image700.width
-        mHeight = meme.images.image700.height
-        mDirectUrl = meme.images.image460sv?.url
-        mTitle = meme.title
-        mImageLoader = imageLoader
-        mCoverUrl = meme.images.image700.url
-        mCategory = meme.post_section
-        isHasAudio = hasAudio;
-        this.isVideo = isVideo;
-        this.data = mData
-    }
+    constructor(meme: Memes) : this(
+        meme.id,
+        meme.post_section,
+        meme.title,
+        meme.images.image460sv?.url,
+        meme.images.image700.url,
+        meme.images.image700.width,
+        meme.images.image700.height,
+        meme.hasAudio(),
+        meme.isVideo(),
+        meme.total_like,
+        meme.total_comment,
+        meme.is_liked
+    )
 
     fun getmDirectUrl(): String? {
         return mDirectUrl
@@ -90,11 +59,7 @@ class DirectLinkItemTest {
     }
 
     fun getmImageLoader(): Picasso {
-        return mImageLoader
-    }
-
-    fun setmImageLoader(mImageLoader: Picasso) {
-        this.mImageLoader = mImageLoader
+        return Picasso.get()
     }
 
     fun getmCoverUrl(): String {

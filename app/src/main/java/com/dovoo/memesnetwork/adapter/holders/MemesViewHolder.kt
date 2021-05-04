@@ -154,8 +154,10 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
         linBtnLike = itemView.findViewById(R.id.linBtnLike)
         linBtnLike.tag = this
         linBtnComment = itemView.findViewById(R.id.linBtnComment)
+        linBtnComment.tag = this
         ivBtnShare = itemView.findViewById(R.id.tvBtnShare)
         tvTitle = itemView.findViewById(R.id.tvTitle)
+        tvTitle.tag = this
         tvCategory = itemView.findViewById(R.id.tvCategory)
         tvLabelNoAudio = itemView.findViewById(R.id.tvLabelNoAudio)
         mCover = itemView.findViewById(R.id.cover)

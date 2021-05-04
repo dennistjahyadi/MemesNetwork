@@ -78,10 +78,9 @@ class MemesRecyclerViewAdapter(
         viewHolder.mCover.visibility = View.VISIBLE
         directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl())
             .into(viewHolder.mCover)
-        val totalLike = directLinkVideoItem.data!!["total_like"] as Int?
-        val totalDislike = directLinkVideoItem.data!!["total_dislike"] as Int?
-        val totalComment = directLinkVideoItem.data!!["total_comment"] as Int?
-        if (directLinkVideoItem.isVideo) {
+        val totalLike = directLinkVideoItem.totalLike
+        val totalComment = directLinkVideoItem.totalComment
+        if (directLinkVideoItem.isVideo == true) {
             //video
             if (directLinkVideoItem.isHasAudio) {
                 viewHolder.ivIconSound.visibility = View.VISIBLE
@@ -97,8 +96,8 @@ class MemesRecyclerViewAdapter(
         }
         viewHolder.tvTotalLike.text = totalLike.toString()
         viewHolder.tvTotalComment.text = totalComment.toString()
-        if (directLinkVideoItem.data!!["is_liked"] is Int) {
-            val isLiked = directLinkVideoItem.data!!["is_liked"] as Int?
+        if (directLinkVideoItem.isLiked is Int) {
+            val isLiked = directLinkVideoItem.isLiked
             if (isLiked == 1) {
                 viewHolder.ivBtnLike.setImageResource(R.drawable.ic_thumbs_up_active)
             } else {
@@ -169,7 +168,7 @@ class MemesRecyclerViewAdapter(
                 })
         })
 
-       // viewHolder.tvTitle.setOnClickListener(onItemClickListener)
+        viewHolder.tvTitle.setOnClickListener(onItemClickListener)
         viewHolder.linBtnComment.setOnClickListener(onItemClickListener)
         viewHolder.linBtnLike.setOnClickListener(likeOnClickListener)
 

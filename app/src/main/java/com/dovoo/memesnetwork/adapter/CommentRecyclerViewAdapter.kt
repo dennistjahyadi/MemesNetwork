@@ -6,6 +6,7 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -45,16 +46,12 @@ class CommentRecyclerViewAdapter(
         val playerView: PlayerView
         val mCover: ImageView
         val tvTitle: TextView
-        val tvLabelNoAudio: TextView
-        val tvIconSound: TextView
 
         init {
             relativeLayout = view.findViewById(R.id.relativeLayout)
             tvTitle = view.findViewById(R.id.tvTitle)
-            tvLabelNoAudio = view.findViewById(R.id.tvLabelNoAudio)
             playerView = view.findViewById(R.id.playerView)
             mCover = view.findViewById(R.id.cover)
-            tvIconSound = view.findViewById(R.id.ivIconSound)
             playerView.player = player
         }
     }
@@ -64,12 +61,14 @@ class CommentRecyclerViewAdapter(
         var tvComment: TextView
         var tvCreatedDate: TextView
         var ivPicture: ImageView
+        var paddingBottom: FrameLayout
 
         init {
             tvUsername = itemView.findViewById(R.id.tvUsername)
             tvComment = itemView.findViewById(R.id.tvComment)
             tvCreatedDate = itemView.findViewById(R.id.tvCreatedDate)
             ivPicture = itemView.findViewById(R.id.ivPicture)
+            paddingBottom = itemView.findViewById(R.id.paddingBottom)
         }
     }
 
@@ -139,6 +138,12 @@ class CommentRecyclerViewAdapter(
         } else if (holder is MyViewHolderItem) {
             val obj = itemList[position - 1]
             val vhItem = holder
+            if(position < itemList.size){
+                vhItem.paddingBottom.visibility = View.GONE
+            }else{
+                vhItem.paddingBottom.visibility = View.VISIBLE
+            }
+
             //vhItem.tvUsername.setText((String)obj.get("created_by"));
            // vhItem.tvUsername.text = obj["created_by"] as String?
             vhItem.tvComment.text = obj.messages
