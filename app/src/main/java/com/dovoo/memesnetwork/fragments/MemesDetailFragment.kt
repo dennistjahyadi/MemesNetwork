@@ -1,44 +1,39 @@
 package com.dovoo.memesnetwork.fragments
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dovoo.memesnetwork.R
-import com.dovoo.memesnetwork.adapter.CommentRecyclerViewAdapter
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
-import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.databinding.FragmentMemesDetailsBinding
-import com.dovoo.memesnetwork.model.Comment
-import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.AdUtils.loadAds
-import com.dovoo.memesnetwork.utils.GlobalFunc
-import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
-import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
-import com.dovoo.memesnetwork.utils.Utils
-import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
-class MemesDetailFragment: Fragment() {
+class MemesDetailFragment : Fragment() {
     private var _binding: FragmentMemesDetailsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var  commentRecyclerViewAdapter:CommentRecyclerViewAdapter
-    private val commentList: ArrayList<Comment> = ArrayList()
-    val memeId by lazy {
-        arguments?.getInt("meme_id")
-    }
     val currentVideoItem by lazy {
         arguments?.getParcelable<DirectLinkItemTest>("item")
     }
+    val listFragment: ArrayList<Fragment> = ArrayList()
 
-    val generalViewModel: GeneralViewModel by viewModels()
+    private lateinit var memesDetailViewPagerAdapter: MemesDetailViewPagerAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initFragments()
+        memesDetailViewPagerAdapter = MemesDetailViewPagerAdapter(this, listFragment)
+    }
+
+    private fun initFragments() {
+        listFragment.add(MemesDetailMemesFragment.newInstance(currentVideoItem!!))
+        listFragment.add(MemesDetailCommentFragment.newInstance(currentVideoItem!!))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,89 +43,32 @@ class MemesDetailFragment: Fragment() {
         _binding = FragmentMemesDetailsBinding.inflate(inflater, container, false)
         loadAds(requireContext(), binding.adView)
 
-        binding.etComment.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                if (!getPrefs(requireContext()).getBoolean(
-                        SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
-                        false
-                    )
-                ) {
-                    findNavController().navigate(R.id.action_memesDetailFragment_to_loginFragment)
-                }
-            }
-        }
         binding.linBtnBack.setOnClickListener { findNavController().popBackStack() }
-        val linearLayoutManager = LinearLayoutManager(requireContext())
-        commentRecyclerViewAdapter = CommentRecyclerViewAdapter(
-            requireContext(), commentList,
-            currentVideoItem!!
-        )
-        binding.rvComment.layoutManager = linearLayoutManager
-        binding.rvComment.adapter = commentRecyclerViewAdapter
 
-        val onLoad = object :
-            EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int) {
-                fetchComments(totalItemsCount)
+        binding.viewPager.adapter = memesDetailViewPagerAdapter
+        binding.viewPager.offscreenPageLimit = 1
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = getString(R.string.memes)
+                1 -> tab.text = getString(R.string.comments)
+                else -> tab.text = getString(R.string.unknown)
             }
-        }
-        binding.rvComment.removeOnScrollListener(onLoad)
-        binding.rvComment.addOnScrollListener(onLoad)
-        binding.btnSend.setOnClickListener(View.OnClickListener {
-            if (TextUtils.isEmpty(binding.etComment.text)) {
-                return@OnClickListener
-            }
-            sendComment()
-        })
-        if(commentList.isEmpty()) fetchComments(0)
+        }.attach()
         return binding.root
     }
 
-    private fun fetchComments(offset: Int){
-        if(offset==0) commentList.clear()
-        generalViewModel.fetchComments(offset, null, memeId).observe(viewLifecycleOwner, {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    it.data?.comments?.let { comments ->
-                        comments.forEach { comment ->
-                            comment.current_datetime = it.data.current_datetime
-                        }
-                        commentList.addAll(comments)
 
-                        commentRecyclerViewAdapter.notifyDataSetChanged()
-                    }
-                }
-                Status.ERROR -> {
-                    println("bbbbb")
-                }
-            }
-        })
-    }
+    class MemesDetailViewPagerAdapter(fragment: Fragment, val listFragment: ArrayList<Fragment>) :
+        FragmentStateAdapter(fragment) {
 
-    private fun sendComment(){
-        binding.btnSend.isEnabled = false
-        binding.progressBar.loadingBar.visibility = View.VISIBLE
-        val messages = binding.etComment.text.toString()
-        generalViewModel.sendComment(
-            currentVideoItem!!.id, GlobalFunc.getLoggedInUserId(
-                requireContext()
-            ), messages, null
-        ).observe(viewLifecycleOwner, {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    binding.btnSend.isEnabled = true
-                    binding.progressBar.loadingBar.visibility = View.GONE
-                    binding.etComment.setText("")
-                    Utils.hideKeyboard(requireActivity())
-                    fetchComments(0)
-                }
-                Status.ERROR -> {
-                    binding.btnSend.isEnabled = true
-                    binding.progressBar.loadingBar.visibility = View.GONE
-                    Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
-                }
-            }
-        })
+        override fun getItemCount(): Int = listFragment.size
+
+        override fun createFragment(position: Int): Fragment {
+            return listFragment[position]
+        }
+
     }
 
 }
+
+

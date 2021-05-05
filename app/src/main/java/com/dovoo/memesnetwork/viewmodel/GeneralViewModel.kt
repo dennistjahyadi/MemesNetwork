@@ -46,9 +46,10 @@ class GeneralViewModel : ViewModel() {
     fun fetchComments(
         offset: Int,
         userId: Int?,
-        memeId: Int?
+        memeId: Int?,
+        sort: String?
     ): MutableLiveData<Resource<CommentResponse>> {
-        val call = adapter.fetchComments(offset, userId, memeId)
+        val call = adapter.fetchComments(offset, userId, memeId, sort)
         var commentResponse = MutableLiveData<Resource<CommentResponse>>()
         call.enqueue(DefaultCallback(commentResponse))
         return commentResponse

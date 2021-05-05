@@ -29,7 +29,8 @@ interface MemesRestService {
     fun fetchComments(
         @Query("offset") offset: Int,
         @Query("user_id") userId: Int?,
-        @Query("meme_id") memeId: Int?
+        @Query("meme_id") memeId: Int?,
+        @Query("sort") sort: String?
     ): Call<CommentResponse>
 
     @GET("v1/fetch-sections")

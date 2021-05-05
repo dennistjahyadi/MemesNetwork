@@ -70,7 +70,7 @@ class MyCommentsFragment : Fragment() {
 
     private fun fetchComments(offset: Int){
         if(offset==0)commentList.clear()
-        generalViewModel.fetchComments(offset, GlobalFunc.getLoggedInUserId(requireContext()), null).observe(viewLifecycleOwner, {
+        generalViewModel.fetchComments(offset, GlobalFunc.getLoggedInUserId(requireContext()), null, null).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.comments?.let { comments ->
