@@ -1,5 +1,6 @@
 package com.dovoo.memesnetwork.adapter
 
+import android.content.Context
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.model.Comment
 import com.squareup.picasso.Picasso
@@ -16,6 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CommentOnlyRecyclerViewAdapter(
+    val context: Context,
     private val itemList: ArrayList<Comment>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -55,8 +58,14 @@ class CommentOnlyRecyclerViewAdapter(
 
         //vhItem.tvUsername.setText((String)obj.get("created_by"));
         // vhItem.tvUsername.text = obj["created_by"] as String?
+        holder.tvUsername.text = obj.user.username
+
         holder.tvComment.text = obj.messages
-        Picasso.get().load(funnyimgs[Random().nextInt(3)]).into(holder.ivPicture)
+        if(obj.user.photo_url?.trim().isNullOrEmpty()){
+            Glide.with(context).load(funnyimgs[2]).into(holder.ivPicture)
+        }else{
+            Glide.with(context).load(obj.user.photo_url).centerCrop().into(holder.ivPicture)
+        }
         try {
             if (!obj.created_at.isNullOrEmpty()) {
                 val createdAtDate = sdf.parse(obj.created_at)

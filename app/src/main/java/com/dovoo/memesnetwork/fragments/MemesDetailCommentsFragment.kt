@@ -21,7 +21,7 @@ import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.utils.Utils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
-import java.util.ArrayList
+import java.util.*
 
 
 class MemesDetailCommentFragment : Fragment() {
@@ -59,7 +59,7 @@ class MemesDetailCommentFragment : Fragment() {
             }
         }
         commentRecyclerViewAdapter = CommentOnlyRecyclerViewAdapter(
-            commentList
+            requireContext(), commentList
         )
         binding.rvComment.layoutManager = linearLayoutManager
         binding.rvComment.adapter = commentRecyclerViewAdapter
@@ -95,7 +95,7 @@ class MemesDetailCommentFragment : Fragment() {
                             commentList.addAll(comments)
 
                             commentRecyclerViewAdapter.notifyDataSetChanged()
-                            if(offset == 0) linearLayoutManager.scrollToPositionWithOffset(0, 0);
+                            if (offset == 0) linearLayoutManager.scrollToPositionWithOffset(0, 0);
                         }
                     }
                     Status.ERROR -> {
