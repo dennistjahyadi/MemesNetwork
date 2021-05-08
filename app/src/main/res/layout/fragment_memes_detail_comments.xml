@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvComment"
@@ -19,6 +20,47 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linReplyTo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey900"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_8">
+
+            <TextView
+                android:id="@+id/tvLblReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reply"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_medium"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivReplyToClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_4"
+                android:src=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_4"
+                android:maxLines="2"
+                android:text="sadf"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_medium"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLblReply" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"

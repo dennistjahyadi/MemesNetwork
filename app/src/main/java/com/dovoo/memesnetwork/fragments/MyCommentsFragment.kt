@@ -30,11 +30,7 @@ class MyCommentsFragment : Fragment() {
     val commentList: ArrayList<Comment> = ArrayList()
     lateinit var adapter: MyCommentsAdapter
 
-    val onClickListener = object : View.OnClickListener {
-        override fun onClick(v: View?) {
-
-        }
-    }
+    val onClickListener = View.OnClickListener { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

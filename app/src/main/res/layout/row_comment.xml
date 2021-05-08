@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="3dp"
     android:background="@color/backgroundMain"
-    android:paddingRight="16dp"
+    android:paddingEnd="16dp"
     android:paddingBottom="8dp">
 
     <View
@@ -55,17 +55,30 @@
         app:layout_constraintTop_toBottomOf="@id/ivPicture" />
 
     <TextView
+        android:id="@+id/tvBtnReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/blue200"
+        android:textSize="@dimen/font_large"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/dimen_16"
+        android:layout_marginTop="@dimen/dimen_4"
+        app:layout_constraintTop_toBottomOf="@id/tvComment"
+        android:text="@string/reply"
+        />
+
+    <TextView
         android:id="@+id/tvCreatedDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_gravity="right"
-        android:text="22 okt 2019 "
+        android:text="22 okt 2019"
         android:textColor="@color/white"
         android:textSize="@dimen/font_small"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvComment" />
+        app:layout_constraintBottom_toBottomOf="@id/tvBtnReply" />
 
     <FrameLayout
         android:id="@+id/paddingBottom"
@@ -73,6 +86,5 @@
         android:layout_height="100dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/tvCreatedDate" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,7 @@ import java.util.*
 class CommentOnlyRecyclerViewAdapter(
     val context: Context,
     private val itemList: ArrayList<Comment>,
+    val replyOnClickListener: View.OnClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     private val funnyimgs =
@@ -30,14 +31,18 @@ class CommentOnlyRecyclerViewAdapter(
         var tvComment: TextView
         var tvCreatedDate: TextView
         var ivPicture: ImageView
+        var tvBtnReply: TextView
         var paddingBottom: FrameLayout
+        lateinit var data: Comment
 
         init {
             tvUsername = itemView.findViewById(R.id.tvUsername)
             tvComment = itemView.findViewById(R.id.tvComment)
             tvCreatedDate = itemView.findViewById(R.id.tvCreatedDate)
             ivPicture = itemView.findViewById(R.id.ivPicture)
+            tvBtnReply = itemView.findViewById(R.id.tvBtnReply)
             paddingBottom = itemView.findViewById(R.id.paddingBottom)
+            tvBtnReply.tag = this
         }
     }
 
@@ -50,6 +55,7 @@ class CommentOnlyRecyclerViewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder as MyViewHolderItem
         val obj = itemList[position]
+        holder.data = obj
         if (position < itemList.size) {
             holder.paddingBottom.visibility = View.GONE
         } else {
@@ -59,11 +65,16 @@ class CommentOnlyRecyclerViewAdapter(
         //vhItem.tvUsername.setText((String)obj.get("created_by"));
         // vhItem.tvUsername.text = obj["created_by"] as String?
         holder.tvUsername.text = obj.user.username
-
         holder.tvComment.text = obj.messages
-        if(obj.user.photo_url?.trim().isNullOrEmpty()){
+
+        if (obj.comment_id == null) holder.tvBtnReply.visibility = View.VISIBLE
+        else holder.tvBtnReply.visibility = View.GONE
+
+        holder.tvBtnReply.setOnClickListener(replyOnClickListener)
+
+        if (obj.user.photo_url?.trim().isNullOrEmpty()) {
             Glide.with(context).load(funnyimgs[2]).into(holder.ivPicture)
-        }else{
+        } else {
             Glide.with(context).load(obj.user.photo_url).centerCrop().into(holder.ivPicture)
         }
         try {
