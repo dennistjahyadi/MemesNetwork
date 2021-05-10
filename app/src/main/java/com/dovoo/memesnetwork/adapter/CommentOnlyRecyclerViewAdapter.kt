@@ -20,7 +20,9 @@ import java.util.*
 class CommentOnlyRecyclerViewAdapter(
     val context: Context,
     private val itemList: ArrayList<Comment>,
-    val replyOnClickListener: View.OnClickListener
+    val commentOnClickListener: View.OnClickListener?,
+    val replyOnClickListener: View.OnClickListener?,
+    val showReply: Boolean = false
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     private val funnyimgs =
@@ -43,6 +45,7 @@ class CommentOnlyRecyclerViewAdapter(
             tvBtnReply = itemView.findViewById(R.id.tvBtnReply)
             paddingBottom = itemView.findViewById(R.id.paddingBottom)
             tvBtnReply.tag = this
+            tvComment.tag = this
         }
     }
 
@@ -66,12 +69,14 @@ class CommentOnlyRecyclerViewAdapter(
         // vhItem.tvUsername.text = obj["created_by"] as String?
         holder.tvUsername.text = obj.user.username
         holder.tvComment.text = obj.messages
+        if(showReply) holder.tvBtnReply.visibility = View.VISIBLE
+        else holder.tvBtnReply.visibility = View.GONE
 
         if (obj.comment_id == null) holder.tvBtnReply.visibility = View.VISIBLE
         else holder.tvBtnReply.visibility = View.GONE
 
         holder.tvBtnReply.setOnClickListener(replyOnClickListener)
-
+        holder.tvComment.setOnClickListener(commentOnClickListener)
         if (obj.user.photo_url?.trim().isNullOrEmpty()) {
             Glide.with(context).load(funnyimgs[2]).into(holder.ivPicture)
         } else {

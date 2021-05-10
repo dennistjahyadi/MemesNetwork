@@ -23,7 +23,6 @@ import com.dovoo.memesnetwork.utils.Utils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import java.util.*
 
-
 class MemesDetailCommentFragment : Fragment() {
     private var _binding: FragmentMemesDetailCommentsBinding? = null
     private val binding get() = _binding!!
@@ -35,6 +34,19 @@ class MemesDetailCommentFragment : Fragment() {
         arguments?.getParcelable<DirectLinkItemTest>("current_video_item")
     }
     lateinit var linearLayoutManager: LinearLayoutManager
+    var replyToData: Comment? = null
+
+    val commentOnClickListener = View.OnClickListener {
+        val data = (it.tag as CommentOnlyRecyclerViewAdapter.MyViewHolderItem).data
+
+    }
+
+    val replyOnClickListener = View.OnClickListener {
+        val data = (it.tag as CommentOnlyRecyclerViewAdapter.MyViewHolderItem).data
+        replyToData = data
+        binding.tvReplyToMsg.text = data.messages
+        binding.linReplyTo.visibility = View.VISIBLE
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +71,7 @@ class MemesDetailCommentFragment : Fragment() {
             }
         }
         commentRecyclerViewAdapter = CommentOnlyRecyclerViewAdapter(
-            requireContext(), commentList
+            requireContext(), commentList, commentOnClickListener, replyOnClickListener, true
         )
         binding.rvComment.layoutManager = linearLayoutManager
         binding.rvComment.adapter = commentRecyclerViewAdapter
@@ -72,6 +84,10 @@ class MemesDetailCommentFragment : Fragment() {
         }
         binding.rvComment.removeOnScrollListener(onLoad)
         binding.rvComment.addOnScrollListener(onLoad)
+        binding.ivReplyToClose.setOnClickListener {
+            replyToData = null
+            binding.linReplyTo.visibility = View.GONE
+        }
         binding.btnSend.setOnClickListener(View.OnClickListener {
             if (TextUtils.isEmpty(binding.etComment.text)) {
                 return@OnClickListener
@@ -84,7 +100,7 @@ class MemesDetailCommentFragment : Fragment() {
 
     private fun fetchComments(offset: Int) {
         if (offset == 0) commentList.clear()
-        generalViewModel.fetchComments(offset, null, currentVideoItem!!.id, "desc")
+        generalViewModel.fetchComments(offset, null, currentVideoItem!!.id,null, "desc")
             .observe(viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
@@ -112,7 +128,7 @@ class MemesDetailCommentFragment : Fragment() {
         generalViewModel.sendComment(
             currentVideoItem!!.id, GlobalFunc.getLoggedInUserId(
                 requireContext()
-            ), messages, null
+            ), messages, replyToData?.id
         ).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {

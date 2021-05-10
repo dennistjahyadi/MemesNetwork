@@ -30,6 +30,7 @@ interface MemesRestService {
         @Query("offset") offset: Int,
         @Query("user_id") userId: Int?,
         @Query("meme_id") memeId: Int?,
+        @Query("comment_id") commentId: Int?,
         @Query("sort") sort: String?
     ): Call<CommentResponse>
 
