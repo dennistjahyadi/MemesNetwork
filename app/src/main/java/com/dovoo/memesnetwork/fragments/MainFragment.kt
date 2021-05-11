@@ -61,8 +61,7 @@ class MainFragment : Fragment() {
 
     val itemOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MemesViewHolder
-        val bundle = bundleOf("meme_id" to memesViewHolder.data.id,
-                                "item" to memesViewHolder.data)
+        val bundle = bundleOf("item" to memesViewHolder.data)
         findNavController().navigate(R.id.action_mainFragment_to_memesDetailFragment, bundle)
     }
 

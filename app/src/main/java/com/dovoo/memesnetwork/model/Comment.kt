@@ -13,6 +13,7 @@ class Comment(
     var created_at: String?,
     var updated_at: String?,
     var current_datetime: String?,
-    var user: User
+    var user: User,
+    var subcomments: List<Comment>?,
 ): Parcelable {
 }

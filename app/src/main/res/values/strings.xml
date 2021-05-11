@@ -46,4 +46,5 @@
     <string name="unknown">unknown</string>
     <string name="memes">Memes</string>
     <string name="reply">Reply</string>
+    <string name="reply_to">Reply to %s</string>
 </resources>

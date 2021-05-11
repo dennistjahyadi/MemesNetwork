@@ -38,13 +38,17 @@ class MemesDetailCommentFragment : Fragment() {
 
     val commentOnClickListener = View.OnClickListener {
         val data = (it.tag as CommentOnlyRecyclerViewAdapter.MyViewHolderItem).data
-
+        val arguments = Bundle()
+        arguments.putParcelable("main_comment", data)
+        findNavController().navigate(R.id.action_memesDetailFragment_to_commentDetailsFragment, arguments)
     }
 
     val replyOnClickListener = View.OnClickListener {
         val data = (it.tag as CommentOnlyRecyclerViewAdapter.MyViewHolderItem).data
         replyToData = data
+        binding.tvLblReply.text = getString(R.string.reply_to, data.user.username)
         binding.tvReplyToMsg.text = data.messages
+
         binding.linReplyTo.visibility = View.VISIBLE
     }
 
@@ -73,8 +77,10 @@ class MemesDetailCommentFragment : Fragment() {
         commentRecyclerViewAdapter = CommentOnlyRecyclerViewAdapter(
             requireContext(), commentList, commentOnClickListener, replyOnClickListener, true
         )
-        binding.rvComment.layoutManager = linearLayoutManager
-        binding.rvComment.adapter = commentRecyclerViewAdapter
+        try {
+            binding.rvComment.layoutManager = linearLayoutManager
+            binding.rvComment.adapter = commentRecyclerViewAdapter
+        }catch (ex: Exception){}
 
         val onLoad = object :
             EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -100,13 +106,16 @@ class MemesDetailCommentFragment : Fragment() {
 
     private fun fetchComments(offset: Int) {
         if (offset == 0) commentList.clear()
-        generalViewModel.fetchComments(offset, null, currentVideoItem!!.id,null, "desc")
+        generalViewModel.fetchMainComments(offset, null, currentVideoItem!!.id, null, "desc")
             .observe(viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
                         it.data?.comments?.let { comments ->
                             comments.forEach { comment ->
                                 comment.current_datetime = it.data.current_datetime
+                                comment.subcomments?.forEach { subcomment ->
+                                    subcomment.current_datetime = it.data.current_datetime
+                                }
                             }
                             commentList.addAll(comments)
 
@@ -135,8 +144,17 @@ class MemesDetailCommentFragment : Fragment() {
                     binding.btnSend.isEnabled = true
                     binding.progressBar.loadingBar.visibility = View.GONE
                     binding.etComment.setText("")
+                    binding.linReplyTo.visibility = View.GONE
                     Utils.hideKeyboard(requireActivity())
-                    fetchComments(0)
+                    if (replyToData == null) fetchComments(0)
+                    else {
+                        val arguments = Bundle()
+                        arguments.putParcelable("main_comment", replyToData)
+                        findNavController().navigate(R.id.action_memesDetailFragment_to_commentDetailsFragment, arguments)
+                    }
+
+                    replyToData = null
+
                 }
                 Status.ERROR -> {
                     binding.btnSend.isEnabled = true

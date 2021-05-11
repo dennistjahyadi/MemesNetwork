@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.model.Comment
-import com.squareup.picasso.Picasso
+import com.dovoo.memesnetwork.utils.Utils
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,6 +36,7 @@ class CommentOnlyRecyclerViewAdapter(
         var ivPicture: ImageView
         var tvBtnReply: TextView
         var paddingBottom: FrameLayout
+        var linSubcomments: LinearLayout
         lateinit var data: Comment
 
         init {
@@ -44,8 +46,10 @@ class CommentOnlyRecyclerViewAdapter(
             ivPicture = itemView.findViewById(R.id.ivPicture)
             tvBtnReply = itemView.findViewById(R.id.tvBtnReply)
             paddingBottom = itemView.findViewById(R.id.paddingBottom)
+            linSubcomments = itemView.findViewById(R.id.lin_sub_comments)
             tvBtnReply.tag = this
             tvComment.tag = this
+            linSubcomments.tag = this
         }
     }
 
@@ -69,7 +73,7 @@ class CommentOnlyRecyclerViewAdapter(
         // vhItem.tvUsername.text = obj["created_by"] as String?
         holder.tvUsername.text = obj.user.username
         holder.tvComment.text = obj.messages
-        if(showReply) holder.tvBtnReply.visibility = View.VISIBLE
+        if (showReply) holder.tvBtnReply.visibility = View.VISIBLE
         else holder.tvBtnReply.visibility = View.GONE
 
         if (obj.comment_id == null) holder.tvBtnReply.visibility = View.VISIBLE
@@ -77,23 +81,41 @@ class CommentOnlyRecyclerViewAdapter(
 
         holder.tvBtnReply.setOnClickListener(replyOnClickListener)
         holder.tvComment.setOnClickListener(commentOnClickListener)
+        holder.linSubcomments.setOnClickListener(commentOnClickListener)
         if (obj.user.photo_url?.trim().isNullOrEmpty()) {
             Glide.with(context).load(funnyimgs[2]).into(holder.ivPicture)
         } else {
             Glide.with(context).load(obj.user.photo_url).centerCrop().into(holder.ivPicture)
         }
+        obj.subcomments = obj.subcomments?.asReversed()
+        obj.subcomments?.forEach { subcomment ->
+            val view = LayoutInflater.from(context).inflate(R.layout.row_subcomment, null)
+            val ivPicture: ImageView = view.findViewById(R.id.ivPicture)
+            val tvUsername: TextView = view.findViewById(R.id.tvUsername)
+            val tvComment: TextView = view.findViewById(R.id.tvComment)
+            val tvCreatedDate: TextView = view.findViewById(R.id.tvCreatedDate)
+            if (subcomment.user.photo_url?.trim().isNullOrEmpty()) {
+                Glide.with(context).load(funnyimgs[2]).into(ivPicture)
+            } else {
+                Glide.with(context).load(subcomment.user.photo_url).centerCrop().into(ivPicture)
+            }
+            tvUsername.text = subcomment.user.username
+            tvComment.text = subcomment.messages
+            try {
+                if (!obj.created_at.isNullOrEmpty()) {
+                    tvCreatedDate.text = Utils.convertToTimeText(subcomment.created_at!!, subcomment.current_datetime!!)
+                } else {
+                    tvCreatedDate.text = "null"
+                }
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+            holder.linSubcomments.addView(view)
+        }
+
         try {
             if (!obj.created_at.isNullOrEmpty()) {
-                val createdAtDate = sdf.parse(obj.created_at)
-                val currentDate = sdf.parse(obj.current_datetime)
-                val createAtMiliseconds = createdAtDate.time
-                val currentTimeMiliseconds = currentDate.time
-                val thedate = DateUtils.getRelativeTimeSpanString(
-                    createAtMiliseconds,
-                    currentTimeMiliseconds,
-                    DateUtils.MINUTE_IN_MILLIS
-                )
-                holder.tvCreatedDate.text = thedate
+                holder.tvCreatedDate.text = Utils.convertToTimeText(obj.created_at!!, obj.current_datetime!!)
             } else {
                 holder.tvCreatedDate.text = "null"
             }

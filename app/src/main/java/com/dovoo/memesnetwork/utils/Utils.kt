@@ -7,12 +7,15 @@ import org.json.JSONObject
 import org.json.JSONArray
 import android.app.Activity
 import android.content.Context
+import android.text.format.DateUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.HashMap
 
 object Utils {
+    val sdfDateTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
     @Throws(JSONException::class)
     @JvmStatic
@@ -73,5 +76,18 @@ object Utils {
             val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+
+    fun convertToTimeText(created_at: String, current_datetime: String): String{
+        val createdAtDate = sdfDateTime.parse(created_at)
+        val currentDate = sdfDateTime.parse(current_datetime)
+        val createAtMiliseconds = createdAtDate.time
+        val currentTimeMiliseconds = currentDate.time
+        val thedate = DateUtils.getRelativeTimeSpanString(
+            createAtMiliseconds,
+            currentTimeMiliseconds,
+            DateUtils.MINUTE_IN_MILLIS
+        )
+        return thedate.toString()
     }
 }

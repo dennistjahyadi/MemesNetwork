@@ -72,6 +72,9 @@ class MyCommentsFragment : Fragment() {
                     it.data?.comments?.let { comments ->
                         comments.forEach {  comment ->
                             comment.current_datetime = it.data.current_datetime
+                            comment.subcomments?.forEach { subcomment ->
+                                subcomment.current_datetime = it.data.current_datetime
+                            }
                         }
                         commentList.addAll(comments)
                         binding.swipeRefreshLayout.isEnabled = true

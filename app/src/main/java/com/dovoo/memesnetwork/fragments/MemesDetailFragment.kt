@@ -1,6 +1,9 @@
 package com.dovoo.memesnetwork.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,7 @@ import com.dovoo.memesnetwork.databinding.FragmentMemesDetailsBinding
 import com.dovoo.memesnetwork.utils.AdUtils.loadAds
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
+
 
 class MemesDetailFragment : Fragment() {
     private var _binding: FragmentMemesDetailsBinding? = null
@@ -42,19 +46,29 @@ class MemesDetailFragment : Fragment() {
     ): View {
         _binding = FragmentMemesDetailsBinding.inflate(inflater, container, false)
         loadAds(requireContext(), binding.adView)
-
         binding.linBtnBack.setOnClickListener { findNavController().popBackStack() }
-
-        binding.viewPager.adapter = memesDetailViewPagerAdapter
-        binding.viewPager.offscreenPageLimit = 1
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = getString(R.string.memes)
-                1 -> tab.text = getString(R.string.comments)
-                else -> tab.text = getString(R.string.unknown)
-            }
-        }.attach()
+        binding.viewPager.offscreenPageLimit = 2
+            binding.viewPager.adapter = memesDetailViewPagerAdapter
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                when (position) {
+                    0 -> tab.text = getString(R.string.memes)
+                    1 -> tab.text = getString(R.string.comments)
+                    else -> tab.text = getString(R.string.unknown)
+                }
+            }.attach()
+        onResult()
         return binding.root
+    }
+
+    private fun onResult() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("openCommentTab")
+            ?.observe(viewLifecycleOwner, {
+                if(it) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        binding.viewPager.setCurrentItem(1, false)
+                    }, 100)
+                }
+            })
     }
 
 
@@ -69,6 +83,10 @@ class MemesDetailFragment : Fragment() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        binding.viewPager.adapter = null
+    }
 }
 
 
