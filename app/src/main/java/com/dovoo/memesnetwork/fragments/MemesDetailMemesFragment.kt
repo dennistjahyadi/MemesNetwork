@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.databinding.FragmentMemesDetailMemesBinding
+import com.github.chrisbanes.photoview.PhotoViewAttacher
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ExtractorMediaSource
@@ -95,6 +96,7 @@ class MemesDetailMemesFragment : Fragment() {
             binding.playerView.visibility = View.GONE
             binding.cover.visibility = View.VISIBLE
             videoItem.getmImageLoader().load(videoItem.getmCoverUrl()).into(binding.cover)
+            PhotoViewAttacher(binding.cover)
         }
         return binding.root
     }

@@ -21,6 +21,7 @@ import com.dovoo.memesnetwork.activities.CommentActivity
 import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.utils.GlobalFunc
+import com.github.chrisbanes.photoview.PhotoViewAttacher
 import com.krishna.fileloader.FileLoader
 import com.krishna.fileloader.listener.FileRequestListener
 import com.krishna.fileloader.pojo.FileResponse
@@ -78,6 +79,7 @@ class MemesRecyclerViewAdapter(
         viewHolder.mCover.visibility = View.VISIBLE
         directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl())
             .into(viewHolder.mCover)
+        PhotoViewAttacher(viewHolder.mCover)
         val totalLike = directLinkVideoItem.totalLike
         val totalComment = directLinkVideoItem.totalComment
         if (directLinkVideoItem.isVideo == true) {
