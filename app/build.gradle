@@ -91,7 +91,9 @@ dependencies {
 
     implementation "androidx.core:core-ktx:"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.github.javiersantos:BottomDialogs:1.2.1'
 
+    implementation 'com.github.AbedElazizShe:LightCompressor:0.9.0'
     // Java language implementation
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
