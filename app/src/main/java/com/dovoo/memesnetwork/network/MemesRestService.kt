@@ -2,7 +2,10 @@ package com.dovoo.memesnetwork.network
 
 import com.dovoo.memesnetwork.model.*
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface MemesRestService {
 
@@ -23,7 +26,8 @@ interface MemesRestService {
     @GET("v1/fetch-liked-memes")
     fun fetchLikedMemes(
         @Query("offset") offset: Int,
-        @Query("user_id") userId: Int): Call<MemesResponse>
+        @Query("user_id") userId: Int
+    ): Call<MemesResponse>
 
     @GET("v1/fetch-main-comments")
     fun fetchMainComments(
@@ -65,4 +69,8 @@ interface MemesRestService {
 
     @POST("v1/insert-comments")
     fun sendComments(@Body request: SendCommentRequest): Call<SendCommentResponse>
+
+    @POST("v1/insert-memes")
+    fun insertMemes(@Body request: InsertMemesRequest): Call<InsertMemesResponse>
+
 }

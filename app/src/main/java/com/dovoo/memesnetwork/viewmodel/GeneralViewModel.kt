@@ -122,4 +122,18 @@ class GeneralViewModel : ViewModel() {
         return listener
     }
 
+    fun insertMemes(
+        user_id: Int,
+        desc: String?,
+        is_photo: Boolean,
+        post_section: String,
+        dataJson: String
+    ): MutableLiveData<Resource<InsertMemesResponse>> {
+        val request = InsertMemesRequest(user_id, desc, is_photo, dataJson, post_section)
+        val call = adapter.insertMemes(request)
+        val listener = MutableLiveData<Resource<InsertMemesResponse>>()
+        call.enqueue(DefaultCallback(listener))
+        return listener
+    }
+
 }

@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.BuildConfig
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.activities.CommentActivity
@@ -77,8 +78,9 @@ class MemesRecyclerViewAdapter(
         viewHolder.tvTitle.text = Html.fromHtml(directLinkVideoItem.getmTitle())
         viewHolder.tvCategory.text = directLinkVideoItem.getmCategory()
         viewHolder.mCover.visibility = View.VISIBLE
-        directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl())
-            .into(viewHolder.mCover)
+        Glide.with(mContext).load(directLinkVideoItem.getmCoverUrl()).into(viewHolder.mCover)
+//        directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl())
+//            .into(viewHolder.mCover)
         PhotoViewAttacher(viewHolder.mCover)
         val totalLike = directLinkVideoItem.totalLike
         val totalComment = directLinkVideoItem.totalComment

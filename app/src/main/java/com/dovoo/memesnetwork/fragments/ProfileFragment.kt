@@ -88,8 +88,6 @@ class ProfileFragment : Fragment() {
             .load(photoUrl)
             .into(binding.ivProfile)
 
-
-
         return binding.root
     }
 

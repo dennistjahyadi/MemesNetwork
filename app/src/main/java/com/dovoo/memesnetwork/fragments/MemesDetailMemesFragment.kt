@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.databinding.FragmentMemesDetailMemesBinding
 import com.github.chrisbanes.photoview.PhotoViewAttacher
@@ -95,7 +96,8 @@ class MemesDetailMemesFragment : Fragment() {
         } else {
             binding.playerView.visibility = View.GONE
             binding.cover.visibility = View.VISIBLE
-            videoItem.getmImageLoader().load(videoItem.getmCoverUrl()).into(binding.cover)
+            //videoItem.getmImageLoader().load(videoItem.getmCoverUrl()).into(binding.cover)
+            Glide.with(requireContext()).load(videoItem.getmCoverUrl()).into(binding.cover)
             PhotoViewAttacher(binding.cover)
         }
         return binding.root
