@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
@@ -71,21 +72,14 @@ class MemesDetailMemesFragment : Fragment() {
         layoutParams.height = finalHeight.toInt()
         binding.relativeLayout.layoutParams = layoutParams
         binding.tvTitle.text = videoItem.getmTitle()
-        //            vhHeader.mCover.setVisibility(View.VISIBLE);
-//
-//            Picasso.get().load(directLinkVideoItem.getmCoverUrl())
-//                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-//                    .networkPolicy(NetworkPolicy.NO_CACHE)
-//                    .resize(0, vhHeader.mCover.getHeight())
-//                    .into(vhHeader.mCover);
-// Produces DataSource instances through which media data is loaded.
+
         val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(
             context,
             Util.getUserAgent(context, "yourApplicationName")
         )
         // This is the MediaSource representing the media to be played.
         if (videoItem.getmDirectUrl() != null) {
-            val videoSource: MediaSource = ExtractorMediaSource.Factory(dataSourceFactory)
+            val videoSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(Uri.parse(videoItem.getmDirectUrl()))
 
 // Prepare the player with the source.
@@ -96,7 +90,6 @@ class MemesDetailMemesFragment : Fragment() {
         } else {
             binding.playerView.visibility = View.GONE
             binding.cover.visibility = View.VISIBLE
-            //videoItem.getmImageLoader().load(videoItem.getmCoverUrl()).into(binding.cover)
             Glide.with(requireContext()).load(videoItem.getmCoverUrl()).into(binding.cover)
             PhotoViewAttacher(binding.cover)
         }
@@ -105,11 +98,6 @@ class MemesDetailMemesFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        player.stop(true)
-    }
-
-    override fun onPause() {
-        super.onPause()
         player.stop(true)
     }
 

@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -123,7 +124,7 @@ class CommentRecyclerViewAdapter(
             )
             // This is the MediaSource representing the media to be played.
             if (videoItem.getmDirectUrl() != null) {
-                val videoSource: MediaSource = ExtractorMediaSource.Factory(dataSourceFactory)
+                val videoSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(Uri.parse(videoItem.getmDirectUrl()))
 
 // Prepare the player with the source.

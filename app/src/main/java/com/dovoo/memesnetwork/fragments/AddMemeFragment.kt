@@ -11,9 +11,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.media.MediaMetadataRetriever
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.provider.MediaStore
 import android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
 import android.view.LayoutInflater
@@ -47,6 +45,7 @@ import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
@@ -65,6 +64,7 @@ class AddMemeFragment : Fragment() {
     lateinit var player: SimpleExoPlayer
 
     var selectedMediaUri: Uri? = null
+    var compressedVideoUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,8 +84,8 @@ class AddMemeFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        binding.linAddImage.setOnClickListener {
-            if(!Environment.isExternalStorageManager()){
+        binding.linAddContent.setOnClickListener {
+            if (!Environment.isExternalStorageManager()) {
                 AlertDialog.Builder(context)
                     .setTitle(getString(R.string.storage_access))
                     .setMessage(getString(R.string.storage_access_desc)) // Specifying a listener allows you to take an action before dismissing the dialog.
@@ -104,7 +104,7 @@ class AddMemeFragment : Fragment() {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show()
 
-            }else{
+            } else {
                 showUploadDialog()
             }
         }
@@ -138,7 +138,7 @@ class AddMemeFragment : Fragment() {
             } else if (selectedMediaUri.toString().contains("video")) {
                 //handle video
                 showLoadingUpload(true)
-                uploadMemes(null, selectedMediaUri)
+                uploadMemes(null, compressedVideoUri)
             } else {
                 Toast.makeText(requireContext(), "Please select the content", Toast.LENGTH_LONG)
                     .show()
@@ -151,7 +151,9 @@ class AddMemeFragment : Fragment() {
     private fun showUploadDialog() {
         val customView =
             LayoutInflater.from(requireContext()).inflate(R.layout.view_select_meme_dialog, null);
-
+        val bottomDialog = BottomDialog.Builder(requireContext())
+            .setCustomView(customView).build()
+        bottomDialog.show()
         val linBtnImage: LinearLayout = customView.findViewById(R.id.linBtnImage)
         val linBtnVideo: LinearLayout = customView.findViewById(R.id.linBtnVideo)
         linBtnImage.setOnClickListener {
@@ -159,16 +161,15 @@ class AddMemeFragment : Fragment() {
                 Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             pickIntent.type = "image/*"
             startActivityForResult(pickIntent, IMAGE_PICKER_SELECT)
+            bottomDialog.dismiss()
         }
         linBtnVideo.setOnClickListener {
             val pickIntent =
                 Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
             pickIntent.type = "video/*"
             startActivityForResult(pickIntent, IMAGE_PICKER_SELECT)
+            bottomDialog.dismiss()
         }
-        val bottomDialog = BottomDialog.Builder(requireContext())
-            .setCustomView(customView)
-        bottomDialog.show()
     }
 
     fun uploadMemes(bitmap: Bitmap?, videoUri: Uri?) {
@@ -223,19 +224,24 @@ class AddMemeFragment : Fragment() {
         val image700 = Memes.Image700(width, height, memeUrl, memeUrl)
         val image460sv = Memes.Image460sv(width, height, memeUrl, memeUrl, 1, 0)
 
-        val data = if(isPhoto) Memes.MemesImage(image700, null) else Memes.MemesImage(image700, image460sv)
+        val data = if (isPhoto) Memes.MemesImage(image700, null) else Memes.MemesImage(
+            image700,
+            image460sv
+        )
 
-        generalViewModel.insertMemes(userId, desc, isPhoto, postSection, Gson().toJson(data)).observe(viewLifecycleOwner, {
-            when(it.status){
-                Status.SUCCESS -> {
-                    Toast.makeText(requireContext(), "Upload complete", Toast.LENGTH_LONG).show()
-                    findNavController().popBackStack()
+        generalViewModel.insertMemes(userId, desc, isPhoto, postSection, Gson().toJson(data))
+            .observe(viewLifecycleOwner, {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        Toast.makeText(requireContext(), "Upload complete", Toast.LENGTH_LONG)
+                            .show()
+                        findNavController().popBackStack()
+                    }
+                    Status.ERROR -> {
+                        println("er")
+                    }
                 }
-                Status.ERROR -> {
-                    println("er")
-                }
-            }
-        })
+            })
     }
 
     private fun showLoadingUpload(show: Boolean) {
@@ -246,8 +252,7 @@ class AddMemeFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             selectedMediaUri = data?.data!!
-            showPreview()
-
+            Handler(Looper.getMainLooper()).postDelayed({ showPreview() }, 500)
         }
     }
 
@@ -278,9 +283,9 @@ class AddMemeFragment : Fragment() {
             binding.playerView.visibility = View.GONE
             binding.ivPreview.visibility = View.VISIBLE
         } else if (selectedMediaUri.toString().contains("video")) {
+            binding.loadingCompress.visibility = View.VISIBLE
             //handle video
             GlobalScope.launch {
-                binding.loadingCompress.visibility = View.VISIBLE
                 // run in background as it
                 var path = ""
                 val job = async { getMediaPath(requireContext(), selectedMediaUri!!) }
@@ -312,10 +317,10 @@ class AddMemeFragment : Fragment() {
                                 Util.getUserAgent(context, "yourApplicationName")
                             )
                             val compressedVideo = Uri.fromFile(desFile)
-                            val videoSource: MediaSource = ExtractorMediaSource.Factory(
+                            compressedVideoUri = compressedVideo
+                            val videoSource: MediaSource = ProgressiveMediaSource.Factory(
                                 dataSourceFactory
-                            )
-                                .createMediaSource(compressedVideo)
+                            ).createMediaSource(compressedVideo)
 
 // Prepare the player with the source.
                             player.prepare(videoSource)
@@ -328,14 +333,15 @@ class AddMemeFragment : Fragment() {
                         override fun onFailure(failureMessage: String) {
                             // On Failure
                             binding.loadingCompress.visibility = View.GONE
-                            Toast.makeText(requireContext(), failureMessage, Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), failureMessage, Toast.LENGTH_LONG)
+                                .show()
                         }
 
                         override fun onCancelled() {
                             // On Cancelled
                         }
 
-                    }, quality = VideoQuality.MEDIUM,
+                    }, quality = VideoQuality.LOW,
                     isMinBitRateEnabled = false,
                     keepOriginalResolution = false
                 )
@@ -392,7 +398,8 @@ class AddMemeFragment : Fragment() {
                 }
             } else {
 
-                val downloadsPath = requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                val downloadsPath =
+                    requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
                 val desFile = File(downloadsPath, videoFileName)
 
                 if (desFile.exists())
@@ -433,11 +440,6 @@ class AddMemeFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        player.stop(true)
-    }
-
-    override fun onPause() {
-        super.onPause()
         player.stop(true)
     }
 

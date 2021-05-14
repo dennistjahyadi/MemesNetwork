@@ -75,7 +75,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
-        android:id="@+id/linAddImage"
+        android:id="@+id/linAddContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dimen_16"
@@ -111,7 +111,7 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@id/linBtnOk"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linAddImage">
+        app:layout_constraintTop_toBottomOf="@+id/linAddContent">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
