@@ -8,7 +8,7 @@ class InsertMemesRequest(
     val user_id: Int,
     val desc: String?,
     val is_photo: Boolean,
-    val dataJson: String,
+    val data: String,
     val post_section: String
 ): Parcelable {
 }

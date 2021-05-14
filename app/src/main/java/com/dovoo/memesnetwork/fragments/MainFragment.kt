@@ -174,7 +174,8 @@ class MainFragment : Fragment() {
         }
 
         binding.fabAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_addMemeFragment)
+            if (GlobalFunc.isLogin(requireContext())) findNavController().navigate(R.id.action_mainFragment_to_addMemeFragment)
+            else findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
         }
 
         binding.includeToolbar.linBtnFilter.setOnClickListener {

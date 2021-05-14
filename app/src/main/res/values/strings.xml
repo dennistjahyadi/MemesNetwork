@@ -50,4 +50,7 @@
     <string name="upload">Upload</string>
     <string name="video">Video</string>
     <string name="image">Image</string>
+    <string name="storage_access">Storage Access</string>
+    <string name="storage_access_desc">You need to allow access to manage all files</string>
+    <string name="compressing">Compressing...</string>
 </resources>
