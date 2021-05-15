@@ -54,4 +54,5 @@
     <string name="storage_access_desc">You need to allow access to manage all files</string>
     <string name="compressing">Compressing...</string>
     <string name="add">Add</string>
+    <string name="top_section">Top Section:</string>
 </resources>
