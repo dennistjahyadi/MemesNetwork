@@ -109,6 +109,13 @@ class AddMemeFragment : Fragment() {
             }
         }
 
+        binding.tilSection.setOnClickListener{
+            findNavController().navigate(R.id.action_addMemeFragment_to_sectionPickerFragment)
+        }
+        binding.etSection.setOnClickListener{
+            findNavController().navigate(R.id.action_addMemeFragment_to_sectionPickerFragment)
+        }
+
         binding.linBtnOk.setOnClickListener {
             if (selectedMediaUri.toString().contains("image")) {
                 //handle image
@@ -144,8 +151,16 @@ class AddMemeFragment : Fragment() {
                     .show()
             }
         }
-
+        onResult()
         return binding.root
+    }
+
+    private fun onResult() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("selectedSection")
+            ?.observe(viewLifecycleOwner, {
+                binding.etSection.setText(it)
+            })
+
     }
 
     private fun showUploadDialog() {

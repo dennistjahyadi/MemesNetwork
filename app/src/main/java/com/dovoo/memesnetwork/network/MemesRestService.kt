@@ -54,6 +54,12 @@ interface MemesRestService {
         @Query("filter") filter: String?
     ): Call<SectionResponse>
 
+
+    @GET("v1/fetch-top-sections")
+    fun fetchTopSections(
+        @Query("filter") filter: String?
+    ): Call<SectionResponse>
+
     @POST("v1/login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
 

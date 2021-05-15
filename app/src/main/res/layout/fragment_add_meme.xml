@@ -61,6 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/dimen_16"
+        android:focusable="false"
+        android:clickable="true"
         android:theme="@style/TextLabel"
         app:layout_constraintTop_toBottomOf="@id/tilDesc">
 
@@ -70,6 +72,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/section"
             android:inputType="textPersonName"
+            android:focusable="false"
+            android:clickable="true"
             android:textColor="@color/white"
             android:textSize="@dimen/font_medium" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -148,7 +152,6 @@
         </RelativeLayout>
     </FrameLayout>
 
-
     <LinearLayout
         android:id="@+id/linBtnOk"
         android:layout_width="match_parent"
@@ -169,7 +172,6 @@
             android:text="@string/upload"
             android:textColor="@color/white" />
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/loading_upload"

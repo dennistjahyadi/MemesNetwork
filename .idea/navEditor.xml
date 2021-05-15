@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="577" />
-                            <option name="y" value="-216" />
+                            <option name="x" value="603" />
+                            <option name="y" value="-178" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -161,6 +161,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="sectionPickerFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="688" />
+                            <option name="y" value="148" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

@@ -74,6 +74,13 @@ class GeneralViewModel : ViewModel() {
         call.enqueue(DefaultCallback(sections))
     }
 
+    fun fetchTopSections(filter: String?):MutableLiveData<Resource<SectionResponse>> {
+        val topSections = MutableLiveData<Resource<SectionResponse>>()
+        val call = adapter.fetchTopSections(filter)
+        call.enqueue(DefaultCallback(topSections))
+        return topSections
+    }
+
     fun login(email: String) {
         val loginRequest = LoginRequest(email)
         val call = adapter.login(loginRequest)

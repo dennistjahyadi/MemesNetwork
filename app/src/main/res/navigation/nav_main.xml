@@ -46,7 +46,11 @@
     <fragment
         android:id="@+id/addMemeFragment"
         android:name="com.dovoo.memesnetwork.fragments.AddMemeFragment"
-        android:label="AddMemeFragment" />
+        android:label="AddMemeFragment" >
+        <action
+            android:id="@+id/action_addMemeFragment_to_sectionPickerFragment"
+            app:destination="@id/sectionPickerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/filterFragment"
         android:name="com.dovoo.memesnetwork.fragments.FilterFragment"
@@ -70,4 +74,8 @@
         android:id="@+id/commentDetailsFragment"
         android:name="com.dovoo.memesnetwork.fragments.CommentDetailsFragment"
         android:label="CommentDetailsFragment" />
+    <fragment
+        android:id="@+id/sectionPickerFragment"
+        android:name="com.dovoo.memesnetwork.fragments.SectionPickerFragment"
+        android:label="SectionPickerFragment" />
 </navigation>
