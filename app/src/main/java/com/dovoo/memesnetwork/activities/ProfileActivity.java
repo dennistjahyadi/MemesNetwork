@@ -131,13 +131,6 @@ public class ProfileActivity extends AppCompatActivity implements PurchasesUpdat
             }
         });
 
-        tvBtnComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), CommentHistoryActivity.class);
-                startActivity(i);
-            }
-        });
 
         tvBtnSubscription.setOnClickListener(new View.OnClickListener() {
             @Override

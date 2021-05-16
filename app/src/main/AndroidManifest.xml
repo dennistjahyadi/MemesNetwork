@@ -72,12 +72,6 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".activities.CommentHistoryActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"/>
-
-        <activity
             android:name=".activities.DislikeHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.model.Memes
+import com.dovoo.memesnetwork.model.User
 import com.squareup.picasso.Picasso
 import kotlinx.android.parcel.Parcelize
 
@@ -23,7 +24,8 @@ class DirectLinkItemTest(
     var isVideo: Boolean = true,
     var totalLike: Int = 0,
     var totalComment: Int = 0,
-    var isLiked: Int?
+    var isLiked: Int?,
+    var user: User? = null
 ) : Parcelable {
     private val mCurrentViewRect = Rect()
 
@@ -39,7 +41,8 @@ class DirectLinkItemTest(
         meme.isVideo(),
         meme.total_like,
         meme.total_comment,
-        meme.is_liked
+        meme.is_liked,
+        meme.user
     )
 
     fun getmDirectUrl(): String? {

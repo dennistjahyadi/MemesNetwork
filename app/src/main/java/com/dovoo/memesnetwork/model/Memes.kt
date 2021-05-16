@@ -17,7 +17,8 @@ class Memes(
     var updated_at: String,
     var total_like: Int,
     var total_comment: Int,
-    var is_liked: Int?
+    var is_liked: Int?,
+    var user: User?
 ): Parcelable {
     @Parcelize
     class MemesImage(

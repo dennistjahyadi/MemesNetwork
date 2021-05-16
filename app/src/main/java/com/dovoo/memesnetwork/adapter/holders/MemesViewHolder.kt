@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
@@ -39,11 +40,14 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
     var tvCategory: TextView
     var ivIconSound: ImageView
     var tvTitle: TextView
+    var tvUsername: TextView
+    var ivProfilePic: ImageView
     var tvLabelNoAudio: TextView
     var ivBtnLike: ImageView
     var tvTotalLike: TextView
     var tvTotalComment: TextView
     var ivBtnShare: ImageView
+    var layoutUser: ConstraintLayout
     var loadingBarVideo: SpinKitView
     var listener: Playable.EventListener? = null
     lateinit var data: DirectLinkItemTest
@@ -151,6 +155,9 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
         tvTotalComment = itemView.findViewById(R.id.tvTotalComment)
         ivBtnLike = itemView.findViewById(R.id.tvBtnLike)
         loadingBarVideo = itemView.findViewById(R.id.loadingBarVideo)
+        tvUsername = itemView.findViewById(R.id.tvUsername)
+        layoutUser = itemView.findViewById(R.id.layout_user)
+        ivProfilePic = itemView.findViewById(R.id.ivProfilePic)
         linBtnLike = itemView.findViewById(R.id.linBtnLike)
         linBtnLike.tag = this
         linBtnComment = itemView.findViewById(R.id.linBtnComment)

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.text.Html
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,6 +72,19 @@ class MemesRecyclerViewAdapter(
             // if video is square
             finalHeight = finalWidth
         }
+
+        directLinkVideoItem.user?.let {
+            viewHolder.layoutUser.visibility = View.VISIBLE
+            viewHolder.tvUsername.text = directLinkVideoItem.user?.username
+            Glide.with(mContext).load(directLinkVideoItem.user?.photo_url).into(viewHolder.ivProfilePic)
+        }?: run {
+            viewHolder.layoutUser.visibility = View.GONE
+        }
+
+        if(TextUtils.isEmpty(directLinkVideoItem.mTitle.trim())){
+            viewHolder.tvTitle.visibility = View.GONE
+        }else viewHolder.tvTitle.visibility = View.VISIBLE
+
         val layoutParams = viewHolder.relativeLayout.layoutParams
         layoutParams.width = finalWidth.toInt()
         layoutParams.height = finalHeight.toInt()
