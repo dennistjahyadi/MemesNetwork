@@ -46,14 +46,6 @@
         app:layout_constraintStart_toStartOf="@+id/toolbar"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-    <ImageView
-        android:id="@+id/iv_profilepic_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_edit"
-        ads:layout_constraintBottom_toBottomOf="@id/ivProfile"
-        ads:layout_constraintRight_toRightOf="@id/ivProfile" />
-
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
@@ -65,13 +57,24 @@
         app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
 
     <TextView
+        android:id="@+id/lbl_total_memes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_16"
+        android:text="@string/memes"
+        android:textColor="@color/white"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toLeftOf="@id/lbl_following"
+        ads:layout_constraintTop_toBottomOf="@id/tvUsername" />
+
+    <TextView
         android:id="@+id/lbl_following"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_16"
         android:text="@string/following"
         android:textColor="@color/white"
-        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintLeft_toRightOf="@id/lbl_total_memes"
         ads:layout_constraintRight_toLeftOf="@id/lbl_followers"
         ads:layout_constraintTop_toBottomOf="@id/tvUsername" />
 
@@ -85,6 +88,17 @@
         ads:layout_constraintLeft_toRightOf="@id/lbl_following"
         ads:layout_constraintRight_toRightOf="parent"
         ads:layout_constraintTop_toBottomOf="@id/tvUsername" />
+
+    <TextView
+        android:id="@+id/tv_total_memes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        ads:layout_constraintLeft_toLeftOf="@id/lbl_total_memes"
+        ads:layout_constraintRight_toRightOf="@id/lbl_total_memes"
+        ads:layout_constraintTop_toBottomOf="@id/lbl_total_memes" />
 
     <TextView
         android:id="@+id/tv_following"

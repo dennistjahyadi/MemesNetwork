@@ -19,7 +19,6 @@ class GeneralViewModel : ViewModel() {
 
     var likedMemes = MutableLiveData<Resource<MemesResponse>>()
 
-
     var sections = MutableLiveData<Resource<SectionResponse>>()
 
     var updateUsernameListener = MutableLiveData<Resource<UpdateUsernameResponse>>()
@@ -139,6 +138,13 @@ class GeneralViewModel : ViewModel() {
         val request = InsertMemesRequest(user_id, desc, is_photo, dataJson, post_section)
         val call = adapter.insertMemes(request)
         val listener = MutableLiveData<Resource<InsertMemesResponse>>()
+        call.enqueue(DefaultCallback(listener))
+        return listener
+    }
+
+    fun getUser(userId: Int): MutableLiveData<Resource<UserOtherResponse>>{
+        val call = adapter.getUser(userId)
+        val listener = MutableLiveData<Resource<UserOtherResponse>>()
         call.enqueue(DefaultCallback(listener))
         return listener
     }

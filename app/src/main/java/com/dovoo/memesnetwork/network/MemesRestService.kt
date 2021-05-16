@@ -79,4 +79,8 @@ interface MemesRestService {
     @POST("v1/insert-memes")
     fun insertMemes(@Body request: InsertMemesRequest): Call<InsertMemesResponse>
 
+    @GET("v1/get-user")
+    fun getUser(
+        @Query("user_id") userId: Int
+    ): Call<UserOtherResponse>
 }
