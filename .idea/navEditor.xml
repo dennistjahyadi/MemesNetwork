@@ -17,6 +17,15 @@
                             <option name="y" value="-178" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_addMemeFragment_to_sectionPickerFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -172,6 +181,18 @@
                           <Point>
                             <option name="x" value="688" />
                             <option name="y" value="148" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="userFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="695" />
+                            <option name="y" value="460" />
                           </Point>
                         </option>
                       </LayoutPositions>

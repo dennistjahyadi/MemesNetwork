@@ -37,7 +37,8 @@ class MemesRecyclerViewAdapter(
     private val directLinkItemTestList: List<DirectLinkItemTest>,
     var mLoadingBar: FrameLayout?,
     val likeOnClickListener: View.OnClickListener,
-    val onItemClickListener: View.OnClickListener
+    val onItemClickListener: View.OnClickListener,
+    val profileOnClickListener: View.OnClickListener
 ) : RecyclerView.Adapter<MemesViewHolder>() {
     var finalWidth // default phone width
             : Float
@@ -189,7 +190,8 @@ class MemesRecyclerViewAdapter(
         viewHolder.tvTitle.setOnClickListener(onItemClickListener)
         viewHolder.linBtnComment.setOnClickListener(onItemClickListener)
         viewHolder.linBtnLike.setOnClickListener(likeOnClickListener)
-
+        viewHolder.ivProfilePic.setOnClickListener(profileOnClickListener)
+        viewHolder.tvUsername.setOnClickListener(profileOnClickListener)
         viewHolder.bind(directLinkVideoItem)
     }
 

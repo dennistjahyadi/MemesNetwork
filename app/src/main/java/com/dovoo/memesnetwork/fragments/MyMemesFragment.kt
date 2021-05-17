@@ -19,7 +19,6 @@ import com.dovoo.memesnetwork.model.Memes
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
-import com.squareup.picasso.Picasso
 import org.json.JSONException
 import java.util.*
 
@@ -62,7 +61,7 @@ class MyMemesFragment : Fragment() {
             binding.swipeRefreshLayout.visibility = View.GONE
             fetchData(0)
         }
-        generalViewModel.myMemes.observe(viewLifecycleOwner, {
+        generalViewModel.userMemes.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
 
@@ -98,7 +97,7 @@ class MyMemesFragment : Fragment() {
         }
         val userId = SharedPreferenceUtils.getPrefs(requireContext())
             .getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
-        generalViewModel.fetchMyMemes(offset, userId, null)
+        generalViewModel.fetchUserMemes(offset, userId, null)
     }
 
     class MyMemesAdapter(

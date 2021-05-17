@@ -169,6 +169,8 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
         tvLabelNoAudio = itemView.findViewById(R.id.tvLabelNoAudio)
         mCover = itemView.findViewById(R.id.cover)
         ivIconSound = itemView.findViewById(R.id.ivIconSound)
+        tvUsername.tag = this
+        ivProfilePic.tag = this
         playerView.setOnTouchListener(OnTouchListener { _, event ->
             if (playerView.player == null) {
                 return@OnTouchListener false

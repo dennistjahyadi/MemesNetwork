@@ -1,5 +1,9 @@
 package com.dovoo.memesnetwork.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 class UserOtherDetails(
     val id: Int,
     var username: String?,
@@ -10,7 +14,9 @@ class UserOtherDetails(
     var remember_token: String?,
     var created_at: String?,
     var updated_at: String?,
-    var memes: ArrayList<Memes>
-) {
+    var memes: ArrayList<Memes>,
+    var following_user: ArrayList<User>,
+    var follower_user: ArrayList<User>
+): Parcelable {
 
 }

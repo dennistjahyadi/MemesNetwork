@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_16"
-        android:text="@string/following"
+        android:text="@string/followings"
         android:textColor="@color/white"
         ads:layout_constraintLeft_toLeftOf="parent"
         ads:layout_constraintRight_toLeftOf="@id/lbl_followers"

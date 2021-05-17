@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_mainFragment_to_memesDetailFragment"
             app:destination="@id/memesDetailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -78,4 +81,8 @@
         android:id="@+id/sectionPickerFragment"
         android:name="com.dovoo.memesnetwork.fragments.SectionPickerFragment"
         android:label="SectionPickerFragment" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.dovoo.memesnetwork.fragments.UserFragment"
+        android:label="UserFragment" />
 </navigation>

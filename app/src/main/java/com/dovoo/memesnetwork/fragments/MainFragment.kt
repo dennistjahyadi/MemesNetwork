@@ -65,6 +65,12 @@ class MainFragment : Fragment() {
         findNavController().navigate(R.id.action_mainFragment_to_memesDetailFragment, bundle)
     }
 
+    val profileOnClickListener = View.OnClickListener {
+        val memesViewHolder = it.tag as MemesViewHolder
+        val bundle = bundleOf("user_id" to memesViewHolder.data.user!!.id)
+        findNavController().navigate(R.id.action_mainFragment_to_userFragment, bundle)
+    }
+
     private fun doLike(
         memeId: Int,
         data: DirectLinkItemTest,
@@ -130,7 +136,8 @@ class MainFragment : Fragment() {
             directLinkItemTestList,
             FrameLayout(requireContext()),
             likeOnClickListener,
-            itemOnClickListener
+            itemOnClickListener,
+            profileOnClickListener
         )
         binding.playerContainer.adapter = adapter
         binding.playerContainer.addOnScrollListener(object :
