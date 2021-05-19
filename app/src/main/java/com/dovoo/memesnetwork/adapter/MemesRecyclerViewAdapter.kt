@@ -77,7 +77,7 @@ class MemesRecyclerViewAdapter(
         directLinkVideoItem.user?.let {
             viewHolder.layoutUser.visibility = View.VISIBLE
             viewHolder.tvUsername.text = directLinkVideoItem.user?.username
-            Glide.with(mContext).load(directLinkVideoItem.user?.photo_url).into(viewHolder.ivProfilePic)
+            Glide.with(mContext).load(directLinkVideoItem.user?.photo_url).placeholder(R.drawable.funny_user2).into(viewHolder.ivProfilePic)
         }?: run {
             viewHolder.layoutUser.visibility = View.GONE
         }

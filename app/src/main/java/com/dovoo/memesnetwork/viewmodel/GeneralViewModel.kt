@@ -149,4 +149,13 @@ class GeneralViewModel : ViewModel() {
         return listener
     }
 
+    fun setFollowing(userId: Int, followingUserId: Int): MutableLiveData<Resource<SetFollowingResponse>>{
+        val request = SetFollowingRequest(userId, followingUserId)
+        val call = adapter.setFollowing(request)
+        val listener = MutableLiveData<Resource<SetFollowingResponse>>()
+        call.enqueue(DefaultCallback(listener))
+        return listener
+    }
+
+
 }

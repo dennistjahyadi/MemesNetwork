@@ -51,14 +51,18 @@
                     android:textStyle="bold" />
 
             </RelativeLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
                 android:id="@+id/layout_user"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:id="@+id/ivProfilePic"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/dimen_16"
                     android:background="@drawable/img_circle_bg"
@@ -71,8 +75,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:text="name"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingVertical="@dimen/dimen_8"
+                    android:paddingStart="@dimen/dimen_8"
                     android:textColor="@color/white"
                     android:textIsSelectable="true"
                     app:layout_constraintBottom_toBottomOf="@id/ivProfilePic"
@@ -148,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="20dp"/>
+                android:layout_margin="20dp" />
 
             <TextView
                 android:id="@+id/tvLabelNoAudio"
@@ -271,9 +277,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="visible"
         android:layout_marginVertical="@dimen/margin_row"
         android:background="@color/line_separator"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linBottom" />
 

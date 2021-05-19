@@ -83,4 +83,7 @@ interface MemesRestService {
     fun getUser(
         @Query("user_id") userId: Int
     ): Call<UserOtherResponse>
+
+    @POST("v1/set-following")
+    fun setFollowing(@Body request: SetFollowingRequest): Call<SetFollowingResponse>
 }

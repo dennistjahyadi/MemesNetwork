@@ -72,6 +72,7 @@ class UserFragment : Fragment() {
         binding.linBtnFollow.setOnClickListener {
             isFollowing = !isFollowing
             updateUI()
+            follow()
         }
 
         generalViewModel.userMemes.observe(viewLifecycleOwner, {
@@ -116,8 +117,8 @@ class UserFragment : Fragment() {
                 Status.SUCCESS -> {
                     currentUser = it.data!!.user
                     val loggedInUserId = GlobalFunc.getLoggedInUserId(requireContext())
-                    it.data.user.follower_user.forEach lit@{ usr ->
-                        if(usr.id == loggedInUserId){
+                    it.data.user.follower_user.forEach lit@{ following ->
+                        if(following.user_id == loggedInUserId){
                             isFollowing = true
                             return@lit
                         }
@@ -131,11 +132,27 @@ class UserFragment : Fragment() {
         })
     }
 
+    private fun follow(){
+        val currentUserId = GlobalFunc.getLoggedInUserId(requireContext())
+        generalViewModel.setFollowing(currentUserId, userId).observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
+                    isFollowing  = !isFollowing
+                    updateUI()
+                }
+            }
+        })
+    }
+
     private fun updateUI(){
         currentUser?.let { user ->
             binding.tvUsername.text = user.username
             Glide.with(requireContext())
                 .load(user.photo_url)
+                .placeholder(R.drawable.funny_user2)
                 .into(binding.ivProfile)
             binding.tvTotalMemes.text = user.memes.size.toString()
             binding.tvFollowers.text = user.following_user.size.toString()

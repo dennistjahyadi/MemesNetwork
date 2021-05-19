@@ -15,8 +15,8 @@ class UserOtherDetails(
     var created_at: String?,
     var updated_at: String?,
     var memes: ArrayList<Memes>,
-    var following_user: ArrayList<User>,
-    var follower_user: ArrayList<User>
+    var following_user: ArrayList<FollowingData>,
+    var follower_user: ArrayList<FollowingData>
 ): Parcelable {
 
 }
