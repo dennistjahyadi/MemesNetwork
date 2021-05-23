@@ -9,6 +9,8 @@ class FollowingData(
     var user_id: Int,
     var following_user_id: Int,
     var created_at: String,
-    var updated_at: String
+    var updated_at: String,
+    var following_user: List<User>?,
+    var follower_user: List<User>?
 ): Parcelable {
 }
