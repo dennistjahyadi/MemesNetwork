@@ -43,31 +43,6 @@
             android:textColor="@color/white"
             />
 
-        <LinearLayout
-            android:id="@+id/linBtnFollow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="@dimen/dimen_16"
-            android:background="@drawable/rounded_border_white"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-
-            <TextView
-                android:id="@+id/tvFollow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/dimen_12"
-                android:layout_marginVertical="@dimen/dimen_4"
-                android:text="@string/follow"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_medium"
-                android:textStyle="bold" />
-        </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout

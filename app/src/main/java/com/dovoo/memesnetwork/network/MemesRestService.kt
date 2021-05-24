@@ -89,11 +89,13 @@ interface MemesRestService {
 
     @GET("v1/fetch-followings")
     fun fetchFollowings(
+        @Query("offset") offset: Int,
         @Query("user_id") userId: Int
     ): Call<FetchFollowingsResponse>
 
     @GET("v1/fetch-followers")
     fun fetchFollowers(
+        @Query("offset") offset: Int,
         @Query("user_id") userId: Int
     ): Call<FetchFollowersResponse>
 }

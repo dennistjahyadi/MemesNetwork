@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -29,7 +30,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import java.io.ByteArrayOutputStream
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), View.OnClickListener {
 
     private val RESULT_LOAD_IMG = 0X123
     private var _binding: FragmentProfileBinding? = null
@@ -68,7 +69,10 @@ class ProfileFragment : Fragment() {
                 else -> tab.text = getString(R.string.unknown)
             }
         }.attach()
-
+        binding.lblFollowing.setOnClickListener(this)
+        binding.lblFollowers.setOnClickListener(this)
+        binding.tvFollowing.setOnClickListener(this)
+        binding.tvFollowers.setOnClickListener(this)
         binding.linBtnBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -218,6 +222,26 @@ class ProfileFragment : Fragment() {
             return listFragment[position]
         }
 
+    }
+
+    override fun onClick(p0: View) {
+        when(p0.id){
+            R.id.lbl_following, R.id.tv_following -> {
+                val i = Bundle()
+                i.putBoolean("isFollowing", true)
+                findNavController().navigate(R.id.action_profileFragment_to_userFollowingsFragment, i)
+            }
+            R.id.lbl_followers, R.id.tv_followers -> {
+                val i = Bundle()
+                i.putBoolean("isFollowing", false)
+                findNavController().navigate(R.id.action_profileFragment_to_userFollowingsFragment, i)
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.viewPager.adapter = null
     }
 
 }

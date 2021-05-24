@@ -45,6 +45,12 @@
         <action
             android:id="@+id/action_profileFragment_to_insertUsernameFragment"
             app:destination="@id/insertUsernameFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_userFollowingsFragment"
+            app:destination="@id/userFollowingsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_memesDetailFragment"
+            app:destination="@id/memesDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/addMemeFragment"
@@ -84,5 +90,20 @@
     <fragment
         android:id="@+id/userFragment"
         android:name="com.dovoo.memesnetwork.fragments.UserFragment"
-        android:label="UserFragment" />
+        android:label="UserFragment" >
+        <action
+            android:id="@+id/action_userFragment_to_userFollowingsFragment"
+            app:destination="@id/userFollowingsFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_memesDetailFragment"
+            app:destination="@id/memesDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFollowingsFragment"
+        android:name="com.dovoo.memesnetwork.fragments.UserFollowingsFragment"
+        android:label="UserFollowingsFragment" >
+        <action
+            android:id="@+id/action_userFollowingsFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
 </navigation>

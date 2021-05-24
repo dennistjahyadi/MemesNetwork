@@ -80,7 +80,7 @@
                     android:paddingVertical="@dimen/dimen_8"
                     android:paddingStart="@dimen/dimen_8"
                     android:textColor="@color/white"
-                    android:textIsSelectable="true"
+                    android:textIsSelectable="false"
                     app:layout_constraintBottom_toBottomOf="@id/ivProfilePic"
                     app:layout_constraintLeft_toRightOf="@id/ivProfilePic"
                     app:layout_constraintTop_toTopOf="@id/ivProfilePic" />

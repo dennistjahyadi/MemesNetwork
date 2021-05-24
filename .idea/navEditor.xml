@@ -122,6 +122,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_mainFragment_to_userFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -132,8 +137,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="560" />
-                            <option name="y" value="-615" />
+                            <option name="x" value="506" />
+                            <option name="y" value="167" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -158,13 +163,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="459" />
-                            <option name="y" value="457" />
+                            <option name="x" value="384" />
+                            <option name="y" value="868" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_profileFragment_to_insertUsernameFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profileFragment_to_userFollowingsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -186,6 +196,27 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="userFollowingsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="970" />
+                            <option name="y" value="462" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_userFollowingsFragment_to_userFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="userFragment">
                     <value>
                       <LayoutPositions>
@@ -194,6 +225,15 @@
                             <option name="x" value="695" />
                             <option name="y" value="460" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_userFragment_to_userFollowingsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

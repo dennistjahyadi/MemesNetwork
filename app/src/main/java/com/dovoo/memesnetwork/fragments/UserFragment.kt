@@ -1,12 +1,15 @@
 package com.dovoo.memesnetwork.fragments
 
+import android.content.Intent
 import android.graphics.Typeface
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.R
+import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.databinding.FragmentUserBinding
@@ -25,7 +29,7 @@ import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import org.json.JSONException
 import java.util.ArrayList
 
-class UserFragment : Fragment() {
+class UserFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
     val generalViewModel: GeneralViewModel by viewModels()
@@ -37,6 +41,8 @@ class UserFragment : Fragment() {
 
     val memesOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MyMemesFragment.MyMemesAdapter.MyMemesViewHolder
+        val bundle = bundleOf("item" to memesViewHolder.data)
+        findNavController().navigate(R.id.action_userFragment_to_memesDetailFragment, bundle)
     }
 
     var currentUser: UserOtherDetails? = null
@@ -68,12 +74,19 @@ class UserFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.removeOnScrollListener(endlessSrollListener)
         binding.recyclerView.addOnScrollListener(endlessSrollListener)
+        binding.lblFollowing.setOnClickListener(this)
+        binding.lblFollowers.setOnClickListener(this)
+        binding.tvFollowing.setOnClickListener(this)
+        binding.tvFollowers.setOnClickListener(this)
 
         binding.linBtnFollow.setOnClickListener {
             isFollowing = !isFollowing
             updateUI()
             follow()
         }
+
+        if(userId == GlobalFunc.getLoggedInUserId(requireContext())) binding.linBtnFollow.visibility = View.GONE
+        else binding.linBtnFollow.visibility = View.VISIBLE
 
         generalViewModel.userMemes.observe(viewLifecycleOwner, {
             when (it.status) {
@@ -155,8 +168,8 @@ class UserFragment : Fragment() {
                 .placeholder(R.drawable.funny_user2)
                 .into(binding.ivProfile)
             binding.tvTotalMemes.text = user.memes.size.toString()
-            binding.tvFollowers.text = user.following_user.size.toString()
-            binding.tvFollowing.text = user.follower_user.size.toString()
+            binding.tvFollowers.text = user.follower_user.size.toString()
+            binding.tvFollowing.text = user.following_user.size.toString()
         }
 
         if(isFollowing){
@@ -170,5 +183,22 @@ class UserFragment : Fragment() {
         }
 
 
+    }
+
+    override fun onClick(p0: View) {
+        when(p0.id){
+            R.id.lbl_following, R.id.tv_following -> {
+                val i = Bundle()
+                i.putBoolean("isFollowing", true)
+                i.putInt("user_id", userId)
+                findNavController().navigate(R.id.action_userFragment_to_userFollowingsFragment, i)
+            }
+            R.id.lbl_followers, R.id.tv_followers -> {
+                val i = Bundle()
+                i.putBoolean("isFollowing", false)
+                i.putInt("user_id", userId)
+                findNavController().navigate(R.id.action_userFragment_to_userFollowingsFragment, i)
+            }
+        }
     }
 }

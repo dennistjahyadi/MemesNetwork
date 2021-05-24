@@ -157,15 +157,15 @@ class GeneralViewModel : ViewModel() {
         return listener
     }
 
-    fun fetchFollowings(userId: Int): MutableLiveData<Resource<FetchFollowingsResponse>>{
-        val call = adapter.fetchFollowings(userId)
+    fun fetchFollowings(offset: Int, userId: Int): MutableLiveData<Resource<FetchFollowingsResponse>>{
+        val call = adapter.fetchFollowings(offset, userId)
         val listener = MutableLiveData<Resource<FetchFollowingsResponse>>()
         call.enqueue(DefaultCallback(listener))
         return listener
     }
 
-    fun fetchFollowers(userId: Int): MutableLiveData<Resource<FetchFollowersResponse>>{
-        val call = adapter.fetchFollowers(userId)
+    fun fetchFollowers(offset: Int, userId: Int): MutableLiveData<Resource<FetchFollowersResponse>>{
+        val call = adapter.fetchFollowers(offset, userId)
         val listener = MutableLiveData<Resource<FetchFollowersResponse>>()
         call.enqueue(DefaultCallback(listener))
         return listener
