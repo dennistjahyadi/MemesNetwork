@@ -46,4 +46,13 @@
         android:src="@drawable/ic_user_circle"
         android:textColor="@color/white" />
 
+    <ImageView
+        android:id="@+id/ivNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:padding="@dimen/dimen_8"
+        android:src="@drawable/ic_bell" />
+
+
 </androidx.appcompat.widget.Toolbar>

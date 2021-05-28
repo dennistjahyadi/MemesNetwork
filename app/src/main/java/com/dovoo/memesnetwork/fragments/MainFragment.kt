@@ -188,6 +188,9 @@ class MainFragment : Fragment() {
         binding.includeToolbar.linBtnFilter.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_filterFragment)
         }
+        binding.includeToolbar.ivNotification.setOnClickListener {
+
+        }
 
         if (directLinkItemTestList.isEmpty()) fetchData(0)
 
