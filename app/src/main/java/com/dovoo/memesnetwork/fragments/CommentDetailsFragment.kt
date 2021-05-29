@@ -98,6 +98,7 @@ class CommentDetailsFragment : Fragment() {
                     currentTimeMiliseconds,
                     DateUtils.MINUTE_IN_MILLIS
                 )
+                binding.tvComment.text = mainComment?.messages
                 binding.tvCreatedDate.text = thedate
             } else {
                 binding.tvCreatedDate.text = "null"

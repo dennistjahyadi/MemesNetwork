@@ -170,4 +170,12 @@ class GeneralViewModel : ViewModel() {
         call.enqueue(DefaultCallback(listener))
         return listener
     }
+
+    fun fetchNotifications(offset: Int, userId: Int): MutableLiveData<Resource<FetchNotificationsResponse>>{
+        val call = adapter.fetchNotifications(offset, userId)
+        val listener = MutableLiveData<Resource<FetchNotificationsResponse>>()
+        call.enqueue(DefaultCallback(listener))
+        return listener
+    }
+
 }

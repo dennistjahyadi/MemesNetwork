@@ -4,7 +4,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class UserOtherResponse(
-    val user: UserOtherDetails,
-    val isFollowing: Boolean
+    val user: UserOtherDetails
 ): BaseResponse() {
 }

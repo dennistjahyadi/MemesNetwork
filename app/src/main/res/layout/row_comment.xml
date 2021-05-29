@@ -34,7 +34,6 @@
         android:layout_marginStart="10dp"
         android:text="name"
         android:textColor="@color/white"
-        android:textIsSelectable="true"
         app:layout_constraintBottom_toBottomOf="@id/ivPicture"
         app:layout_constraintLeft_toRightOf="@id/ivPicture"
         app:layout_constraintTop_toTopOf="@id/ivPicture" />
@@ -48,7 +47,6 @@
         android:layout_marginTop="8dp"
         android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"
         android:textColor="@color/white"
-        android:textIsSelectable="true"
         android:textSize="@dimen/font_medium2"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"

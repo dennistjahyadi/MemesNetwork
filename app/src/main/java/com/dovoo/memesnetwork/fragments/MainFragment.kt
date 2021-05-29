@@ -189,7 +189,7 @@ class MainFragment : Fragment() {
             findNavController().navigate(R.id.action_mainFragment_to_filterFragment)
         }
         binding.includeToolbar.ivNotification.setOnClickListener {
-
+            findNavController().navigate(R.id.action_mainFragment_to_notificationFragment)
         }
 
         if (directLinkItemTestList.isEmpty()) fetchData(0)

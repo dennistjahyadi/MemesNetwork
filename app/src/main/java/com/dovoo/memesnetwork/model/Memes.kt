@@ -58,6 +58,10 @@ class Memes(
         return mData
     }
 
+    fun getCoverUrl(): String{
+        return images.image700.url
+    }
+
     fun isVideo(): Boolean{
         if (type.equals("animated", ignoreCase = true)) {
             return true

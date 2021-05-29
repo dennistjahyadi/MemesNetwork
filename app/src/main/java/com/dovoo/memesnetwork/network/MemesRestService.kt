@@ -98,4 +98,10 @@ interface MemesRestService {
         @Query("offset") offset: Int,
         @Query("user_id") userId: Int
     ): Call<FetchFollowersResponse>
+
+    @GET("v1/fetch-notifications")
+    fun fetchNotifications(
+        @Query("offset") offset: Int,
+        @Query("user_id") userId: Int
+    ): Call<FetchNotificationsResponse>
 }
