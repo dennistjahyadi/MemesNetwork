@@ -15,6 +15,8 @@ object SharedPreferenceUtils {
     const val PREFERENCES_USER_LOGIN = "user_login"
     const val PREFERENCES_USER_PASSWORD = "user_password"
     const val PREFERENCES_PREMIUM_MEMBER = "premium_member"
+    const val PREFERENCES_NOTIF_COUNT = "notif_count"
+
     @JvmStatic
     fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
@@ -54,7 +56,13 @@ object SharedPreferenceUtils {
     }
 
     @JvmStatic
-    fun saveUserPrefs(context: Context, username: String?, userId: Int, email: String, photoUrl: String?){
+    fun saveUserPrefs(
+        context: Context,
+        username: String?,
+        userId: Int,
+        email: String,
+        photoUrl: String?
+    ) {
         setPrefs(context, PREFERENCES_USER_NAME, username)
         setPrefs(context, PREFERENCES_USER_ID, userId)
         setPrefs(context, PREFERENCES_USER_EMAIL, email)
@@ -63,7 +71,7 @@ object SharedPreferenceUtils {
     }
 
     @JvmStatic
-    fun insertUsernamePrefs(context: Context, username: String?){
+    fun insertUsernamePrefs(context: Context, username: String?) {
         setPrefs(context, PREFERENCES_USER_NAME, username)
         setPrefs(context, PREFERENCES_USER_IS_LOGIN, true);
     }
@@ -80,4 +88,6 @@ object SharedPreferenceUtils {
         prefsEditor.remove(PREFERENCES_USER_PASSWORD)
         prefsEditor.apply()
     }
+
+
 }

@@ -1,14 +1,11 @@
 package com.dovoo.memesnetwork.fragments
 
-import android.content.Intent
 import android.graphics.Typeface
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,17 +14,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.R
-import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.databinding.FragmentUserBinding
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.model.UserOtherDetails
 import com.dovoo.memesnetwork.utils.GlobalFunc
-import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import org.json.JSONException
-import java.util.ArrayList
+import java.util.*
 
 class UserFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentUserBinding? = null
@@ -85,7 +80,8 @@ class UserFragment : Fragment(), View.OnClickListener {
             follow()
         }
 
-        if(userId == GlobalFunc.getLoggedInUserId(requireContext())) binding.linBtnFollow.visibility = View.GONE
+        if (userId == GlobalFunc.getLoggedInUserId(requireContext())) binding.linBtnFollow.visibility =
+            View.GONE
         else binding.linBtnFollow.visibility = View.VISIBLE
 
         generalViewModel.userMemes.observe(viewLifecycleOwner, {
@@ -131,7 +127,7 @@ class UserFragment : Fragment(), View.OnClickListener {
                     currentUser = it.data!!.user
                     val loggedInUserId = GlobalFunc.getLoggedInUserId(requireContext())
                     it.data.user.follower_user.forEach lit@{ following ->
-                        if(following.user_id == loggedInUserId){
+                        if (following.user_id == loggedInUserId) {
                             isFollowing = true
                             return@lit
                         }
@@ -145,7 +141,7 @@ class UserFragment : Fragment(), View.OnClickListener {
         })
     }
 
-    private fun follow(){
+    private fun follow() {
         val currentUserId = GlobalFunc.getLoggedInUserId(requireContext())
         generalViewModel.setFollowing(currentUserId, userId).observe(viewLifecycleOwner, {
             when (it.status) {
@@ -153,30 +149,37 @@ class UserFragment : Fragment(), View.OnClickListener {
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
-                    isFollowing  = !isFollowing
+                    isFollowing = !isFollowing
                     updateUI()
                 }
             }
         })
     }
 
-    private fun updateUI(){
+    private fun updateUI() {
         currentUser?.let { user ->
             binding.tvUsername.text = user.username
-            Glide.with(requireContext())
-                .load(user.photo_url)
-                .placeholder(R.drawable.funny_user2)
-                .into(binding.ivProfile)
+            if (user.photo_url.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                    .load(R.drawable.funny_user2)
+                    .into(binding.ivProfile)
+            } else {
+                Glide.with(requireContext())
+                    .load(user.photo_url)
+                    .placeholder(R.drawable.funny_user2)
+                    .into(binding.ivProfile)
+            }
+
             binding.tvTotalMemes.text = user.memes.size.toString()
             binding.tvFollowers.text = user.follower_user.size.toString()
             binding.tvFollowing.text = user.following_user.size.toString()
         }
 
-        if(isFollowing){
+        if (isFollowing) {
             binding.linBtnFollow.setBackgroundResource(R.drawable.rounded_border_white_bold)
             binding.tvFollow.setText(R.string.followed)
             binding.tvFollow.typeface = Typeface.DEFAULT_BOLD;
-        }else{
+        } else {
             binding.linBtnFollow.setBackgroundResource(R.drawable.rounded_border_white)
             binding.tvFollow.setText(R.string.follow)
             binding.tvFollow.typeface = Typeface.DEFAULT;
@@ -186,7 +189,7 @@ class UserFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(p0: View) {
-        when(p0.id){
+        when (p0.id) {
             R.id.lbl_following, R.id.tv_following -> {
                 val i = Bundle()
                 i.putBoolean("isFollowing", true)

@@ -43,7 +43,6 @@ import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.github.javiersantos.bottomdialogs.BottomDialog
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
@@ -85,22 +84,31 @@ class AddMemeFragment : Fragment() {
         }
 
         binding.linAddContent.setOnClickListener {
-            if (!Environment.isExternalStorageManager()) {
+
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 AlertDialog.Builder(context)
                     .setTitle(getString(R.string.storage_access))
                     .setMessage(getString(R.string.storage_access_desc)) // Specifying a listener allows you to take an action before dismissing the dialog.
                     // The dialog is automatically dismissed when a dialog button is clicked.
-                    .setPositiveButton(android.R.string.yes,
-                        DialogInterface.OnClickListener { dialog, which ->
-                            // Continue with delete operation
-                            val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
-                            startActivity(
-                                Intent(
-                                    ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                                    uri
-                                )
-                            )
-                        }) // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setPositiveButton(android.R.string.yes) { _, _ ->
+                        // Continue with delete operation
+                        ActivityCompat.requestPermissions(
+                            requireActivity(),
+                            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                            1123
+                        )
+//                        val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+//                        startActivity(
+//                            Intent(
+//                                ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+//                                uri
+//                            )
+//                        )
+                    } // A null listener allows the button to dismiss the dialog and take no further action.
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show()
 
@@ -109,10 +117,10 @@ class AddMemeFragment : Fragment() {
             }
         }
 
-        binding.tilSection.setOnClickListener{
+        binding.tilSection.setOnClickListener {
             findNavController().navigate(R.id.action_addMemeFragment_to_sectionPickerFragment)
         }
-        binding.etSection.setOnClickListener{
+        binding.etSection.setOnClickListener {
             findNavController().navigate(R.id.action_addMemeFragment_to_sectionPickerFragment)
         }
 

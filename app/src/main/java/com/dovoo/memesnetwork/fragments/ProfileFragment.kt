@@ -88,10 +88,16 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL,
             null
         )
-        Glide.with(requireContext())
-            .load(photoUrl)
-            .into(binding.ivProfile)
 
+        if (photoUrl.isNullOrEmpty()) {
+            Glide.with(requireContext())
+                .load(R.drawable.funny_user2)
+                .into(binding.ivProfile)
+        } else {
+            Glide.with(requireContext())
+                .load(photoUrl)
+                .into(binding.ivProfile)
+        }
         return binding.root
     }
 

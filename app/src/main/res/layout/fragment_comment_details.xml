@@ -102,6 +102,13 @@
             android:layout_height="100dp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/tvCreatedDate" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:background="@color/grey900"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/tvCreatedDate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

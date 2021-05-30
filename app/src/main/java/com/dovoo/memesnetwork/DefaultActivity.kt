@@ -83,6 +83,10 @@ class DefaultActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        checkIfThroughNotification()
+    }
+
+    private fun checkIfThroughNotification(){
         val title = intent.getStringExtra("title")
         val messages = intent.getStringExtra("messages")
         val iconUrl = intent.getStringExtra("iconUrl")
@@ -90,9 +94,11 @@ class DefaultActivity : AppCompatActivity() {
         val memeId = intent.getStringExtra("memeId")
         val userId = intent.getStringExtra("userId")
         val commentId = intent.getStringExtra("commentId")
+
         when {
             notifType.equals(Notification.TYPE_FOLLOWING) -> {
                 try {
+                    GlobalFunc.minNotifCount(this)
                     val bundle = bundleOf("user_id" to userId!!.toInt())
                     navHostFragment.findNavController().navigate(R.id.userFragment, bundle)
                 } catch (ex: Exception) {
@@ -100,12 +106,14 @@ class DefaultActivity : AppCompatActivity() {
             }
             notifType.equals(Notification.TYPE_MEME_COMMENT) -> {
                 try {
+                    GlobalFunc.minNotifCount(this)
                     getMeme(memeId!!.toInt())
                 } catch (ex: Exception) {
                 }
             }
             notifType.equals(Notification.TYPE_SUB_COMMENT) -> {
                 try {
+                    GlobalFunc.minNotifCount(this)
                     getComment(commentId!!.toInt())
                 } catch (ex: Exception) {
                 }

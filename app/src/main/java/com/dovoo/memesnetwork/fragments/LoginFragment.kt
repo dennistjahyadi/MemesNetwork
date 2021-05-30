@@ -2,6 +2,7 @@ package com.dovoo.memesnetwork.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -93,10 +96,25 @@ class LoginFragment : Fragment(), View.OnClickListener {
                             user.photo_url
                         )
 
+
                         if(user.username.isNullOrEmpty()){
                             findNavController().navigate(R.id.action_loginFragment_to_insertUsernameFragment)
                         }else{
                             Toast.makeText(requireContext(), "Welcome ${user.username} :)", Toast.LENGTH_LONG).show()
+                            FirebaseMessaging.getInstance().token.addOnCompleteListener(
+                                OnCompleteListener { task ->
+                                if (!task.isSuccessful) {
+                                    Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                                    return@OnCompleteListener
+                                }
+
+                                // Get new FCM registration token
+                                val token = task.result
+                                if (GlobalFunc.isLogin(requireContext())) {
+                                    val userId = GlobalFunc.getLoggedInUserId(requireContext())
+                                    generalViewModel.setFirebaseToken(userId, token)
+                                }
+                            })
                             findNavController().previousBackStackEntry?.savedStateHandle?.set("loginSuccess", true)
                             findNavController().popBackStack()
                         }

@@ -106,10 +106,16 @@ class NotificationFragment : Fragment() {
         generalViewModel.fetchNotifications(offset, userId).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
+                    val currentDatetime = it.data?.current_datetime
                     it.data?.notifications?.let {
+                        it.forEach {  notif ->
+                            notif.main_comment_obj?.current_datetime = currentDatetime
+                            notif.current_comment_obj?.current_datetime = currentDatetime
+                        }
                         listNotification.addAll(it)
                     }
                     adapter.notifyDataSetChanged()
+                    GlobalFunc.clearNotifCount(requireContext())
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()

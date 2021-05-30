@@ -1,6 +1,7 @@
 package com.dovoo.memesnetwork.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,12 @@ import androidx.navigation.fragment.findNavController
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.databinding.FragmentInsertUsernameBinding
 import com.dovoo.memesnetwork.model.Status
+import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class InsertUsernameFragment : Fragment() {
 
@@ -35,13 +39,41 @@ class InsertUsernameFragment : Fragment() {
         return binding.root
     }
 
-    private fun updateUsernameListener(){
+    private fun updateUsernameListener() {
         generalViewModel.updateUsernameListener.observe(viewLifecycleOwner, {
-            when(it.status){
+            when (it.status) {
                 Status.SUCCESS -> {
-                    SharedPreferenceUtils.insertUsernamePrefs(requireContext(), it.data?.user?.username)
-                    Toast.makeText(requireContext(), "Welcome ${it.data?.user?.username} :)", Toast.LENGTH_LONG).show()
-                    findNavController().getBackStackEntry(R.id.mainFragment).savedStateHandle.set("loginSuccess", true)
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener(
+                        OnCompleteListener { task ->
+                            if (!task.isSuccessful) {
+                                Log.w(
+                                    "TAG",
+                                    "Fetching FCM registration token failed",
+                                    task.exception
+                                )
+                                return@OnCompleteListener
+                            }
+
+                            // Get new FCM registration token
+                            val token = task.result
+                            if (GlobalFunc.isLogin(requireContext())) {
+                                val userId = GlobalFunc.getLoggedInUserId(requireContext())
+                                generalViewModel.setFirebaseToken(userId, token)
+                            }
+                        })
+                    SharedPreferenceUtils.insertUsernamePrefs(
+                        requireContext(),
+                        it.data?.user?.username
+                    )
+                    Toast.makeText(
+                        requireContext(),
+                        "Welcome ${it.data?.user?.username} :)",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    findNavController().getBackStackEntry(R.id.mainFragment).savedStateHandle.set(
+                        "loginSuccess",
+                        true
+                    )
                     findNavController().popBackStack(R.id.mainFragment, false)
                 }
                 Status.ERROR -> {
@@ -51,7 +83,7 @@ class InsertUsernameFragment : Fragment() {
         })
     }
 
-    private fun updateUsername(){
+    private fun updateUsername() {
         val userId = getPrefs(requireContext()).getInt(
             SharedPreferenceUtils.PREFERENCES_USER_ID,
             -1

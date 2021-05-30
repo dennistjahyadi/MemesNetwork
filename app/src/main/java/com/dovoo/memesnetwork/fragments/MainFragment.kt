@@ -188,7 +188,7 @@ class MainFragment : Fragment() {
         binding.includeToolbar.linBtnFilter.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_filterFragment)
         }
-        binding.includeToolbar.ivNotification.setOnClickListener {
+        binding.includeToolbar.conNotification.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_notificationFragment)
         }
 
@@ -197,6 +197,15 @@ class MainFragment : Fragment() {
         onResult()
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(GlobalFunc.getNotifCount(requireContext())>0){
+            binding.includeToolbar.dotBadge.visibility = View.VISIBLE
+        }else{
+            binding.includeToolbar.dotBadge.visibility = View.GONE
+        }
     }
 
     private fun onResult() {

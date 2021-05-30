@@ -1,11 +1,8 @@
 package com.dovoo.memesnetwork.utils
 
-import android.app.Activity
 import android.content.Context
-import androidx.appcompat.app.AlertDialog
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 object GlobalFunc {
 
@@ -25,9 +22,50 @@ object GlobalFunc {
         return GoogleSignIn.getLastSignedInAccount(context) != null
     }
 
-    fun getLoggedInUserId(context: Context): Int{
+    fun getLoggedInUserId(context: Context): Int {
         val userId = SharedPreferenceUtils.getPrefs(context)
             .getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
         return userId
+    }
+
+    @JvmStatic
+    fun getNotifCount(
+        context: Context
+    ): Int {
+        return SharedPreferenceUtils.getPrefs(context)
+            .getInt(SharedPreferenceUtils.PREFERENCES_NOTIF_COUNT, 0)
+    }
+
+    @JvmStatic
+    fun addNotifCount(
+        context: Context
+    ) {
+        val count = SharedPreferenceUtils.getPrefs(context)
+            .getInt(SharedPreferenceUtils.PREFERENCES_NOTIF_COUNT, 0)
+        SharedPreferenceUtils.setPrefs(
+            context,
+            SharedPreferenceUtils.PREFERENCES_NOTIF_COUNT,
+            count + 1
+        )
+    }
+
+    @JvmStatic
+    fun minNotifCount(
+        context: Context
+    ) {
+        val count = SharedPreferenceUtils.getPrefs(context)
+            .getInt(SharedPreferenceUtils.PREFERENCES_NOTIF_COUNT, 0)
+        SharedPreferenceUtils.setPrefs(
+            context,
+            SharedPreferenceUtils.PREFERENCES_NOTIF_COUNT,
+            count - 1
+        )
+    }
+
+    @JvmStatic
+    fun clearNotifCount(
+        context: Context
+    ) {
+        SharedPreferenceUtils.setPrefs(context, SharedPreferenceUtils.PREFERENCES_NOTIF_COUNT, 0)
     }
 }

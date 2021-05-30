@@ -70,6 +70,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun sendNotification(
         data: Map<String, String>
     ) {
+        GlobalFunc.addNotifCount(this)
         val title = data["title"]
         val messages = data["messages"]
         val iconUrl = data["iconUrl"]
