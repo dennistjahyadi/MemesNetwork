@@ -178,4 +178,25 @@ class GeneralViewModel : ViewModel() {
         return listener
     }
 
+    fun setFirebaseToken(userId: Int, token: String): MutableLiveData<Resource<BaseResponse>>{
+        val request = SetFirebaseTokenRequest(userId, token)
+        val call = adapter.setFirebaseToken(request)
+        val listener = MutableLiveData<Resource<BaseResponse>>()
+        call.enqueue(DefaultCallback(listener))
+        return listener
+    }
+
+    fun getComment(commentId: Int): MutableLiveData<Resource<GetCommentResponse>>{
+        val call = adapter.getComment(commentId)
+        val listener = MutableLiveData<Resource<GetCommentResponse>>()
+        call.enqueue(DefaultCallback(listener))
+        return listener
+    }
+
+    fun getMeme(memeId: Int): MutableLiveData<Resource<GetMemeResponse>>{
+        val call = adapter.getMeme(memeId)
+        val listener = MutableLiveData<Resource<GetMemeResponse>>()
+        call.enqueue(DefaultCallback(listener))
+        return listener
+    }
 }

@@ -3,7 +3,6 @@ package com.dovoo.memesnetwork.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +22,9 @@ class MemesDetailFragment : Fragment() {
     private val binding get() = _binding!!
     val currentVideoItem by lazy {
         arguments?.getParcelable<DirectLinkItemTest>("item")
+    }
+    val defaultCommentPage by lazy {
+        arguments?.getBoolean("defaultCommentPage")
     }
     val listFragment: ArrayList<Fragment> = ArrayList()
 
@@ -48,22 +50,33 @@ class MemesDetailFragment : Fragment() {
         loadAds(requireContext(), binding.adView)
         binding.linBtnBack.setOnClickListener { findNavController().popBackStack() }
         binding.viewPager.offscreenPageLimit = 2
-            binding.viewPager.adapter = memesDetailViewPagerAdapter
-            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-                when (position) {
-                    0 -> tab.text = getString(R.string.memes)
-                    1 -> tab.text = getString(R.string.comments)
-                    else -> tab.text = getString(R.string.unknown)
-                }
-            }.attach()
+
         onResult()
+
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.viewPager.adapter = memesDetailViewPagerAdapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = getString(R.string.memes)
+                1 -> tab.text = getString(R.string.comments)
+                else -> tab.text = getString(R.string.unknown)
+            }
+        }.attach()
+        if (defaultCommentPage == true) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.viewPager.setCurrentItem(1, false)
+            }, 100)
+        }
     }
 
     private fun onResult() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("openCommentTab")
             ?.observe(viewLifecycleOwner, {
-                if(it) {
+                if (it) {
                     Handler(Looper.getMainLooper()).postDelayed({
                         binding.viewPager.setCurrentItem(1, false)
                     }, 100)

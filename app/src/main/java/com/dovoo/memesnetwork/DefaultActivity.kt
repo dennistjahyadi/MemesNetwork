@@ -2,17 +2,28 @@ package com.dovoo.memesnetwork
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.findNavController
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
+import com.dovoo.memesnetwork.model.Notification
+import com.dovoo.memesnetwork.model.Status
+import com.dovoo.memesnetwork.utils.GlobalFunc
+import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import java.util.*
@@ -22,10 +33,14 @@ class DefaultActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private val ACTIVITY_RESULT_SECTION = 2
     lateinit var storage: FirebaseStorage
+    val generalViewModel: GeneralViewModel by viewModels()
+    lateinit var navHostFragment: FragmentContainerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_default)
+        navHostFragment = findViewById(R.id.nav_host_fragment)
+
         FirebaseApp.initializeApp(this)
         storage = Firebase.storage("gs://memes-network-1554020980788.appspot.com")
 //        storage = FirebaseStorage.getInstance()
@@ -50,21 +65,89 @@ class DefaultActivity : AppCompatActivity() {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
         MobileAds.initialize(this, resources.getString(R.string.admob_app_id))
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            if (GlobalFunc.isLogin(applicationContext)) {
+                val userId = GlobalFunc.getLoggedInUserId(applicationContext)
+                generalViewModel.setFirebaseToken(userId, token)
+            }
+        })
     }
 
-    fun uploadProfilePicUri(uri: Uri){
-        // Create a storage reference from our app
-        val storageRef = storage.reference
-
-        val profilePicRef = storageRef.child("profilepicture/" + UUID.randomUUID())
-
-        var uploadTask = profilePicRef.putFile(uri)
-        uploadTask.addOnFailureListener {
-
-        }.addOnSuccessListener { taskSnapshot ->
-
+    override fun onStart() {
+        super.onStart()
+        val title = intent.getStringExtra("title")
+        val messages = intent.getStringExtra("messages")
+        val iconUrl = intent.getStringExtra("iconUrl")
+        val notifType = intent.getStringExtra("notifType")
+        val memeId = intent.getStringExtra("memeId")
+        val userId = intent.getStringExtra("userId")
+        val commentId = intent.getStringExtra("commentId")
+        when {
+            notifType.equals(Notification.TYPE_FOLLOWING) -> {
+                try {
+                    val bundle = bundleOf("user_id" to userId!!.toInt())
+                    navHostFragment.findNavController().navigate(R.id.userFragment, bundle)
+                } catch (ex: Exception) {
+                }
+            }
+            notifType.equals(Notification.TYPE_MEME_COMMENT) -> {
+                try {
+                    getMeme(memeId!!.toInt())
+                } catch (ex: Exception) {
+                }
+            }
+            notifType.equals(Notification.TYPE_SUB_COMMENT) -> {
+                try {
+                    getComment(commentId!!.toInt())
+                } catch (ex: Exception) {
+                }
+            }
         }
-
+        intent.removeExtra("notifType")
+        intent.removeExtra("memeId")
+        intent.removeExtra("userId")
+        intent.removeExtra("commentId")
+        intent.removeExtra("title")
+        intent.removeExtra("messages")
+        intent.removeExtra("iconUrl")
     }
+
+    private fun getComment(commentId: Int) {
+        generalViewModel.getComment(commentId).observe(this, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    val comment = it.data?.comment
+                    comment?.current_datetime = it.data?.current_datetime
+                    val bundle = bundleOf("main_comment" to comment)
+                    navHostFragment.findNavController()
+                        .navigate(R.id.commentDetailsFragment, bundle)
+                }
+            }
+        })
+    }
+
+    private fun getMeme(memeId: Int) {
+        generalViewModel.getMeme(memeId).observe(this, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    try {
+                        val bundle = bundleOf("item" to DirectLinkItemTest(it.data!!.meme),
+                            "defaultCommentPage" to true
+                        )
+                        navHostFragment.findNavController().navigate(R.id.memesDetailFragment, bundle)
+                    }catch (ex: Exception){}
+                }
+            }
+        })
+    }
+
 
 }

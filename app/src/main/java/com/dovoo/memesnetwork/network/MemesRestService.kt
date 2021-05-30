@@ -104,4 +104,17 @@ interface MemesRestService {
         @Query("offset") offset: Int,
         @Query("user_id") userId: Int
     ): Call<FetchNotificationsResponse>
+
+    @POST("v1/set-firebase-token")
+    fun setFirebaseToken(@Body request: SetFirebaseTokenRequest): Call<BaseResponse>
+
+    @GET("v1/get-meme")
+    fun getMeme(
+        @Query("meme_id") memeId: Int
+    ): Call<GetMemeResponse>
+
+    @GET("v1/get-comment")
+    fun getComment(
+        @Query("comment_id") commentId: Int
+    ): Call<GetCommentResponse>
 }

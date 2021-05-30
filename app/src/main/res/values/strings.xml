@@ -58,4 +58,6 @@
     <string name="follow">Follow</string>
     <string name="followed">Followed</string>
     <string name="notifications">Notifications</string>
+    <string name="channel_id_comment_notif">CommentNotification</string>
+    <string name="channel_id_following_notif">FollowingNotification</string>
 </resources>
