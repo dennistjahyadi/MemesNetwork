@@ -18,21 +18,19 @@ import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager
+import com.dovoo.memesnetwork.databinding.FragmentFollowingMemesBinding
 import com.dovoo.memesnetwork.databinding.FragmentMainBinding
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
-import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
-import com.squareup.picasso.Picasso
 import im.ene.toro.widget.PressablePlayerSelector
 import org.json.JSONException
-import java.util.*
+import java.util.ArrayList
 
-class MainFragment : Fragment() {
-    private var _binding: FragmentMainBinding? = null
+class FollowingMemesFragment: Fragment() {
+    private var _binding: FragmentFollowingMemesBinding? = null
     private val binding get() = _binding!!
-
     private var selectedSection: String? = null
     private lateinit var layoutManager: MyLinearLayoutManager
     private lateinit var adapter: MemesRecyclerViewAdapter
@@ -42,7 +40,7 @@ class MainFragment : Fragment() {
 
     val likeOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MemesViewHolder
-        if (!getPrefs(requireContext()).getBoolean(
+        if (!SharedPreferenceUtils.getPrefs(requireContext()).getBoolean(
                 SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
                 false
             )
@@ -79,7 +77,8 @@ class MainFragment : Fragment() {
         linBtnLike: LinearLayout
     ) {
         val userId =
-            getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
+            SharedPreferenceUtils.getPrefs(requireContext())
+                .getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
         var isLiked = data.isLiked
 
         if (isLiked == 1) {
@@ -115,6 +114,8 @@ class MainFragment : Fragment() {
                 }
             }
         })
+
+
     }
 
     override fun onCreateView(
@@ -122,7 +123,7 @@ class MainFragment : Fragment() {
         viewGroup: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMainBinding.inflate(inflater, viewGroup, false)
+        _binding = FragmentFollowingMemesBinding.inflate(inflater, viewGroup, false)
 
         layoutManager = MyLinearLayoutManager(context)
 
@@ -175,59 +176,23 @@ class MainFragment : Fragment() {
                 }
             }
         })
-        binding.includeToolbar.ivBtnProfile.setOnClickListener {
-            if (GlobalFunc.isLogin(requireContext())) findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
-            else findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+        binding.includeToolbar.linBtnBack.setOnClickListener {
+            findNavController().popBackStack()
         }
-
-        binding.fabAdd.setOnClickListener {
-            if (GlobalFunc.isLogin(requireContext())) findNavController().navigate(R.id.action_mainFragment_to_addMemeFragment)
-            else findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+        binding.tvMenuHome.setOnClickListener {
+            findNavController().popBackStack()
         }
-
-        binding.includeToolbar.linBtnFilter.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_filterFragment)
-        }
-        binding.includeToolbar.conNotification.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_notificationFragment)
-        }
-        binding.tvMenuFollowing.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_followingMemesFragment)
-        }
-
         if (directLinkItemTestList.isEmpty()) fetchData(0)
 
-        onResult()
-
         return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if(GlobalFunc.getNotifCount(requireContext())>0){
-            binding.includeToolbar.dotBadge.visibility = View.VISIBLE
-        }else{
-            binding.includeToolbar.dotBadge.visibility = View.GONE
-        }
-    }
-
-    private fun onResult() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("selectedSection")
-            ?.observe(viewLifecycleOwner, {
-                selectedSection = it
-                fetchData(0)
-            })
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("loginSuccess")
-            ?.observe(viewLifecycleOwner, {
-                if (it) fetchData(0)
-            })
     }
 
     private fun fetchData(offset: Int) {
         if (offset == 0) {
             directLinkItemTestList.clear()
         }
-        val userId = getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
+        val userId = SharedPreferenceUtils.getPrefs(requireContext())
+            .getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
         generalViewModel.fetchMemesHome(offset, userId, selectedSection)
     }
 
@@ -237,5 +202,4 @@ class MainFragment : Fragment() {
 //        selector = null
         super.onDestroyView()
     }
-
 }

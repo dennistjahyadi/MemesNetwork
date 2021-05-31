@@ -41,18 +41,6 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="defaultActivity">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="223" />
-                            <option name="y" value="1164" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="filterFragment">
                     <value>
                       <LayoutPositions>
@@ -60,6 +48,18 @@
                           <Point>
                             <option name="x" value="45" />
                             <option name="y" value="-381" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="followingMemesFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="76" />
+                            <option name="y" value="790" />
                           </Point>
                         </option>
                       </LayoutPositions>

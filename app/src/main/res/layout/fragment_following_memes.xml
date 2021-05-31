@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/include_toolbar"
-        layout="@layout/custom_toolbar_home"
+        layout="@layout/custom_toolbar_following"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,19 +40,11 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@color/backgroundMain"
+        android:layout_marginBottom="@dimen/dimen_4"
         ads:adSize="BANNER"
         ads:adUnitId="@string/admob_banner_ad_unit_id"
-        ads:layout_constraintTop_toBottomOf="@id/include_toolbar" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_16"
-        android:backgroundTint="@color/lightgreen500"
-        android:src="@drawable/ic_plus"
         app:layout_constraintBottom_toTopOf="@id/con_menu"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_menu"
@@ -74,9 +66,9 @@
             android:layout_height="0dp"
             android:gravity="center"
             android:text="@string/home"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/grey700"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/tvMenuFollowing"
             app:layout_constraintTop_toBottomOf="@id/border" />
@@ -87,9 +79,9 @@
             android:layout_height="0dp"
             android:gravity="center"
             android:text="@string/following"
-            android:textColor="@color/grey700"
-            android:textStyle="bold"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/tvMenuHome"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/border" />
