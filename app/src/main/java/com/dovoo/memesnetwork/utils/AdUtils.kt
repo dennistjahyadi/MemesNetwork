@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.View
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.InterstitialAd
 
 object AdUtils {
     @JvmStatic
@@ -21,12 +20,12 @@ object AdUtils {
         }
     }
 
-    @JvmStatic
-    fun loadInterstitialAds(context: Context, interstitialAd: InterstitialAd) {
-        val isPremiumMember = SharedPreferenceUtils.getPrefs(context)
-            .getBoolean(SharedPreferenceUtils.PREFERENCES_PREMIUM_MEMBER, false)
-        if (!isPremiumMember) {
-            interstitialAd.loadAd(AdRequest.Builder().build())
-        }
-    }
+//    @JvmStatic
+//    fun loadInterstitialAds(context: Context, interstitialAd: InterstitialAd) {
+//        val isPremiumMember = SharedPreferenceUtils.getPrefs(context)
+//            .getBoolean(SharedPreferenceUtils.PREFERENCES_PREMIUM_MEMBER, false)
+//        if (!isPremiumMember) {
+//            interstitialAd.loadAd(AdRequest.Builder().build())
+//        }
+//    }
 }

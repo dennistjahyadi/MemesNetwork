@@ -19,17 +19,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.BuildConfig
 import com.dovoo.memesnetwork.R
-import com.dovoo.memesnetwork.activities.CommentActivity
 import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
-import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.github.chrisbanes.photoview.PhotoViewAttacher
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
 import com.krishna.fileloader.FileLoader
 import com.krishna.fileloader.listener.FileRequestListener
 import com.krishna.fileloader.pojo.FileResponse
 import com.krishna.fileloader.request.FileLoadRequest
 import im.ene.toro.widget.PressablePlayerSelector
 import java.io.File
+
 
 class MemesRecyclerViewAdapter(
     private val mContext: Context,
@@ -44,6 +45,8 @@ class MemesRecyclerViewAdapter(
             : Float
     var finalHeight: Float
     var maxHeightVideo: Float
+    val adRequest: AdRequest = AdRequest.Builder().build()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemesViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(MemesViewHolder.LAYOUT_RES, parent, false)
@@ -57,6 +60,17 @@ class MemesRecyclerViewAdapter(
         // public static BaseVideoItem currentVideoItem;
         val directLinkVideoItem = directLinkItemTestList[position]
         viewHolder.data = directLinkVideoItem
+
+        if ((0..10).random() > 7) {
+            viewHolder.adView.loadAd(adRequest)
+            viewHolder.adView.adListener = object : AdListener() {
+                override fun onAdLoaded() {
+                    viewHolder.adView.visibility = View.VISIBLE
+                }
+            }
+
+        } else viewHolder.adView.visibility = View.GONE
+
         if (directLinkVideoItem.getmHeight() > directLinkVideoItem.getmWidth()) {
             // if video is potrait
             val ratio = directLinkVideoItem.getmHeight().toFloat() / directLinkVideoItem.getmWidth()
@@ -77,14 +91,15 @@ class MemesRecyclerViewAdapter(
         directLinkVideoItem.user?.let {
             viewHolder.layoutUser.visibility = View.VISIBLE
             viewHolder.tvUsername.text = directLinkVideoItem.user?.username
-            Glide.with(mContext).load(directLinkVideoItem.user?.photo_url).placeholder(R.drawable.funny_user2).into(viewHolder.ivProfilePic)
-        }?: run {
+            Glide.with(mContext).load(directLinkVideoItem.user?.photo_url)
+                .placeholder(R.drawable.funny_user2).into(viewHolder.ivProfilePic)
+        } ?: run {
             viewHolder.layoutUser.visibility = View.GONE
         }
 
-        if(TextUtils.isEmpty(directLinkVideoItem.mTitle.trim())){
+        if (TextUtils.isEmpty(directLinkVideoItem.mTitle.trim())) {
             viewHolder.tvTitle.visibility = View.GONE
-        }else viewHolder.tvTitle.visibility = View.VISIBLE
+        } else viewHolder.tvTitle.visibility = View.VISIBLE
 
         val layoutParams = viewHolder.relativeLayout.layoutParams
         layoutParams.width = finalWidth.toInt()
@@ -125,6 +140,8 @@ class MemesRecyclerViewAdapter(
         } else {
             viewHolder.ivBtnLike.setImageResource(R.drawable.ic_thumbs_up)
         }
+
+
         viewHolder.ivBtnShare.setOnClickListener(View.OnClickListener {
             if (ContextCompat.checkSelfPermission(
                     mContext,

@@ -58,7 +58,9 @@ class InsertUsernameFragment : Fragment() {
                             val token = task.result
                             if (GlobalFunc.isLogin(requireContext())) {
                                 val userId = GlobalFunc.getLoggedInUserId(requireContext())
-                                generalViewModel.setFirebaseToken(userId, token)
+                                try {
+                                    generalViewModel.setFirebaseToken(userId, token!!)
+                                }catch (ex: Exception){}
                             }
                         })
                     SharedPreferenceUtils.insertUsernamePrefs(

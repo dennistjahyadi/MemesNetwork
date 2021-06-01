@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        MobileAds.initialize(this, resources.getString(R.string.admob_app_id))
+       // MobileAds.initialize(this, resources.getString(R.string.admob_app_id))
     }
 
     private fun checkUserLoggedIn() {

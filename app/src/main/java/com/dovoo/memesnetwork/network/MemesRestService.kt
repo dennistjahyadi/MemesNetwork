@@ -16,6 +16,12 @@ interface MemesRestService {
         @Query("post_section") postSection: String?
     ): Call<MemesResponse>
 
+    @GET("v1/fetch-memes-just-following")
+    fun fetchMemesFollowing(
+        @Query("offset") offset: Int,
+        @Query("user_id") userId: Int
+    ): Call<MemesResponse>
+
     @GET("v1/fetch-mymemes")
     fun fetchMyMemes(
         @Query("offset") offset: Int,

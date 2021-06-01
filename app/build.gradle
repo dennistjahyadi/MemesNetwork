@@ -85,7 +85,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.10.3'
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
 
-    implementation 'com.google.android.gms:play-services-ads:19.7.0'
+    implementation 'com.google.android.gms:play-services-ads:20.1.0'
     implementation 'com.android.billingclient:billing:3.0.0'
     implementation 'com.github.kk121:File-Loader:1.2'
 

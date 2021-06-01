@@ -4,17 +4,30 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_row"
     android:background="@color/backgroundMain"
     android:orientation="vertical">
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_centerHorizontal="true"
+        android:background="@color/backgroundMain"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/admob_banner_ad_unit_id"
+        ads:layout_constraintBottom_toTopOf="@id/linTop"
+        ads:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/linTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/adView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,11 +74,11 @@
                     android:id="@+id/ivProfilePic"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/dimen_16"
                     android:background="@drawable/img_circle_bg"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:src="@drawable/funny_user1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -183,7 +196,7 @@
         android:id="@+id/linBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/dimen_12"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -277,7 +290,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/margin_row"
+        android:layout_marginVertical="@dimen/dimen_8"
         android:background="@color/line_separator"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

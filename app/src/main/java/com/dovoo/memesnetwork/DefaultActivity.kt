@@ -16,6 +16,7 @@ import com.dovoo.memesnetwork.model.Notification
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -64,7 +65,12 @@ class DefaultActivity : AppCompatActivity() {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        MobileAds.initialize(this, resources.getString(R.string.admob_app_id))
+        MobileAds.initialize(
+            this
+        ) {
+
+        }
+
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -76,7 +82,9 @@ class DefaultActivity : AppCompatActivity() {
             val token = task.result
             if (GlobalFunc.isLogin(applicationContext)) {
                 val userId = GlobalFunc.getLoggedInUserId(applicationContext)
-                generalViewModel.setFirebaseToken(userId, token)
+                try {
+                    generalViewModel.setFirebaseToken(userId, token!!)
+                }catch (ex: Exception){}
             }
         })
     }
@@ -147,11 +155,16 @@ class DefaultActivity : AppCompatActivity() {
             when (it.status) {
                 Status.SUCCESS -> {
                     try {
-                        val bundle = bundleOf("item" to DirectLinkItemTest(it.data!!.meme),
+                        val bundle = bundleOf(
+                            "item" to DirectLinkItemTest(it.data!!.meme),
                             "defaultCommentPage" to true
                         )
-                        navHostFragment.findNavController().navigate(R.id.memesDetailFragment, bundle)
-                    }catch (ex: Exception){}
+                        navHostFragment.findNavController().navigate(
+                            R.id.memesDetailFragment,
+                            bundle
+                        )
+                    } catch (ex: Exception) {
+                    }
                 }
             }
         })

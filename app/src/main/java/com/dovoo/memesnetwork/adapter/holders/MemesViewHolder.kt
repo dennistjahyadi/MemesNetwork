@@ -18,6 +18,7 @@ import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.gms.ads.AdView
 import im.ene.toro.ToroPlayer
 import im.ene.toro.ToroUtil
 import im.ene.toro.exoplayer.ExoPlayerDispatcher
@@ -49,6 +50,7 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
     var ivBtnShare: ImageView
     var layoutUser: ConstraintLayout
     var loadingBarVideo: SpinKitView
+    var adView: AdView
     var listener: Playable.EventListener? = null
     lateinit var data: DirectLinkItemTest
     override fun getPlayerView(): View {
@@ -171,6 +173,7 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
         ivIconSound = itemView.findViewById(R.id.ivIconSound)
         tvUsername.tag = this
         ivProfilePic.tag = this
+        adView = itemView.findViewById(R.id.adView)
         playerView.setOnTouchListener(OnTouchListener { _, event ->
             if (playerView.player == null) {
                 return@OnTouchListener false

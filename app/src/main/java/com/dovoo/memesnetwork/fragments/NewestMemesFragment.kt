@@ -10,13 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.dovoo.memesnetwork.MainActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.MemesRecyclerViewAdapter
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
@@ -25,12 +23,9 @@ import com.dovoo.memesnetwork.billing.BillingManager.BillingUpdatesListener
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager
 import com.dovoo.memesnetwork.utils.AdUtils.loadAds
-import com.dovoo.memesnetwork.utils.AdUtils.loadInterstitialAds
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.InterstitialAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import im.ene.toro.widget.Container
 import im.ene.toro.widget.PressablePlayerSelector
@@ -48,7 +43,8 @@ class NewestMemesFragment : Fragment(), BillingUpdatesListener {
 
     //private IInAppBillingService mService;
     private var billingManager: BillingManager? = null
-    private var mInterstitialAd: InterstitialAd? = null
+
+    //    private var mInterstitialAd: InterstitialAd? = null
     private var mServiceConn: ServiceConnection? = null
     private var mAdView: AdView? = null
     lateinit var fab: FloatingActionButton
@@ -69,23 +65,23 @@ class NewestMemesFragment : Fragment(), BillingUpdatesListener {
         billingManager = BillingManager(this)
         setupBillingService()
         mAdView = view.findViewById(R.id.adView)
-        mInterstitialAd = InterstitialAd(context)
-        mInterstitialAd!!.adUnitId = "ca-app-pub-4908922088432819/1640263467"
-        mInterstitialAd!!.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-                mInterstitialAd!!.show()
-            }
-
-            override fun onAdClosed() {
-                // Code to be executed when the interstitial ad is closed.
-                Toast.makeText(
-                    context,
-                    "To remove ads, click button remove ads on your profile",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+//        mInterstitialAd = InterstitialAd(context)
+//        mInterstitialAd!!.adUnitId = "ca-app-pub-4908922088432819/1640263467"
+//        mInterstitialAd!!.adListener = object : AdListener() {
+//            override fun onAdLoaded() {
+//                // Code to be executed when an ad finishes loading.
+//                mInterstitialAd!!.show()
+//            }
+//
+//            override fun onAdClosed() {
+//                // Code to be executed when the interstitial ad is closed.
+//                Toast.makeText(
+//                    context,
+//                    "To remove ads, click button remove ads on your profile",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            }
+//        }
         container = view.findViewById(R.id.player_container)
         loadingBar = view.findViewById(R.id.loadingBar)
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
@@ -184,7 +180,7 @@ class NewestMemesFragment : Fragment(), BillingUpdatesListener {
         val max = 100
         val randomNum = Random().nextInt(max - min + 1) + min
         if (randomNum > 30) {
-            loadInterstitialAds(requireContext(), mInterstitialAd!!)
+//            loadInterstitialAds(requireContext(), mInterstitialAd!!)
         }
         if (offset == 0) {
             directLinkItemTestList.clear()
@@ -270,6 +266,6 @@ class NewestMemesFragment : Fragment(), BillingUpdatesListener {
 
     override fun onSubscriptionPurchaseUpdated() {
         loadAds(requireContext(), mAdView!!)
-        loadInterstitialAds(requireContext(), mInterstitialAd!!)
+//        loadInterstitialAds(requireContext(), mInterstitialAd!!)
     }
 }

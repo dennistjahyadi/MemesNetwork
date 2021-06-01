@@ -14,6 +14,7 @@ class GeneralViewModel : ViewModel() {
     private val adapter = MemesRestAdapter.apiRestService
 
     var memesHome = MutableLiveData<Resource<MemesResponse>>()
+    var memesFollowing = MutableLiveData<Resource<MemesResponse>>()
 
     var userMemes = MutableLiveData<Resource<MemesResponse>>()
 
@@ -29,6 +30,12 @@ class GeneralViewModel : ViewModel() {
         // Do an asynchronous operation to fetch users.
         val call = adapter.fetchMemes(offset, userId, postSection)
         call.enqueue(DefaultCallback(memesHome))
+    }
+
+    fun fetchMemesFollowing(offset: Int, userId: Int) {
+        // Do an asynchronous operation to fetch users.
+        val call = adapter.fetchMemesFollowing(offset, userId)
+        call.enqueue(DefaultCallback(memesFollowing))
     }
 
     fun fetchUserMemes(offset: Int, userId: Int, postSection: String?) {

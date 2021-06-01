@@ -31,7 +31,6 @@ import java.util.ArrayList
 class FollowingMemesFragment: Fragment() {
     private var _binding: FragmentFollowingMemesBinding? = null
     private val binding get() = _binding!!
-    private var selectedSection: String? = null
     private lateinit var layoutManager: MyLinearLayoutManager
     private lateinit var adapter: MemesRecyclerViewAdapter
     private lateinit var selector: PressablePlayerSelector
@@ -151,7 +150,7 @@ class FollowingMemesFragment: Fragment() {
             binding.swipeRefreshLayout.visibility = View.GONE
             fetchData(0)
         }
-        generalViewModel.memesHome.observe(viewLifecycleOwner, {
+        generalViewModel.memesFollowing.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
                     // do anything with response
@@ -193,7 +192,7 @@ class FollowingMemesFragment: Fragment() {
         }
         val userId = SharedPreferenceUtils.getPrefs(requireContext())
             .getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)
-        generalViewModel.fetchMemesHome(offset, userId, selectedSection)
+        generalViewModel.fetchMemesFollowing(offset, userId)
     }
 
     override fun onDestroyView() {
