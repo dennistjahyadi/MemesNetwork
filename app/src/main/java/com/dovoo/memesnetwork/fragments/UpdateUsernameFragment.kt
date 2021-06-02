@@ -14,12 +14,10 @@ import com.dovoo.memesnetwork.databinding.FragmentInsertUsernameBinding
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
-import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
-class InsertUsernameFragment : Fragment() {
+class UpdateUsernameFragment : Fragment() {
 
     private var _binding: FragmentInsertUsernameBinding? = null
     private val binding get() = _binding!!
@@ -29,7 +27,7 @@ class InsertUsernameFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentInsertUsernameBinding.inflate(inflater, container, false)
         updateUsernameListener()
         binding.linBtnBack.setOnClickListener {
@@ -51,14 +49,10 @@ class InsertUsernameFragment : Fragment() {
                     )
                     Toast.makeText(
                         requireContext(),
-                        "Welcome ${it.data?.user?.username} :)",
+                        "Update complete ${it.data?.user?.username} :)",
                         Toast.LENGTH_LONG
                     ).show()
-                    findNavController().getBackStackEntry(R.id.mainFragment).savedStateHandle.set(
-                        "loginSuccess",
-                        true
-                    )
-                    findNavController().popBackStack(R.id.mainFragment, false)
+                    findNavController().popBackStack()
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
@@ -68,7 +62,7 @@ class InsertUsernameFragment : Fragment() {
     }
 
     private fun updateUsername() {
-        val userId = getPrefs(requireContext()).getInt(
+        val userId = SharedPreferenceUtils.getPrefs(requireContext()).getInt(
             SharedPreferenceUtils.PREFERENCES_USER_ID,
             -1
         )

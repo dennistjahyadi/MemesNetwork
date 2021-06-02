@@ -51,6 +51,7 @@
     <color name="green700">#388E3C</color>
     <color name="lightgreen700">#689F38</color>
     <color name="lime700">#AFB42B</color>
+    <color name="green_light">#2ecc71</color>
 
     <color name="line_separator">@color/grey900</color>
 

@@ -1,6 +1,7 @@
 package com.dovoo.memesnetwork.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,8 @@ import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils.getPrefs
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.picasso.Picasso
 import im.ene.toro.widget.PressablePlayerSelector
 import org.json.JSONException
@@ -219,6 +222,28 @@ class MainFragment : Fragment() {
             })
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("loginSuccess")
             ?.observe(viewLifecycleOwner, {
+                FirebaseMessaging.getInstance().token.addOnCompleteListener(
+                    OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w(
+                                "TAG",
+                                "Fetching FCM registration token failed",
+                                task.exception
+                            )
+                            return@OnCompleteListener
+                        }
+
+                        // Get new FCM registration token
+                            val token = task.result
+                            if (GlobalFunc.isLogin(requireContext())) {
+                                val userId = GlobalFunc.getLoggedInUserId(requireContext())
+                                try {
+                                    generalViewModel.setFirebaseToken(userId, token!!)
+                                } catch (ex: Exception) {
+                                }
+                            }
+
+                    })
                 if (it) fetchData(0)
             })
     }

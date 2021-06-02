@@ -9,6 +9,12 @@
 
         <item name="android:fontFamily">@font/font</item>
         <item name="fontFamily">@font/font</item>
+        <!-- Active thumb color & Active track color(30% transparency) -->
+        <item name="colorControlActivated">@color/green_light</item>
+        <!-- Inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/grey300</item>
+        <!-- Inactive track color(30% transparency) -->
+        <item name="android:colorForeground">@color/grey700</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -32,5 +38,4 @@
         <item name="android:textColorHighlight">@color/red500</item>
         <item name="android:textColorLink">@color/red500</item>
     </style>
-
 </resources>

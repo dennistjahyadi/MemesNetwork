@@ -7,20 +7,18 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.dovoo.memesnetwork.DefaultActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.model.Notification
 import com.dovoo.memesnetwork.model.SetFirebaseTokenRequest
 import com.dovoo.memesnetwork.network.MemesRestAdapter
 import com.dovoo.memesnetwork.utils.GlobalFunc
+import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -109,8 +107,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .load(iconUrl)
                 .submit(100, 100)
                 .get()
-        }catch (ex: Exception){
-            if(notifType.equals(Notification.TYPE_FOLLOWING)) {
+        } catch (ex: Exception) {
+            if (notifType.equals(Notification.TYPE_FOLLOWING)) {
                 bitmap = Glide.with(this)
                     .asBitmap()
                     .load(R.drawable.funny_user2)
@@ -125,8 +123,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
-        if(!messages.isNullOrEmpty()) notificationBuilder.setContentText(messages)
-        if(bitmap != null) notificationBuilder.setLargeIcon(bitmap)
+        if (!messages.isNullOrEmpty()) notificationBuilder.setContentText(messages)
+        if (bitmap != null) notificationBuilder.setLargeIcon(bitmap)
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -141,10 +139,34 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        if (isAllowNotif(notifType)) notificationManager.notify(
+            0 /* ID of notification */,
+            notificationBuilder.build()
+        )
     }
 
-    private fun showNotif(){
+    private fun isAllowNotif(notifType: String?): Boolean {
+        var allow = false
+        if (notifType.equals(Notification.TYPE_FOLLOWING) && SharedPreferenceUtils.isEnableNotifFollowing(
+                applicationContext
+            )
+        ) {
+            allow = true
+        } else if (notifType.equals(Notification.TYPE_MEME_COMMENT) && SharedPreferenceUtils.isEnableNotifMemesComment(
+                applicationContext
+            )
+        ) {
+            allow = true
+        } else if (notifType.equals(Notification.TYPE_SUB_COMMENT) && SharedPreferenceUtils.isEnableNotifCommentReply(
+                applicationContext
+            )
+        ) {
+            allow = true
+        }
+        return allow
+    }
+
+    private fun showNotif() {
 
     }
 

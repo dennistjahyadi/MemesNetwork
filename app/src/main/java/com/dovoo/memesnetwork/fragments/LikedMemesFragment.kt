@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
@@ -31,8 +33,10 @@ class LikedMemesFragment : Fragment() {
     lateinit var adapter: LikedMemesAdapter
 
     val memesOnClickListener = View.OnClickListener {
+        if(parentFragment is ProfileFragment)  (parentFragment as ProfileFragment).lastPageIndex = 1
         val memesViewHolder = it.tag as LikedMemesAdapter.LikedMemesViewHolder
-
+        val bundle = bundleOf("item" to memesViewHolder.data)
+        findNavController().navigate(R.id.action_profileFragment_to_memesDetailFragment, bundle)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -158,7 +162,7 @@ class LikedMemesFragment : Fragment() {
 
         class LikedMemesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val ivImage: ImageView
-            lateinit var data: Memes
+            lateinit var data: DirectLinkItemTest
 
             init {
                 ivImage = itemView.findViewById(R.id.iv_image)
@@ -178,6 +182,7 @@ class LikedMemesFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             holder as LikedMemesViewHolder
             val data = memesList[position]
+            holder.data = data
             holder.itemView.setOnClickListener(onClickListener)
             Glide.with(context).load(data.getmCoverUrl()).centerCrop().into(holder.ivImage)
         }

@@ -16,6 +16,9 @@ object SharedPreferenceUtils {
     const val PREFERENCES_USER_PASSWORD = "user_password"
     const val PREFERENCES_PREMIUM_MEMBER = "premium_member"
     const val PREFERENCES_NOTIF_COUNT = "notif_count"
+    const val PREFERENCES_NOTIF_FOLLOWING = "notif_following"
+    const val PREFERENCES_NOTIF_MEMES_COMMENT = "notif_memes_comment"
+    const val PREFERENCES_NOTIF_COMMENT_REPLY = "notif_comment_reply"
 
     @JvmStatic
     fun getPrefs(context: Context): SharedPreferences {
@@ -87,6 +90,36 @@ object SharedPreferenceUtils {
         prefsEditor.remove(PREFERENCES_USER_LOGIN)
         prefsEditor.remove(PREFERENCES_USER_PASSWORD)
         prefsEditor.apply()
+    }
+
+    @JvmStatic
+    fun isEnableNotifFollowing(context: Context): Boolean{
+        return getPrefs(context).getBoolean(PREFERENCES_NOTIF_FOLLOWING, true)
+    }
+
+    @JvmStatic
+    fun isEnableNotifMemesComment(context: Context): Boolean{
+        return getPrefs(context).getBoolean(PREFERENCES_NOTIF_MEMES_COMMENT, true)
+    }
+
+    @JvmStatic
+    fun isEnableNotifCommentReply(context: Context): Boolean{
+        return getPrefs(context).getBoolean(PREFERENCES_NOTIF_COMMENT_REPLY, true)
+    }
+
+    @JvmStatic
+    fun setNotifFollowing(context: Context, value: Boolean){
+        setPrefs(context, PREFERENCES_NOTIF_FOLLOWING, value)
+    }
+
+    @JvmStatic
+    fun setNotifMemesComment(context: Context, value: Boolean){
+        setPrefs(context, PREFERENCES_NOTIF_MEMES_COMMENT, value)
+    }
+
+    @JvmStatic
+    fun setNotifCommentReply(context: Context, value: Boolean){
+        setPrefs(context, PREFERENCES_NOTIF_COMMENT_REPLY, value)
     }
 
 

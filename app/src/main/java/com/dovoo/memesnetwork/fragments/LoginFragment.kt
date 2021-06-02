@@ -105,27 +105,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                                 "Welcome ${user.username} :)",
                                 Toast.LENGTH_LONG
                             ).show()
-                            FirebaseMessaging.getInstance().token.addOnCompleteListener(
-                                OnCompleteListener { task ->
-                                    if (!task.isSuccessful) {
-                                        Log.w(
-                                            "TAG",
-                                            "Fetching FCM registration token failed",
-                                            task.exception
-                                        )
-                                        return@OnCompleteListener
-                                    }
 
-                                    // Get new FCM registration token
-                                    val token = task.result
-                                    if (GlobalFunc.isLogin(requireContext())) {
-                                        val userId = GlobalFunc.getLoggedInUserId(requireContext())
-                                        try {
-                                            generalViewModel.setFirebaseToken(userId, token!!)
-                                        } catch (ex: Exception) {
-                                        }
-                                    }
-                                })
                             findNavController().previousBackStackEntry?.savedStateHandle?.set(
                                 "loginSuccess",
                                 true

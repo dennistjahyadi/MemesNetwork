@@ -7,11 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dovoo.memesnetwork.R
+import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.databinding.FragmentMyCommentsBinding
 import com.dovoo.memesnetwork.model.Comment
@@ -30,7 +34,38 @@ class MyCommentsFragment : Fragment() {
     val commentList: ArrayList<Comment> = ArrayList()
     lateinit var adapter: MyCommentsAdapter
 
-    val onClickListener = View.OnClickListener { }
+    val onClickListener = View.OnClickListener {
+        if(parentFragment is ProfileFragment)  (parentFragment as ProfileFragment).lastPageIndex = 2
+        val viewHolder = it.tag as MyCommentsAdapter.MyCommentsViewHolder
+        val data = viewHolder.data
+        viewHolder.itemView.isClickable = false
+        viewHolder.itemView.isEnabled = false
+        generalViewModel.getMeme(data.meme_id).observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    try {
+                        val bundle = bundleOf(
+                            "item" to DirectLinkItemTest(it.data!!.meme),
+                            "defaultCommentPage" to true
+                        )
+                        findNavController().navigate(
+                            R.id.action_profileFragment_to_memesDetailFragment,
+                            bundle
+                        )
+
+                    } catch (ex: Exception) {
+                    }
+                    viewHolder.itemView.isClickable = true
+                    viewHolder.itemView.isEnabled = true
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
+                    viewHolder.itemView.isClickable = true
+                    viewHolder.itemView.isEnabled = true
+                }
+            }
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,17 +95,23 @@ class MyCommentsFragment : Fragment() {
             fetchComments(0)
         }
 
-        if(commentList.isEmpty()) fetchComments(0)
+        if (commentList.isEmpty()) fetchComments(0)
         return binding.root
     }
 
-    private fun fetchComments(offset: Int){
-        if(offset==0)commentList.clear()
-        generalViewModel.fetchComments(offset, GlobalFunc.getLoggedInUserId(requireContext()), null, null, "desc").observe(viewLifecycleOwner, {
+    private fun fetchComments(offset: Int) {
+        if (offset == 0) commentList.clear()
+        generalViewModel.fetchComments(
+            offset,
+            GlobalFunc.getLoggedInUserId(requireContext()),
+            null,
+            null,
+            "desc"
+        ).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.comments?.let { comments ->
-                        comments.forEach {  comment ->
+                        comments.forEach { comment ->
                             comment.current_datetime = it.data.current_datetime
                             comment.subcomments?.forEach { subcomment ->
                                 subcomment.current_datetime = it.data.current_datetime
@@ -101,7 +142,7 @@ class MyCommentsFragment : Fragment() {
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-        class LikedMemesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        class MyCommentsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val tvComment: TextView
             val tvCreatedDate: TextView
             lateinit var data: Comment
@@ -122,12 +163,13 @@ class MyCommentsFragment : Fragment() {
                 parent,
                 false
             )
-            return LikedMemesViewHolder(view)
+            return MyCommentsViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            holder as LikedMemesViewHolder
+            holder as MyCommentsViewHolder
             val data = commentList[position]
+            holder.data = data
             holder.itemView.setOnClickListener(onClickListener)
             holder.tvComment.text = data.messages
             try {

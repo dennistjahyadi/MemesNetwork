@@ -1,20 +1,20 @@
 package com.dovoo.memesnetwork.fragments
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
@@ -38,11 +38,15 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     val generalViewModel: GeneralViewModel by viewModels()
     val listFragment: ArrayList<Fragment> = ArrayList()
     private lateinit var profileViewPagerAdapter: ProfileViewPagerAdapter
+    private lateinit var onPageChangeCallback: ViewPager2.OnPageChangeCallback
+    var lastPageIndex = 0
+    private var currentPagePosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragments()
         profileViewPagerAdapter = ProfileViewPagerAdapter(this, listFragment)
+
     }
 
     private fun initFragments() {
@@ -57,7 +61,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        checkUsername()
+        if(!GlobalFunc.isLogin(requireContext())) findNavController().popBackStack()
+        else checkUsername()
 
         binding.viewPager.adapter = profileViewPagerAdapter
         binding.viewPager.offscreenPageLimit = 1
@@ -69,20 +74,27 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 else -> tab.text = getString(R.string.unknown)
             }
         }.attach()
+        binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentPagePosition = position
+            }
+        })
         binding.lblFollowing.setOnClickListener(this)
         binding.lblFollowers.setOnClickListener(this)
         binding.tvFollowing.setOnClickListener(this)
         binding.tvFollowers.setOnClickListener(this)
+        binding.tvUsername.setOnClickListener(this)
+        binding.ivUsernameEdit.setOnClickListener(this)
+        binding.ivProfile.setOnClickListener(this)
+        binding.ivProfilepicEdit.setOnClickListener(this)
+
         binding.linBtnBack.setOnClickListener {
             findNavController().popBackStack()
         }
-        binding.tvBtnLogout.setOnClickListener {
-            doGoogleLogout()
-        }
-        binding.ivProfilepicEdit.setOnClickListener {
-            val photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.type = "image/*"
-            startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG)
+
+        binding.ivSettings.setOnClickListener{
+            findNavController().navigate(R.id.action_profileFragment_to_settingsFragment)
         }
         val photoUrl = SharedPreferenceUtils.getPrefs(requireContext()).getString(
             SharedPreferenceUtils.PREFERENCES_USER_PHOTO_URL,
@@ -109,28 +121,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         if (username.isNullOrEmpty()) {
             findNavController().navigate(R.id.action_profileFragment_to_insertUsernameFragment)
         } else binding.tvUsername.text = username
-    }
-
-    private fun doGoogleLogout() {
-        (activity as DefaultActivity).mGoogleSignInClient.signOut()
-            .addOnCompleteListener(activity as DefaultActivity) {
-                if (it.isComplete) {
-                    showDialogLogout()
-                }
-            }
-    }
-
-    fun showDialogLogout() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage(getString(R.string.logout_msg))
-            .setPositiveButton(getString(R.string.yes)) { _: DialogInterface, _: Int ->
-                SharedPreferenceUtils.removeUserPrefs(requireContext())
-                findNavController().popBackStack()
-            }
-            .setNegativeButton(getString(R.string.no)) { _, _ -> }
-        // Create the AlertDialog object and return it
-        builder.create()
-        builder.show()
     }
 
     fun uploadProfilePic(bitmap: Bitmap) {
@@ -235,19 +225,53 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             R.id.lbl_following, R.id.tv_following -> {
                 val i = Bundle()
                 i.putBoolean("isFollowing", true)
-                findNavController().navigate(R.id.action_profileFragment_to_userFollowingsFragment, i)
+                findNavController().navigate(
+                    R.id.action_profileFragment_to_userFollowingsFragment,
+                    i
+                )
             }
             R.id.lbl_followers, R.id.tv_followers -> {
                 val i = Bundle()
                 i.putBoolean("isFollowing", false)
-                findNavController().navigate(R.id.action_profileFragment_to_userFollowingsFragment, i)
+                findNavController().navigate(
+                    R.id.action_profileFragment_to_userFollowingsFragment,
+                    i
+                )
+            }
+            R.id.iv_profilepic_edit, R.id.ivProfile -> {
+                val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                photoPickerIntent.type = "image/*"
+                startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG)
+            }
+            R.id.tvUsername, R.id.ivUsernameEdit -> {
+                findNavController().navigate(R.id.action_profileFragment_to_updateUsernameFragment)
+
             }
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.viewPager.adapter = profileViewPagerAdapter
+        binding.viewPager.offscreenPageLimit = 1
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = getString(R.string.my_memes)
+                1 -> tab.text = getString(R.string.liked)
+                2 -> tab.text = getString(R.string.comments)
+                else -> tab.text = getString(R.string.unknown)
+            }
+        }.attach()
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.viewPager.setCurrentItem(lastPageIndex, false)
+        }, 100)
+    }
+
     override fun onStop() {
         super.onStop()
+        lastPageIndex = currentPagePosition
         binding.viewPager.adapter = null
     }
+
 
 }

@@ -21,6 +21,7 @@ import com.dovoo.memesnetwork.BuildConfig
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
+import com.dovoo.memesnetwork.utils.AdUtils
 import com.github.chrisbanes.photoview.PhotoViewAttacher
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -45,7 +46,6 @@ class MemesRecyclerViewAdapter(
             : Float
     var finalHeight: Float
     var maxHeightVideo: Float
-    val adRequest: AdRequest = AdRequest.Builder().build()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemesViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -62,7 +62,7 @@ class MemesRecyclerViewAdapter(
         viewHolder.data = directLinkVideoItem
 
         if ((0..10).random() > 7) {
-            viewHolder.adView.loadAd(adRequest)
+            AdUtils.loadAds(mContext, viewHolder.adView)
             viewHolder.adView.adListener = object : AdListener() {
                 override fun onAdLoaded() {
                     viewHolder.adView.visibility = View.VISIBLE

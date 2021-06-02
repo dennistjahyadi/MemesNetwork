@@ -33,14 +33,14 @@
                 android:src="@drawable/ic_arrow_circle_left" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvBtnEditProfile"
+        <ImageView
+            android:id="@+id/ivSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
+            android:layout_gravity="end"
             android:layout_marginEnd="16dp"
             android:padding="4dp"
-            android:text="@string/edit"
+            android:src="@drawable/ic_setting"
             android:textColor="@color/white" />
 
     </androidx.appcompat.widget.Toolbar>
@@ -73,6 +73,15 @@
         app:layout_constraintEnd_toEndOf="@+id/ivProfile"
         app:layout_constraintStart_toStartOf="@+id/ivProfile"
         app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
+    <ImageView
+        android:id="@+id/ivUsernameEdit"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_edit"
+        ads:layout_constraintBottom_toBottomOf="@id/tvUsername"
+        ads:layout_constraintTop_toTopOf="@id/tvUsername"
+        android:layout_marginLeft="@dimen/dimen_8"
+        ads:layout_constraintLeft_toRightOf="@id/tvUsername" />
 
     <TextView
         android:id="@+id/lbl_following"
@@ -140,114 +149,6 @@
         android:layout_height="0dp"
         ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintTop_toBottomOf="@id/tab_layout" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        ads:layout_constraintTop_toBottomOf="parent">
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_16"
-            android:orientation="horizontal"
-            ads:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_margin="4dp"
-                android:layout_weight="0.5"
-                android:background="@color/backgroundMain">
-
-                <TextView
-                    android:id="@+id/tvBtnLike"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/likes"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linComment"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_margin="4dp"
-            android:background="@color/backgroundMain"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-            <TextView
-                android:id="@+id/tvBtnComment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/comments"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linPrivacyPolicy"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_margin="4dp"
-            android:background="@color/backgroundMain"
-            app:layout_constraintTop_toBottomOf="@+id/linComment">
-
-            <TextView
-                android:id="@+id/tvBtnPrivacyPolicy"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/privacy_policy"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linSubscription"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_margin="4dp"
-            android:background="@color/backgroundMain"
-            app:layout_constraintTop_toBottomOf="@+id/linPrivacyPolicy">
-
-            <TextView
-                android:id="@+id/tvBtnSubscription"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/help_the_developer_remove_ads"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_medium" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_margin="4dp"
-            android:background="@color/backgroundMain"
-            app:layout_constraintTop_toBottomOf="@+id/linSubscription">
-
-            <TextView
-                android:id="@+id/tvBtnLogout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/logout"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/loading_upload"

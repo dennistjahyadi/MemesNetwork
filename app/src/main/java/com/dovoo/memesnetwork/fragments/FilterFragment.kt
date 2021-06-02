@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.databinding.FragmentFilterBinding
 import com.dovoo.memesnetwork.model.Section
 import com.dovoo.memesnetwork.model.Status
+import com.dovoo.memesnetwork.utils.AdUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 
 class FilterFragment : Fragment() {
@@ -40,6 +42,8 @@ class FilterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilterBinding.inflate(inflater, container, false)
+
+        AdUtils.loadAds(requireContext(), binding.adView)
         binding.rvSection.adapter = adapter
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.rvSection.layoutManager = layoutManager
@@ -64,7 +68,7 @@ class FilterFragment : Fragment() {
                     adapter.notifyDataSetChanged()
                 }
                 Status.ERROR -> {
-                    System.out.println("BBBBB: " + it.error?.message)
+                    Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
                 }
             }
         })

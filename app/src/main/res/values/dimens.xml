@@ -22,4 +22,5 @@
     <dimen name="dimen_12">12dp</dimen>
     <dimen name="dimen_32">32dp</dimen>
     <dimen name="dimen_64">64dp</dimen>
+    <dimen name="dimen_row_settings">45dp</dimen>
 </resources>

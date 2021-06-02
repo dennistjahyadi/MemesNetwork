@@ -32,6 +32,7 @@ class MyMemesFragment : Fragment() {
     lateinit var adapter: MyMemesAdapter
 
     val memesOnClickListener = View.OnClickListener {
+        if(parentFragment is ProfileFragment)  (parentFragment as ProfileFragment).lastPageIndex = 0
         val memesViewHolder = it.tag as MyMemesAdapter.MyMemesViewHolder
         val bundle = bundleOf("item" to memesViewHolder.data)
         findNavController().navigate(R.id.action_profileFragment_to_memesDetailFragment, bundle)
