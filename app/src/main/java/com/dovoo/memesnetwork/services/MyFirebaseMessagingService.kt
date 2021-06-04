@@ -76,7 +76,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val memeId = data["memeId"]
         val userId = data["userId"]
         val commentId = data["commentId"]
-
+        val notificationId = System.currentTimeMillis().toInt()
         val intent = Intent(this, DefaultActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra("title", title)
@@ -87,7 +87,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         intent.putExtra("userId", userId)
         intent.putExtra("commentId", commentId)
         val pendingIntent = PendingIntent.getActivity(
-            this, 0 /* Request code */, intent,
+            this, notificationId /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT
         )
 
@@ -140,7 +140,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         if (isAllowNotif(notifType)) notificationManager.notify(
-            0 /* ID of notification */,
+            notificationId,
             notificationBuilder.build()
         )
     }
