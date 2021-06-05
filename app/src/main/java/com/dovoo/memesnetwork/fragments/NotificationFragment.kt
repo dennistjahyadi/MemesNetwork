@@ -37,19 +37,25 @@ class NotificationFragment : Fragment() {
     val notificationOnClick = View.OnClickListener {
         val viewHolder = it.tag as NotificationAdapter.NotificationViewHolder
         val data = viewHolder.data
-        if(data.type.equals(Notification.TYPE_FOLLOWING)){
+        if(data.type == Notification.TYPE_FOLLOWING){
             val bundle = bundleOf("user_id" to data.user_id_from)
             findNavController().navigate(R.id.action_notificationFragment_to_userFragment, bundle)
-        }else if(data.type.equals(Notification.TYPE_MEME_COMMENT)){
+        }else if(data.type == Notification.TYPE_MEME_COMMENT){
             try {
                 val directLinkItemTest = DirectLinkItemTest(data.meme_obj!!)
                 val bundle = bundleOf("item" to directLinkItemTest)
                 findNavController().navigate(R.id.action_notificationFragment_to_memesDetailFragment, bundle)
             }catch (ex: Exception){}
-        }else if(data.type.equals(Notification.TYPE_SUB_COMMENT)){
+        }else if(data.type == Notification.TYPE_SUB_COMMENT){
             val arguments = Bundle()
             arguments.putParcelable("main_comment", data.main_comment_obj)
             findNavController().navigate(R.id.action_notificationFragment_to_commentDetailsFragment, arguments)
+        }else if(data.type == Notification.TYPE_MEME_LIKED){
+            try {
+                val directLinkItemTest = DirectLinkItemTest(data.meme_obj!!)
+                val bundle = bundleOf("item" to directLinkItemTest)
+                findNavController().navigate(R.id.action_notificationFragment_to_memesDetailFragment, bundle)
+            }catch (ex: Exception){}
         }
 
     }

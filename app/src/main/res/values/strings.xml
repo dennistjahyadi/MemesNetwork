@@ -57,6 +57,7 @@
     <string name="followed">Followed</string>
     <string name="notifications">Notifications</string>
     <string name="channel_id_comment_notif">CommentNotification</string>
+    <string name="channel_id_memes_liked_notif">MemesLikedNotification</string>
     <string name="channel_id_following_notif">FollowingNotification</string>
     <string name="home">Home</string>
     <string name="following">Following</string>
@@ -69,4 +70,5 @@
     <string name="privacy_policy_url">https://memesnetwork.com/privacypolicy</string>
     <string name="type_your_new_username">Type your new username</string>
     <string name="type_an_username">Type an username</string>
+    <string name="enable_liked_memes_notification">Enable Liked Memes Notification</string>
 </resources>

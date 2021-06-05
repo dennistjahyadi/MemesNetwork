@@ -26,5 +26,6 @@ class Notification(
         val TYPE_FOLLOWING = "following"
         val TYPE_SUB_COMMENT = "sub_comment"
         val TYPE_MEME_COMMENT = "meme_comment"
+        val TYPE_MEME_LIKED = "meme_liked"
     }
 }

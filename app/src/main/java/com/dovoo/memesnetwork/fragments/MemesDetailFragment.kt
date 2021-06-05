@@ -98,7 +98,6 @@ class MemesDetailFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-
         binding.viewPager.adapter = null
     }
 }

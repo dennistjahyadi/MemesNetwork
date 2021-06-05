@@ -126,7 +126,72 @@
 
                 </RelativeLayout>
             </FrameLayout>
+            <FrameLayout
+                android:id="@+id/linBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_12"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linMiddle">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:id="@+id/linBtnLike"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:id="@+id/tvBtnLike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_thumbs_up"
+                            android:textColor="@color/white"
+                            android:textSize="22dp" />
+
+                        <TextView
+                            android:id="@+id/tvTotalLike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linBtnShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/linBtnDislike"
+                        android:visibility="gone"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:id="@+id/tvBtnShare"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_share"
+                            android:textColor="@color/white"
+                            android:textSize="26dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

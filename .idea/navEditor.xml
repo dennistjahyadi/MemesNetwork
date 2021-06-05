@@ -159,8 +159,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="470" />
-                            <option name="y" value="135" />
+                            <option name="x" value="-478" />
+                            <option name="y" value="337" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -171,6 +171,11 @@
                               </value>
                             </entry>
                             <entry key="action_memesDetailFragment_to_loginFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_memesDetailFragment_to_loginFragment2">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -233,6 +238,11 @@
                               </value>
                             </entry>
                             <entry key="action_profileFragment_to_settingsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profileFragment_to_updateUsernameFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

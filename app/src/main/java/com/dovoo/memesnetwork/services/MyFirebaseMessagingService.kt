@@ -95,6 +95,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notifType.equals(Notification.TYPE_FOLLOWING) -> getString(R.string.channel_id_following_notif)
             notifType.equals(Notification.TYPE_MEME_COMMENT) -> getString(R.string.channel_id_comment_notif)
             notifType.equals(Notification.TYPE_SUB_COMMENT) -> getString(R.string.channel_id_comment_notif)
+            notifType.equals(Notification.TYPE_MEME_LIKED) -> getString(R.string.channel_id_memes_liked_notif)
             else -> ""
         }
 
@@ -158,6 +159,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         ) {
             allow = true
         } else if (notifType.equals(Notification.TYPE_SUB_COMMENT) && SharedPreferenceUtils.isEnableNotifCommentReply(
+                applicationContext
+            )
+        ) {
+            allow = true
+        }else if (notifType.equals(Notification.TYPE_MEME_LIKED) && SharedPreferenceUtils.isEnableNotifMemesLiked(
                 applicationContext
             )
         ) {

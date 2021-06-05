@@ -68,7 +68,33 @@
                 android:textSize="@dimen/font_medium" />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_row_settings"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/dimen_16">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/enable_liked_memes_notification"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swNotifMemeLiked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="@dimen/dimen_16"
+            android:background="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"

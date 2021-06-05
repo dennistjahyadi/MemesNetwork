@@ -38,7 +38,9 @@ class SettingsFragment : Fragment() {
         binding.swNotifCommentReply.isChecked = SharedPreferenceUtils.isEnableNotifCommentReply(
             requireContext()
         )
-
+        binding.swNotifMemeLiked.isChecked = SharedPreferenceUtils.isEnableNotifMemesLiked(
+            requireContext()
+        )
         binding.swNotifFollowing.setOnCheckedChangeListener { _, b ->
             SharedPreferenceUtils.setNotifFollowing(requireContext(), b)
         }
@@ -47,6 +49,9 @@ class SettingsFragment : Fragment() {
         }
         binding.swNotifCommentReply.setOnCheckedChangeListener { _, b ->
             SharedPreferenceUtils.setNotifCommentReply(requireContext(), b)
+        }
+        binding.swNotifMemeLiked.setOnCheckedChangeListener { _, b ->
+            SharedPreferenceUtils.setNotifMemeLiked(requireContext(), b)
         }
 
         binding.tvBtnPrivacyPolicy.setOnClickListener {

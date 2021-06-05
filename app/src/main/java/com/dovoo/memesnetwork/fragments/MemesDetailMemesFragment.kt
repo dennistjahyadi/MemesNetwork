@@ -1,14 +1,29 @@
 package com.dovoo.memesnetwork.fragments
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.dovoo.memesnetwork.BuildConfig
+import com.dovoo.memesnetwork.R
+import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.databinding.FragmentMemesDetailMemesBinding
+import com.dovoo.memesnetwork.model.Status
+import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
+import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.github.chrisbanes.photoview.PhotoViewAttacher
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -18,6 +33,11 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
+import com.krishna.fileloader.FileLoader
+import com.krishna.fileloader.listener.FileRequestListener
+import com.krishna.fileloader.pojo.FileResponse
+import com.krishna.fileloader.request.FileLoadRequest
+import java.io.File
 import kotlin.properties.Delegates
 
 
@@ -32,6 +52,26 @@ class MemesDetailMemesFragment : Fragment() {
     var maxHeightVideo by Delegates.notNull<Float>()
     lateinit var player: SimpleExoPlayer
 
+    val generalViewModel: GeneralViewModel by viewModels()
+
+
+    val likeOnClickListener = View.OnClickListener {
+        if (!SharedPreferenceUtils.getPrefs(requireContext()).getBoolean(
+                SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
+                false
+            )
+        ) {
+            findNavController().navigate(R.id.action_memesDetailFragment_to_loginFragment)
+        } else {
+            doLike(
+                videoItem.id,
+                videoItem,
+                binding.tvBtnLike,
+                binding.tvTotalLike,
+                binding.linBtnLike
+            )
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         finalWidth =
@@ -93,9 +133,127 @@ class MemesDetailMemesFragment : Fragment() {
             Glide.with(requireContext()).load(videoItem.getmCoverUrl()).into(binding.cover)
             PhotoViewAttacher(binding.cover)
         }
+        binding.tvBtnLike.setOnClickListener(likeOnClickListener)
+        binding.linBtnShare.visibility = View.GONE
+        binding.linBtnShare.setOnClickListener (View.OnClickListener{
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(requireContext(), "Please allow storage permission", Toast.LENGTH_LONG)
+                    .show()
+                return@OnClickListener
+            }
+            binding.tvBtnShare.isEnabled = false
+
+            val isVideo = videoItem.getmDirectUrl() != null
+            var theUrl: String? = videoItem.getmCoverUrl()
+            if (videoItem.getmDirectUrl() != null) {
+                theUrl = videoItem.getmDirectUrl()
+            }
+            FileLoader.with(requireContext())
+                .load(theUrl) //2nd parameter is optioal, pass true to force load from network
+                .fromDirectory("memesnetwork", FileLoader.DIR_EXTERNAL_PUBLIC)
+                .asFile(object : FileRequestListener<File?> {
+                    override fun onLoad(request: FileLoadRequest, response: FileResponse<File?>) {
+                        val loadedFile = response.body
+                        val share = Intent(Intent.ACTION_SEND)
+                        if (!isVideo) {
+                            share.type = "image/*"
+                        } else {
+                            share.type = "video/*"
+                        }
+                        val uri: Uri
+                        uri = if (Build.VERSION.SDK_INT <= 24) {
+                            Uri.fromFile(loadedFile)
+                        } else {
+                            FileProvider.getUriForFile(
+                                requireContext(),
+                                BuildConfig.APPLICATION_ID + ".provider",
+                                loadedFile!!
+                            )
+                        }
+                        var shareMessage =
+                            "\nWith MemesNetwork everything is laughable, download here\n\n"
+                        shareMessage = """
+                            ${shareMessage}https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}
+                            
+                            
+                            """.trimIndent()
+                        share.putExtra(Intent.EXTRA_TEXT, shareMessage)
+                        share.putExtra(Intent.EXTRA_STREAM, uri)
+                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        startActivity(Intent.createChooser(share, "Share :"))
+
+                        binding.tvBtnShare.isEnabled = true
+                    }
+
+                    override fun onError(request: FileLoadRequest, t: Throwable) {
+                        binding.tvBtnShare.isEnabled = true
+                        Toast.makeText(requireContext(), "Cannot sharing file", Toast.LENGTH_LONG).show()
+                    }
+                })
+        })
+
+        var isLiked = videoItem.isLiked
+
+        if (isLiked == 1) {
+            binding.tvBtnLike.setImageResource(R.drawable.ic_thumbs_up_active)
+        } else {
+            binding.tvBtnLike.setImageResource(R.drawable.ic_thumbs_up)
+        }
+        binding.tvTotalLike.text = (videoItem.totalLike).toString()
+
         return binding.root
     }
 
+    private fun doLike(
+        memeId: Int,
+        data: DirectLinkItemTest,
+        ivLike: ImageView,
+        tvTotalLike: TextView,
+        linBtnLike: LinearLayout
+    ) {
+        val userId =
+            SharedPreferenceUtils.getPrefs(requireContext())
+                .getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, -1)
+        var isLiked = data.isLiked
+
+        if (isLiked == 1) {
+            isLiked = 0
+            ivLike.setImageResource(R.drawable.ic_thumbs_up)
+        } else {
+            isLiked = 1
+            ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
+        }
+        linBtnLike.isEnabled = false
+        data.isLiked = isLiked
+        val totLike = data.totalLike
+        data.totalLike = if(isLiked==1) totLike+1 else totLike-1
+        tvTotalLike.text = (data.totalLike).toString()
+
+        generalViewModel.insertLike(memeId, userId, isLiked).observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    linBtnLike.isEnabled = true
+                }
+                Status.ERROR -> {
+                    linBtnLike.isEnabled = true
+                    if (isLiked == 1) {
+                        ivLike.setImageResource(R.drawable.ic_thumbs_up)
+                        data.isLiked = 0
+                    } else {
+                        ivLike.setImageResource(R.drawable.ic_thumbs_up_active)
+                        data.isLiked = 1
+                    }
+                    val totLike2 = data.totalLike
+                    data.totalLike = (totLike2 - 1)
+                    tvTotalLike.text = (data.totalLike).toString()
+                }
+            }
+        })
+    }
     override fun onStop() {
         super.onStop()
         player.stop(true)

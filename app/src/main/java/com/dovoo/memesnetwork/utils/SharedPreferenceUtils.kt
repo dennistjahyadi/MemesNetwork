@@ -19,6 +19,7 @@ object SharedPreferenceUtils {
     const val PREFERENCES_NOTIF_FOLLOWING = "notif_following"
     const val PREFERENCES_NOTIF_MEMES_COMMENT = "notif_memes_comment"
     const val PREFERENCES_NOTIF_COMMENT_REPLY = "notif_comment_reply"
+    const val PREFERENCES_NOTIF_MEMES_LIKED = "notif_memes_liked"
 
     @JvmStatic
     fun getPrefs(context: Context): SharedPreferences {
@@ -108,8 +109,18 @@ object SharedPreferenceUtils {
     }
 
     @JvmStatic
+    fun isEnableNotifMemesLiked(context: Context): Boolean{
+        return getPrefs(context).getBoolean(PREFERENCES_NOTIF_MEMES_LIKED, true)
+    }
+
+    @JvmStatic
     fun setNotifFollowing(context: Context, value: Boolean){
         setPrefs(context, PREFERENCES_NOTIF_FOLLOWING, value)
+    }
+
+    @JvmStatic
+    fun setNotifMemeLiked(context: Context, value: Boolean){
+        setPrefs(context, PREFERENCES_NOTIF_MEMES_LIKED, value)
     }
 
     @JvmStatic
