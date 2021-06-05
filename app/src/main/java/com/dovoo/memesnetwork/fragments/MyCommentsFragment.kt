@@ -40,7 +40,8 @@ class MyCommentsFragment : Fragment() {
         val data = viewHolder.data
         viewHolder.itemView.isClickable = false
         viewHolder.itemView.isEnabled = false
-        generalViewModel.getMeme(data.meme_id).observe(viewLifecycleOwner, {
+
+        generalViewModel.getMeme(GlobalFunc.getLoggedInUserId(requireContext()), data.meme_id).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
                     try {

@@ -200,8 +200,8 @@ class GeneralViewModel : ViewModel() {
         return listener
     }
 
-    fun getMeme(memeId: Int): MutableLiveData<Resource<GetMemeResponse>>{
-        val call = adapter.getMeme(memeId)
+    fun getMeme(userId: Int, memeId: Int): MutableLiveData<Resource<GetMemeResponse>>{
+        val call = adapter.getMeme(userId, memeId)
         val listener = MutableLiveData<Resource<GetMemeResponse>>()
         call.enqueue(DefaultCallback(listener))
         return listener

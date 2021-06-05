@@ -116,6 +116,7 @@ interface MemesRestService {
 
     @GET("v1/get-meme")
     fun getMeme(
+        @Query("user_id") userId: Int,
         @Query("meme_id") memeId: Int
     ): Call<GetMemeResponse>
 

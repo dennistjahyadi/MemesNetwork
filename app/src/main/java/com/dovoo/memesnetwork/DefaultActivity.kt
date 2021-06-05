@@ -115,7 +115,7 @@ class DefaultActivity : AppCompatActivity() {
             notifType.equals(Notification.TYPE_MEME_COMMENT) -> {
                 try {
                     GlobalFunc.minNotifCount(this)
-                    getMeme(memeId!!.toInt())
+                    getMeme(memeId!!.toInt(), true)
                 } catch (ex: Exception) {
                 }
             }
@@ -123,6 +123,13 @@ class DefaultActivity : AppCompatActivity() {
                 try {
                     GlobalFunc.minNotifCount(this)
                     getComment(commentId!!.toInt())
+                } catch (ex: Exception) {
+                }
+            }
+            notifType.equals(Notification.TYPE_MEME_LIKED) -> {
+                try {
+                    GlobalFunc.minNotifCount(this)
+                    getMeme(memeId!!.toInt(), false)
                 } catch (ex: Exception) {
                 }
             }
@@ -150,14 +157,15 @@ class DefaultActivity : AppCompatActivity() {
         })
     }
 
-    private fun getMeme(memeId: Int) {
-        generalViewModel.getMeme(memeId).observe(this, {
+    private fun getMeme(memeId: Int,defaultCommentPage: Boolean) {
+
+        generalViewModel.getMeme(GlobalFunc.getLoggedInUserId(applicationContext), memeId).observe(this, {
             when (it.status) {
                 Status.SUCCESS -> {
                     try {
                         val bundle = bundleOf(
                             "item" to DirectLinkItemTest(it.data!!.meme),
-                            "defaultCommentPage" to true
+                            "defaultCommentPage" to defaultCommentPage
                         )
                         navHostFragment.findNavController().navigate(
                             R.id.memesDetailFragment,
