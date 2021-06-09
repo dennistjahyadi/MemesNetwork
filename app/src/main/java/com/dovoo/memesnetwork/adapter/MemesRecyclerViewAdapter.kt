@@ -37,7 +37,7 @@ class MemesRecyclerViewAdapter(
     private val mContext: Context,
     private val selector: PressablePlayerSelector?, //
     private val directLinkItemTestList: List<DirectLinkItemTest>,
-    var mLoadingBar: FrameLayout?,
+    var mLoadingBar: View?,
     val likeOnClickListener: View.OnClickListener,
     val onItemClickListener: View.OnClickListener,
     val profileOnClickListener: View.OnClickListener
@@ -161,7 +161,7 @@ class MemesRecyclerViewAdapter(
             }
             FileLoader.with(mContext)
                 .load(theUrl) //2nd parameter is optioal, pass true to force load from network
-                .fromDirectory("memesnetwork", FileLoader.DIR_EXTERNAL_PUBLIC)
+                .fromDirectory("memesnetwork", FileLoader.DIR_INTERNAL)
                 .asFile(object : FileRequestListener<File?> {
                     override fun onLoad(request: FileLoadRequest, response: FileResponse<File?>) {
                         val loadedFile = response.body
@@ -199,7 +199,7 @@ class MemesRecyclerViewAdapter(
                     override fun onError(request: FileLoadRequest, t: Throwable) {
                         mLoadingBar?.visibility = View.GONE
                         viewHolder.ivBtnShare.isEnabled = true
-                        Toast.makeText(mContext, "Cannot sharing file", Toast.LENGTH_LONG).show()
+                        Toast.makeText(mContext, "Cannot sharing file asdfsd", Toast.LENGTH_LONG).show()
                     }
                 })
         })

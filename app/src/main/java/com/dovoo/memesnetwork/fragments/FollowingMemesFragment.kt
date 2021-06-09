@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -19,16 +18,14 @@ import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager
 import com.dovoo.memesnetwork.databinding.FragmentFollowingMemesBinding
-import com.dovoo.memesnetwork.databinding.FragmentMainBinding
 import com.dovoo.memesnetwork.model.Status
-import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import im.ene.toro.widget.PressablePlayerSelector
 import org.json.JSONException
-import java.util.ArrayList
+import java.util.*
 
-class FollowingMemesFragment: Fragment() {
+class FollowingMemesFragment : Fragment() {
     private var _binding: FragmentFollowingMemesBinding? = null
     private val binding get() = _binding!!
     private lateinit var layoutManager: MyLinearLayoutManager
@@ -39,13 +36,11 @@ class FollowingMemesFragment: Fragment() {
 
     val likeOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MemesViewHolder
-        if (!SharedPreferenceUtils.getPrefs(requireContext()).getBoolean(
+        if (SharedPreferenceUtils.getPrefs(requireContext()).getBoolean(
                 SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
                 false
             )
         ) {
-            findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
-        } else {
             doLike(
                 memesViewHolder.data.id,
                 memesViewHolder.data,
@@ -59,13 +54,16 @@ class FollowingMemesFragment: Fragment() {
     val itemOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MemesViewHolder
         val bundle = bundleOf("item" to memesViewHolder.data)
-        findNavController().navigate(R.id.action_mainFragment_to_memesDetailFragment, bundle)
+        findNavController().navigate(
+            R.id.action_followingMemesFragment_to_memesDetailFragment,
+            bundle
+        )
     }
 
     val profileOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MemesViewHolder
         val bundle = bundleOf("user_id" to memesViewHolder.data.user!!.id)
-        findNavController().navigate(R.id.action_mainFragment_to_userFragment, bundle)
+        findNavController().navigate(R.id.action_followingMemesFragment_to_userFragment, bundle)
     }
 
     private fun doLike(
@@ -90,7 +88,7 @@ class FollowingMemesFragment: Fragment() {
         linBtnLike.isEnabled = false
         data.isLiked = isLiked
         val totLike = data.totalLike
-        data.totalLike = if(isLiked==1) totLike+1 else totLike-1
+        data.totalLike = if (isLiked == 1) totLike + 1 else totLike - 1
         tvTotalLike.text = (data.totalLike).toString()
 
         generalViewModel.insertLike(memeId, userId, isLiked).observe(viewLifecycleOwner, {
@@ -134,7 +132,7 @@ class FollowingMemesFragment: Fragment() {
             requireContext(),
             selector,
             directLinkItemTestList,
-            FrameLayout(requireContext()),
+            binding.loadingBar,
             likeOnClickListener,
             itemOnClickListener,
             profileOnClickListener

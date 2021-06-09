@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -137,7 +136,7 @@ class MainFragment : Fragment() {
             requireContext(),
             selector,
             directLinkItemTestList,
-            FrameLayout(requireContext()),
+            binding.loadingBar,
             likeOnClickListener,
             itemOnClickListener,
             profileOnClickListener
@@ -195,7 +194,8 @@ class MainFragment : Fragment() {
             findNavController().navigate(R.id.action_mainFragment_to_notificationFragment)
         }
         binding.tvMenuFollowing.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_followingMemesFragment)
+            if (GlobalFunc.isLogin(requireContext())) findNavController().navigate(R.id.action_mainFragment_to_followingMemesFragment)
+            else findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
         }
 
         if (directLinkItemTestList.isEmpty()) fetchData(0)

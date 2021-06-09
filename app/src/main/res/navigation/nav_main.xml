@@ -135,7 +135,15 @@
     <fragment
         android:id="@+id/followingMemesFragment"
         android:name="com.dovoo.memesnetwork.fragments.FollowingMemesFragment"
-        android:label="FollowingMemesFragment" />
+        android:label="FollowingMemesFragment" >
+        <action
+            android:id="@+id/action_followingMemesFragment_to_memesDetailFragment"
+            app:destination="@id/memesDetailFragment" />
+        <action
+            android:id="@+id/action_followingMemesFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.dovoo.memesnetwork.fragments.SettingsFragment"
