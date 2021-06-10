@@ -71,4 +71,5 @@
     <string name="type_your_new_username">Type your new username</string>
     <string name="type_an_username">Type an username</string>
     <string name="enable_liked_memes_notification">Enable Liked Memes Notification</string>
+    <string name="select_source">Select Source:</string>
 </resources>

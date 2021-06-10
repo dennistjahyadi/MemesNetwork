@@ -175,7 +175,7 @@ class AddMemeFragment : Fragment() {
         val customView =
             LayoutInflater.from(requireContext()).inflate(R.layout.view_select_meme_dialog, null);
         val bottomDialog = BottomDialog.Builder(requireContext())
-            .setCustomView(customView).build()
+            .setCustomView(customView).setTitle(getString(R.string.select_source)).build()
         bottomDialog.show()
         val linBtnImage: LinearLayout = customView.findViewById(R.id.linBtnImage)
         val linBtnVideo: LinearLayout = customView.findViewById(R.id.linBtnVideo)
