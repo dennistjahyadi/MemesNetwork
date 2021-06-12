@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.CommentOnlyRecyclerViewAdapter
+import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.databinding.FragmentMemesDetailCommentsBinding
@@ -52,6 +54,12 @@ class MemesDetailCommentFragment : Fragment() {
         binding.linReplyTo.visibility = View.VISIBLE
     }
 
+    val profileOnClickListener = View.OnClickListener {
+        val memesViewHolder = it.tag as CommentOnlyRecyclerViewAdapter.MyViewHolderItem
+        val bundle = bundleOf("user_id" to memesViewHolder.data.user_id)
+        findNavController().navigate(R.id.action_memesDetailFragment_to_userFragment, bundle)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         linearLayoutManager = LinearLayoutManager(requireContext())
@@ -75,7 +83,7 @@ class MemesDetailCommentFragment : Fragment() {
             }
         }
         commentRecyclerViewAdapter = CommentOnlyRecyclerViewAdapter(
-            requireContext(), commentList, commentOnClickListener, replyOnClickListener, true
+            requireContext(), commentList, commentOnClickListener, replyOnClickListener, profileOnClickListener, true
         )
         try {
             binding.rvComment.layoutManager = linearLayoutManager

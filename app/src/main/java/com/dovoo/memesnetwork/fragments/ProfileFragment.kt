@@ -10,6 +10,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -46,7 +47,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         initFragments()
         profileViewPagerAdapter = ProfileViewPagerAdapter(this, listFragment)
-
     }
 
     private fun initFragments() {
@@ -110,7 +110,23 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 .load(photoUrl)
                 .into(binding.ivProfile)
         }
+        getUser()
         return binding.root
+    }
+
+    private fun getUser() {
+        val userId = GlobalFunc.getLoggedInUserId(requireContext())
+        generalViewModel.getUser(userId).observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.tvFollowers.text = it.data?.user?.follower_user?.size.toString()
+                    binding.tvFollowing.text = it.data?.user?.following_user?.size.toString()
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
     }
 
     private fun checkUsername() {
@@ -223,16 +239,20 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onClick(p0: View) {
         when(p0.id){
             R.id.lbl_following, R.id.tv_following -> {
+                val userId = GlobalFunc.getLoggedInUserId(requireContext())
                 val i = Bundle()
                 i.putBoolean("isFollowing", true)
+                i.putInt("user_id", userId)
                 findNavController().navigate(
                     R.id.action_profileFragment_to_userFollowingsFragment,
                     i
                 )
             }
             R.id.lbl_followers, R.id.tv_followers -> {
+                val userId = GlobalFunc.getLoggedInUserId(requireContext())
                 val i = Bundle()
                 i.putBoolean("isFollowing", false)
+                i.putInt("user_id", userId)
                 findNavController().navigate(
                     R.id.action_profileFragment_to_userFollowingsFragment,
                     i

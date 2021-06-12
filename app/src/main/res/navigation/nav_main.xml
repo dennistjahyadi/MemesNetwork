@@ -90,11 +90,18 @@
         <action
             android:id="@+id/action_memesDetailFragment_to_commentDetailsFragment"
             app:destination="@id/commentDetailsFragment" />
+        <action
+            android:id="@+id/action_memesDetailFragment_to_userFragment"
+            app:destination="@id/userFragment" />
     </fragment>
     <fragment
         android:id="@+id/commentDetailsFragment"
         android:name="com.dovoo.memesnetwork.fragments.CommentDetailsFragment"
-        android:label="CommentDetailsFragment" />
+        android:label="CommentDetailsFragment" >
+        <action
+            android:id="@+id/action_commentDetailsFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
     <fragment
         android:id="@+id/sectionPickerFragment"
         android:name="com.dovoo.memesnetwork.fragments.SectionPickerFragment"

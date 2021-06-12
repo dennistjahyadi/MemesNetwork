@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -26,7 +27,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CommentDetailsFragment : Fragment() {
+class CommentDetailsFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentCommentDetailsBinding? = null
     private val binding get() = _binding!!
     val generalViewModel: GeneralViewModel by viewModels()
@@ -38,11 +39,17 @@ class CommentDetailsFragment : Fragment() {
     lateinit var linearLayoutManager: LinearLayoutManager
     private val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
+    val profileOnClickListener = View.OnClickListener {
+        val memesViewHolder = it.tag as CommentOnlyRecyclerViewAdapter.MyViewHolderItem
+        val bundle = bundleOf("user_id" to memesViewHolder.data.user_id)
+        findNavController().navigate(R.id.action_commentDetailsFragment_to_userFragment, bundle)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        linearLayoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, true)
+
         commentRecyclerViewAdapter = CommentOnlyRecyclerViewAdapter(
-            requireContext(), commentList, null, null, false
+            requireContext(), commentList, null, null, profileOnClickListener, false
         )
     }
 
@@ -53,7 +60,10 @@ class CommentDetailsFragment : Fragment() {
     ): View {
         _binding = FragmentCommentDetailsBinding.inflate(inflater, container, false)
         binding.linBtnBack.setOnClickListener {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("openCommentTab", true)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                "openCommentTab",
+                true
+            )
             findNavController().popBackStack()
         }
 
@@ -63,6 +73,7 @@ class CommentDetailsFragment : Fragment() {
             }
             sendComment()
         })
+        linearLayoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, true)
         binding.rvComment.layoutManager = linearLayoutManager
         binding.rvComment.adapter = commentRecyclerViewAdapter
 
@@ -74,6 +85,8 @@ class CommentDetailsFragment : Fragment() {
         }
         binding.rvComment.removeOnScrollListener(onLoad)
         binding.rvComment.addOnScrollListener(onLoad)
+        binding.tvUsername.setOnClickListener(this)
+        binding.ivPicture.setOnClickListener(this)
         initMainComment()
         fetchComments(0)
         return binding.root
@@ -163,5 +176,19 @@ class CommentDetailsFragment : Fragment() {
                 }
             })
     }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.tvUsername, R.id.ivPicture -> {
+                val bundle = bundleOf("user_id" to mainComment?.user_id)
+                findNavController().navigate(
+                    R.id.action_commentDetailsFragment_to_userFragment,
+                    bundle
+                )
+            }
+        }
+    }
+
+
 
 }

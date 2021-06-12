@@ -23,6 +23,7 @@ class CommentOnlyRecyclerViewAdapter(
     private val itemList: ArrayList<Comment>,
     val commentOnClickListener: View.OnClickListener?,
     val replyOnClickListener: View.OnClickListener?,
+    val profileOnClickListener: View.OnClickListener?,
     val showReply: Boolean = false
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -50,6 +51,8 @@ class CommentOnlyRecyclerViewAdapter(
             tvBtnReply.tag = this
             tvComment.tag = this
             linSubcomments.tag = this
+            tvUsername.tag = this
+            ivPicture.tag = this
         }
     }
 
@@ -78,7 +81,8 @@ class CommentOnlyRecyclerViewAdapter(
 
         if (obj.comment_id == null) holder.tvBtnReply.visibility = View.VISIBLE
         else holder.tvBtnReply.visibility = View.GONE
-
+        holder.tvUsername.setOnClickListener(profileOnClickListener)
+        holder.ivPicture.setOnClickListener(profileOnClickListener)
         holder.tvBtnReply.setOnClickListener(replyOnClickListener)
         holder.tvComment.setOnClickListener(commentOnClickListener)
         holder.linSubcomments.setOnClickListener(commentOnClickListener)
