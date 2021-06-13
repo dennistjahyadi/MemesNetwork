@@ -258,6 +258,7 @@ class AddMemeFragment : Fragment() {
                     Status.SUCCESS -> {
                         Toast.makeText(requireContext(), "Upload complete", Toast.LENGTH_LONG)
                             .show()
+                        findNavController().previousBackStackEntry?.savedStateHandle?.set("add_success", true)
                         findNavController().popBackStack()
                     }
                     Status.ERROR -> {

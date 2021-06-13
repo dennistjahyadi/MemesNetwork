@@ -124,4 +124,10 @@ interface MemesRestService {
     fun getComment(
         @Query("comment_id") commentId: Int
     ): Call<GetCommentResponse>
+
+    @GET("v1/fetch-user")
+    fun fetchUser(
+        @Query("offset") offset: Int,
+        @Query("filter") filter: String
+    ): Call<FetchUserResponse>
 }

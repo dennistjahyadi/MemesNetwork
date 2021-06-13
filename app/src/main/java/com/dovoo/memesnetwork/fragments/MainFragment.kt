@@ -1,6 +1,8 @@
 package com.dovoo.memesnetwork.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -197,6 +199,10 @@ class MainFragment : Fragment() {
             if (GlobalFunc.isLogin(requireContext())) findNavController().navigate(R.id.action_mainFragment_to_followingMemesFragment)
             else findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
         }
+        binding.includeToolbar.searchUser.setOnClickListener {
+            if (GlobalFunc.isLogin(requireContext())) findNavController().navigate(R.id.action_mainFragment_to_searchUserFragment)
+            else findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+        }
 
         if (directLinkItemTestList.isEmpty()) fetchData(0)
 
@@ -215,6 +221,16 @@ class MainFragment : Fragment() {
     }
 
     private fun onResult() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("add_success")
+            ?.observe(viewLifecycleOwner, {
+                if(it) {
+                    findNavController().currentBackStackEntry?.savedStateHandle?.set(
+                        "add_success",
+                        false
+                    )
+                    findNavController().navigate(R.id.action_mainFragment_to_followingMemesFragment)
+                }
+            })
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("selectedSection")
             ?.observe(viewLifecycleOwner, {
                 selectedSection = it

@@ -26,7 +26,7 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField "String", "API_URL", '"https://apiv2.memesnetwork.com/api/"'
+            buildConfigField "String", "API_URL", '"http://192.168.18.83:3000/api/"'
             buildConfigField "String", "MOPUB_AD_UNIT_ID", '"b195f8dd8ded45fe847ad89ed1d016da"'
             buildConfigField "String", "clientId", '"1016402780199-fqinff42oo693meufqji5na1adj53b7v.apps.googleusercontent.com"' // get from console.developer.google.com
         }

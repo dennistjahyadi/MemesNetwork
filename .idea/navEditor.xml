@@ -38,6 +38,15 @@
                             <option name="y" value="-274" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_commentDetailsFragment_to_userFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -61,6 +70,20 @@
                             <option name="x" value="76" />
                             <option name="y" value="790" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_followingMemesFragment_to_memesDetailFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_followingMemesFragment_to_userFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -175,7 +198,7 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_memesDetailFragment_to_loginFragment2">
+                            <entry key="action_memesDetailFragment_to_userFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -253,6 +276,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="searchUserFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-318" />
+                            <option name="y" value="822" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

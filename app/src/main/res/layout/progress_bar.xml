@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/loadingBar"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loadingBar"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.3"
     android:background="@color/black"
     android:clickable="true"
-    android:visibility="invisible"
-    android:alpha="0.3"
-    android:layout_height="match_parent">
+    android:visibility="invisible">
+
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/spin_kit"
         style="@style/SpinKitView.Large.DoubleBounce"

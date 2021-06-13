@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_mainFragment_to_followingMemesFragment"
             app:destination="@id/followingMemesFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_searchUserFragment"
+            app:destination="@id/searchUserFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -159,4 +162,8 @@
         android:id="@+id/updateUsernameFragment"
         android:name="com.dovoo.memesnetwork.fragments.UpdateUsernameFragment"
         android:label="UpdateUsernameFragment" />
+    <fragment
+        android:id="@+id/searchUserFragment"
+        android:name="com.dovoo.memesnetwork.fragments.SearchUserFragment"
+        android:label="SearchUserFragment" />
 </navigation>

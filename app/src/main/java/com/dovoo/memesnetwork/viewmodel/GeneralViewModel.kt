@@ -206,4 +206,11 @@ class GeneralViewModel : ViewModel() {
         call.enqueue(DefaultCallback(listener))
         return listener
     }
+
+    fun fetchUser(offset: Int, filter:String): MutableLiveData<Resource<FetchUserResponse>>{
+        val call = adapter.fetchUser(offset, filter)
+        val listener = MutableLiveData<Resource<FetchUserResponse>>()
+        call.enqueue(DefaultCallback(listener))
+        return listener
+    }
 }
