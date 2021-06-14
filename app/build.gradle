@@ -18,8 +18,8 @@ android {
         applicationId "com.dovoo.memesnetwork"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 29
-        versionName "29"
+        versionCode 30
+        versionName "30"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         signingConfig signingConfigs.memesnetwork_release
     }
