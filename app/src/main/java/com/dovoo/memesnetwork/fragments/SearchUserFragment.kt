@@ -2,6 +2,7 @@ package com.dovoo.memesnetwork.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.databinding.FragmentSearchUserBinding
@@ -28,7 +32,9 @@ class SearchUserFragment : Fragment() {
     val generalViewModel: GeneralViewModel by viewModels()
 
     val itemOnClickListener = View.OnClickListener {
-
+        val data = (it.tag as SearchUserAdapter.SearchUserViewHolder).data
+        val bundle = bundleOf("user_id" to data.id)
+        findNavController().navigate(R.id.action_searchUserFragment_to_userFragment, bundle)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,14 +57,25 @@ class SearchUserFragment : Fragment() {
                 fetchUser(totalItemsCount)
             }
         })
-
+        binding.linBtnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
         binding.ivSearch.setOnClickListener {
             fetchUser(0)
         }
+        binding.etSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                fetchUser(0)
+                return@OnKeyListener true
+            }
+            false
+        })
         return binding.root
     }
 
     private fun fetchUser(offset: Int) {
+        if(offset==0)userList.clear()
         binding.progressBar.loadingBar.visibility = View.VISIBLE
         generalViewModel.fetchUser(offset, binding.etSearch.text.toString())
             .observe(viewLifecycleOwner, {
@@ -95,6 +112,7 @@ class SearchUserFragment : Fragment() {
                 ivProfilePic = itemView.findViewById(R.id.ivProfilePic)
                 tvUsername = itemView.findViewById(R.id.tvUsername)
                 linBtnFollow = itemView.findViewById(R.id.linBtnFollow)
+                itemView.tag = this
             }
         }
 
@@ -107,7 +125,10 @@ class SearchUserFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             holder as SearchUserViewHolder
             val data = userList[position]
-
+            holder.data = data
+            holder.tvUsername.text = data.username
+            Glide.with(context).load(data.photo_url).placeholder(R.drawable.funny_user2).into(holder.ivProfilePic)
+            holder.itemView.setOnClickListener(itemOnClickListener)
         }
 
         override fun getItemCount(): Int {

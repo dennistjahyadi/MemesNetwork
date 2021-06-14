@@ -165,5 +165,9 @@
     <fragment
         android:id="@+id/searchUserFragment"
         android:name="com.dovoo.memesnetwork.fragments.SearchUserFragment"
-        android:label="SearchUserFragment" />
+        android:label="SearchUserFragment" >
+        <action
+            android:id="@+id/action_searchUserFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
 </navigation>
