@@ -116,11 +116,11 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private fun getUser() {
         val userId = GlobalFunc.getLoggedInUserId(requireContext())
-        generalViewModel.getUser(userId).observe(viewLifecycleOwner, {
+        generalViewModel.getUser(requireContext(), userId).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.tvFollowers.text = it.data?.user?.follower_user?.size.toString()
-                    binding.tvFollowing.text = it.data?.user?.following_user?.size.toString()
+                    binding.tvFollowers.text = it.data?.total_follower.toString()
+                    binding.tvFollowing.text = it.data?.total_following.toString()
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()

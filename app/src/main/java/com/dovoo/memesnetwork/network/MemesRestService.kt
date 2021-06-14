@@ -87,6 +87,7 @@ interface MemesRestService {
 
     @GET("v1/get-user")
     fun getUser(
+        @Query("current_user_id") currentUserId: Int,
         @Query("user_id") userId: Int
     ): Call<UserOtherResponse>
 

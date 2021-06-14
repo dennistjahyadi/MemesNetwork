@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -157,6 +158,8 @@ class MainFragment : Fragment() {
         generalViewModel.memesHome.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
+                    binding.loadingBar.visibility = View.GONE
+
                     // do anything with response
                     try {
                         it.data?.memes?.forEach { meme ->
@@ -173,7 +176,8 @@ class MainFragment : Fragment() {
 
                 }
                 Status.ERROR -> {
-                    println("BBBBB: " + it.error?.message)
+                    binding.loadingBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
                 }
                 else -> {
                 }
@@ -266,6 +270,7 @@ class MainFragment : Fragment() {
 
     private fun fetchData(offset: Int) {
         if (offset == 0) {
+            binding.loadingBar.visibility = View.VISIBLE
             directLinkItemTestList.clear()
         }
         val userId = getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)

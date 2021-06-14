@@ -14,10 +14,7 @@ class UserOtherDetails(
     var remember_token: String?,
     var firebase_token: String?,
     var created_at: String?,
-    var updated_at: String?,
-    var memes: ArrayList<Memes>,
-    var following_user: ArrayList<FollowingData>,
-    var follower_user: ArrayList<FollowingData>
+    var updated_at: String?
 ): Parcelable {
 
 }

@@ -69,6 +69,7 @@ class LikedMemesFragment : Fragment() {
         generalViewModel.likedMemes.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
+                    binding.loadingBar.visibility = View.GONE
 
                     // do anything with response
                     try {
@@ -85,6 +86,8 @@ class LikedMemesFragment : Fragment() {
 
                 }
                 Status.ERROR -> {
+                    binding.loadingBar.visibility = View.GONE
+
                     println("BBBBB: " + it.error?.message)
                 }
                 else -> {
@@ -98,6 +101,7 @@ class LikedMemesFragment : Fragment() {
 
     private fun fetchData(offset: Int) {
         if (offset == 0) {
+            binding.loadingBar.visibility = View.VISIBLE
             memesList.clear()
         }
         val userId = SharedPreferenceUtils.getPrefs(requireContext())

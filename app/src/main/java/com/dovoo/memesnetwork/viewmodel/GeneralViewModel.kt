@@ -1,10 +1,12 @@
 package com.dovoo.memesnetwork.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dovoo.memesnetwork.model.*
 import com.dovoo.memesnetwork.network.DefaultCallback
 import com.dovoo.memesnetwork.network.MemesRestAdapter
+import com.dovoo.memesnetwork.utils.GlobalFunc
 
 
 class GeneralViewModel : ViewModel() {
@@ -149,8 +151,9 @@ class GeneralViewModel : ViewModel() {
         return listener
     }
 
-    fun getUser(userId: Int): MutableLiveData<Resource<UserOtherResponse>>{
-        val call = adapter.getUser(userId)
+    fun getUser(context: Context, userId: Int): MutableLiveData<Resource<UserOtherResponse>>{
+        val currentUserId = GlobalFunc.getLoggedInUserId(context)
+        val call = adapter.getUser(currentUserId, userId)
         val listener = MutableLiveData<Resource<UserOtherResponse>>()
         call.enqueue(DefaultCallback(listener))
         return listener

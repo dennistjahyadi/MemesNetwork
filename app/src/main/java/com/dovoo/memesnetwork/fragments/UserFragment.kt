@@ -19,6 +19,7 @@ import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.databinding.FragmentUserBinding
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.model.UserOtherDetails
+import com.dovoo.memesnetwork.model.UserOtherResponse
 import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import org.json.JSONException
@@ -40,7 +41,7 @@ class UserFragment : Fragment(), View.OnClickListener {
         findNavController().navigate(R.id.action_userFragment_to_memesDetailFragment, bundle)
     }
 
-    var currentUser: UserOtherDetails? = null
+    var currentUserResp: UserOtherResponse? = null
 
     var isFollowing = false
 
@@ -55,6 +56,11 @@ class UserFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
+        if(GlobalFunc.isLogin(requireContext())){
+            binding.linBtnFollow.visibility = View.VISIBLE
+        }else{
+            binding.linBtnFollow.visibility = View.GONE
+        }
         binding.linBtnBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -120,18 +126,11 @@ class UserFragment : Fragment(), View.OnClickListener {
     }
 
     private fun getUser() {
-
-        generalViewModel.getUser(userId).observe(viewLifecycleOwner, {
+        generalViewModel.getUser(requireContext(), userId).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
-                    currentUser = it.data!!.user
-                    val loggedInUserId = GlobalFunc.getLoggedInUserId(requireContext())
-                    it.data.user.follower_user.forEach lit@{ following ->
-                        if (following.user_id == loggedInUserId) {
-                            isFollowing = true
-                            return@lit
-                        }
-                    }
+                    currentUserResp = it.data
+                    isFollowing = currentUserResp!!.is_following
                     updateUI()
                 }
                 Status.ERROR -> {
@@ -157,22 +156,22 @@ class UserFragment : Fragment(), View.OnClickListener {
     }
 
     private fun updateUI() {
-        currentUser?.let { user ->
-            binding.tvUsername.text = user.username
-            if (user.photo_url.isNullOrEmpty()) {
+        currentUserResp?.let { resp ->
+            binding.tvUsername.text = resp.user.username
+            if (resp.user.photo_url.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(R.drawable.funny_user2)
                     .into(binding.ivProfile)
             } else {
                 Glide.with(requireContext())
-                    .load(user.photo_url)
+                    .load(resp.user.photo_url)
                     .placeholder(R.drawable.funny_user2)
                     .into(binding.ivProfile)
             }
 
-            binding.tvTotalMemes.text = user.memes.size.toString()
-            binding.tvFollowers.text = user.follower_user.size.toString()
-            binding.tvFollowing.text = user.following_user.size.toString()
+            binding.tvTotalMemes.text = resp.total_memes.toString()
+            binding.tvFollowers.text = resp.total_follower.toString()
+            binding.tvFollowing.text = resp.total_following.toString()
         }
 
         if (isFollowing) {

@@ -111,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_8"
-            android:text="Please wait..."
+            android:text="@string/please_wait"
             android:textColor="@color/white" />
 
     </LinearLayout>

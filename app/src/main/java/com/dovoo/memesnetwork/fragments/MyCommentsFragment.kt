@@ -101,7 +101,9 @@ class MyCommentsFragment : Fragment() {
     }
 
     private fun fetchComments(offset: Int) {
-        if (offset == 0) commentList.clear()
+        if (offset == 0) {commentList.clear()
+            binding.loadingBar.visibility = View.VISIBLE
+        }
         generalViewModel.fetchComments(
             offset,
             GlobalFunc.getLoggedInUserId(requireContext()),
@@ -111,6 +113,8 @@ class MyCommentsFragment : Fragment() {
         ).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
+                    binding.loadingBar.visibility = View.GONE
+
                     it.data?.comments?.let { comments ->
                         comments.forEach { comment ->
                             comment.current_datetime = it.data.current_datetime
@@ -126,6 +130,8 @@ class MyCommentsFragment : Fragment() {
                     }
                 }
                 Status.ERROR -> {
+                    binding.loadingBar.visibility = View.GONE
+
                     binding.swipeRefreshLayout.isEnabled = true
                     binding.swipeRefreshLayout.isRefreshing = false
                     binding.swipeRefreshLayout.visibility = View.VISIBLE
