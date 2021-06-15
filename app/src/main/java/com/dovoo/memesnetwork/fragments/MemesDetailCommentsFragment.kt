@@ -35,9 +35,8 @@ class MemesDetailCommentFragment : Fragment() {
     val currentVideoItem by lazy {
         arguments?.getParcelable<DirectLinkItemTest>("current_video_item")
     }
-    lateinit var linearLayoutManager: LinearLayoutManager
     var replyToData: Comment? = null
-
+    var linearLayoutManager: LinearLayoutManager? = null
     val commentOnClickListener = View.OnClickListener {
         val data = (it.tag as CommentOnlyRecyclerViewAdapter.MyViewHolderItem).data
         val arguments = Bundle()
@@ -62,7 +61,7 @@ class MemesDetailCommentFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        linearLayoutManager = LinearLayoutManager(requireContext())
+
     }
 
     override fun onCreateView(
@@ -85,6 +84,7 @@ class MemesDetailCommentFragment : Fragment() {
         commentRecyclerViewAdapter = CommentOnlyRecyclerViewAdapter(
             requireContext(), commentList, commentOnClickListener, replyOnClickListener, profileOnClickListener, true
         )
+        val linearLayoutManager = LinearLayoutManager(requireContext())
         try {
             binding.rvComment.layoutManager = linearLayoutManager
             binding.rvComment.adapter = commentRecyclerViewAdapter
@@ -128,7 +128,7 @@ class MemesDetailCommentFragment : Fragment() {
                             commentList.addAll(comments)
 
                             commentRecyclerViewAdapter.notifyDataSetChanged()
-                            if (offset == 0) linearLayoutManager.scrollToPositionWithOffset(0, 0);
+                            if (offset == 0) linearLayoutManager?.scrollToPositionWithOffset(0, 0);
                         }
                     }
                     Status.ERROR -> {

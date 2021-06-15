@@ -4,17 +4,13 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dimen_4"
     android:background="@color/backgroundMain"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingTop="@dimen/dimen_12">
 
     <LinearLayout
         android:id="@+id/linBtnFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         android:paddingHorizontal="@dimen/dimen_16"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,8 +20,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="@dimen/font_medium2" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:layout_marginTop="@dimen/dimen_12"
+        app:layout_constraintTop_toBottomOf="@id/linBtnFilter"
+        android:layout_marginStart="@dimen/dimen_16"
+        android:background="@color/line_separator"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

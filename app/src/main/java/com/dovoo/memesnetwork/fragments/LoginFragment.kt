@@ -2,7 +2,6 @@ package com.dovoo.memesnetwork.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,9 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.messaging.FirebaseMessaging
 
 
 class LoginFragment : Fragment(), View.OnClickListener {
@@ -77,6 +74,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
             syncDatabase(account)
         } else {
             // user not log in
+            GlobalFunc.setLogout(requireContext())
             removeAllPrefs(requireContext())
         }
     }
@@ -86,6 +84,8 @@ class LoginFragment : Fragment(), View.OnClickListener {
         generalViewModel.loginListener.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
+                    binding.loading.loadingBar.visibility = View.GONE
+
                     it.data?.user?.let { user ->
                         generalViewModel.currentUser = user
                         SharedPreferenceUtils.saveUserPrefs(
@@ -95,8 +95,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                             user.email,
                             user.photo_url
                         )
-
-
+                        GlobalFunc.successLogin(requireContext())
                         if (user.username.isNullOrEmpty()) {
                             findNavController().navigate(R.id.action_loginFragment_to_insertUsernameFragment)
                         } else {
@@ -116,6 +115,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                     }
                 }
                 Status.ERROR -> {
+                    binding.loading.loadingBar.visibility = View.GONE
                     println("bbbbb: login: " + it.error?.message)
                 }
             }
@@ -125,46 +125,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private fun syncDatabase(account: GoogleSignInAccount) {
         val email = account.email
         email?.let {
+            binding.loading.loadingBar.visibility = View.VISIBLE
             generalViewModel.login(email)
         }
-//        AndroidNetworking.post(BuildConfig.API_URL + "syncusers")
-//                .addJSONObjectBody(jsonObject)
-//                .setPriority(Priority.HIGH)
-//                .build()
-//                .getAsJSONObject(new JSONObjectRequestListener() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        // do anything with response
-//                        try {
-//                            JSONObject data = response.getJSONObject("data");
-//
-//
-//                            if (data.isNull("username") || data.getString("username").equals("")) {
-//                                Intent i = new Intent(getApplicationContext(), ChooseUsernameActivity.class);
-//                                i.putExtra("email", email);
-//                                startActivity(i);
-//                            } else {
-//                                SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_NAME, data.getString("username"));
-//                                SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_ID, data.getInt("id"));
-//                                SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_EMAIL, email);
-//                                SharedPreferenceUtils.setPrefs(getApplicationContext(), SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, true);
-//                                Toast.makeText(getApplicationContext(), "Welcome " + data.getString("username") + " :)", Toast.LENGTH_LONG).show();
-//                            }
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        finish();
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(ANError anError) {
-//                        // handle error
-//                        System.out.print("error");
-//                    }
-//                });
     }
 
     override fun onClick(view: View) {

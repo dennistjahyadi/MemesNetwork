@@ -3,10 +3,13 @@ package com.dovoo.memesnetwork.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dovoo.memesnetwork.R
@@ -28,12 +31,10 @@ class MemesDetailFragment : Fragment() {
     }
     val listFragment: ArrayList<Fragment> = ArrayList()
 
-    private lateinit var memesDetailViewPagerAdapter: MemesDetailViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragments()
-        memesDetailViewPagerAdapter = MemesDetailViewPagerAdapter(this, listFragment)
     }
 
     private fun initFragments() {
@@ -48,6 +49,18 @@ class MemesDetailFragment : Fragment() {
     ): View {
         _binding = FragmentMemesDetailsBinding.inflate(inflater, container, false)
         loadAds(requireContext(), binding.adView)
+        binding.viewPager.adapter = MemesDetailViewPagerAdapter(
+            childFragmentManager,
+            lifecycle,
+            listFragment
+        )
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = getString(R.string.memes)
+                1 -> tab.text = getString(R.string.comments)
+                else -> tab.text = getString(R.string.unknown)
+            }
+        }.attach()
         binding.linBtnBack.setOnClickListener { findNavController().popBackStack() }
         binding.viewPager.offscreenPageLimit = 2
 
@@ -58,14 +71,6 @@ class MemesDetailFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        binding.viewPager.adapter = memesDetailViewPagerAdapter
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = getString(R.string.memes)
-                1 -> tab.text = getString(R.string.comments)
-                else -> tab.text = getString(R.string.unknown)
-            }
-        }.attach()
         if (defaultCommentPage == true) {
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.viewPager.setCurrentItem(1, false)
@@ -84,9 +89,12 @@ class MemesDetailFragment : Fragment() {
             })
     }
 
-
-    class MemesDetailViewPagerAdapter(fragment: Fragment, val listFragment: ArrayList<Fragment>) :
-        FragmentStateAdapter(fragment) {
+    class MemesDetailViewPagerAdapter(
+        fragment: FragmentManager,
+        lifecycle: Lifecycle,
+        val listFragment: ArrayList<Fragment>
+    ) :
+        FragmentStateAdapter(fragment, lifecycle) {
 
         override fun getItemCount(): Int = listFragment.size
 
@@ -98,7 +106,7 @@ class MemesDetailFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        binding.viewPager.adapter = null
+      //  binding.viewPager.adapter = null
     }
 }
 

@@ -14,12 +14,28 @@ object GlobalFunc {
 
     @JvmStatic
     fun isLogin(context: Context): Boolean {
+        val localLogin = SharedPreferenceUtils.getPrefs(context).getBoolean(
+            SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
+            false
+        )
 
-//        return SharedPreferenceUtils.getPrefs(context).getBoolean(
-//            SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
-//            false
-//        )
-        return GoogleSignIn.getLastSignedInAccount(context) != null
+        return (GoogleSignIn.getLastSignedInAccount(context) != null) && localLogin
+    }
+
+    @JvmStatic
+    fun successLogin(context: Context) {
+        SharedPreferenceUtils.getPrefsEditor(context).putBoolean(
+            SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
+            true
+        )
+    }
+
+    @JvmStatic
+    fun setLogout(context: Context) {
+        SharedPreferenceUtils.getPrefsEditor(context).putBoolean(
+            SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
+            false
+        )
     }
 
     fun getLoggedInUserId(context: Context): Int {

@@ -66,6 +66,8 @@ class FilterFragment : Fragment() {
                         listSections.add(section)
                     }
                     adapter.notifyDataSetChanged()
+                    if(binding.etSearch.text.isNullOrEmpty()) binding.lblTopSections.visibility = View.VISIBLE
+                    else binding.lblTopSections.visibility = View.GONE
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()

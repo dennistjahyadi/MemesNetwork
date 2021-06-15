@@ -33,7 +33,7 @@ class UserFragment : Fragment(), View.OnClickListener {
         arguments?.getInt("user_id")!!
     }
     private val memesList: ArrayList<DirectLinkItemTest> = ArrayList()
-    lateinit var adapter: MyMemesFragment.MyMemesAdapter
+    var adapter: MyMemesFragment.MyMemesAdapter? = null
 
     val memesOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MyMemesFragment.MyMemesAdapter.MyMemesViewHolder
@@ -44,11 +44,6 @@ class UserFragment : Fragment(), View.OnClickListener {
     var currentUserResp: UserOtherResponse? = null
 
     var isFollowing = false
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        adapter = MyMemesFragment.MyMemesAdapter(requireContext(), memesList, memesOnClickListener)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +58,7 @@ class UserFragment : Fragment(), View.OnClickListener {
         }else{
             binding.linBtnFollow.visibility = View.GONE
         }
-
+        adapter = MyMemesFragment.MyMemesAdapter(requireContext(), memesList, memesOnClickListener)
 
         binding.linBtnBack.setOnClickListener {
             findNavController().popBackStack()
@@ -90,8 +85,6 @@ class UserFragment : Fragment(), View.OnClickListener {
             follow()
         }
 
-
-
         generalViewModel.userMemes.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -101,7 +94,7 @@ class UserFragment : Fragment(), View.OnClickListener {
                         it.data?.memes?.forEach { meme ->
                             memesList.add(DirectLinkItemTest(meme))
                         }
-                        adapter.notifyDataSetChanged()
+                        adapter?.notifyDataSetChanged()
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }

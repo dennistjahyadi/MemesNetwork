@@ -76,9 +76,20 @@
                 android:src="@drawable/ic_search" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/lblTopSections"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="@dimen/dimen_16"
+            android:text="@string/top_sections"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSection"
-            android:layout_marginTop="@dimen/dimen_16"
+            android:layout_marginTop="@dimen/dimen_4"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />

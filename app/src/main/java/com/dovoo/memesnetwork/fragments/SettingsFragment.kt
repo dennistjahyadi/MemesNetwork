@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.dovoo.memesnetwork.DefaultActivity
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.databinding.FragmentSettingsBinding
+import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 
 class SettingsFragment : Fragment() {
@@ -69,6 +70,7 @@ class SettingsFragment : Fragment() {
         (activity as DefaultActivity).mGoogleSignInClient.signOut()
             .addOnCompleteListener(activity as DefaultActivity) {
                 if (it.isComplete) {
+                    GlobalFunc.setLogout(requireContext())
                     SharedPreferenceUtils.removeUserPrefs(requireContext())
                     findNavController().popBackStack()
                 }

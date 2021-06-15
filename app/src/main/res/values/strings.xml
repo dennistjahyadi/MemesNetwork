@@ -32,7 +32,7 @@
     <string name="logout_msg">Do you want to logout?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="followings">Followings</string>
+    <string name="followings">Following</string>
     <string name="followers">Followers</string>
     <string name="uploading">Uploading..</string>
     <string name="edit">Edit</string>
@@ -75,4 +75,5 @@
     <string name="ok">OK</string>
     <string name="search_user">Search User</string>
     <string name="please_wait">Please wait...</string>
+    <string name="top_sections">Top Sections:</string>
 </resources>

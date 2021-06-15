@@ -105,10 +105,13 @@ class UserFollowingsFragment : Fragment() {
                             listData.addAll(it)
                         }
                         adapter.notifyDataSetChanged()
+                        binding.loadingBar.visibility = View.GONE
                     }
                     Status.ERROR -> {
                         Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG)
                             .show()
+                        binding.loadingBar.visibility = View.GONE
+
                     }
                 }
             })

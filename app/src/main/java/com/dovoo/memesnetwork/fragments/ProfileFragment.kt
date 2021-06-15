@@ -38,15 +38,13 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private val binding get() = _binding!!
     val generalViewModel: GeneralViewModel by viewModels()
     val listFragment: ArrayList<Fragment> = ArrayList()
-    private lateinit var profileViewPagerAdapter: ProfileViewPagerAdapter
-    private lateinit var onPageChangeCallback: ViewPager2.OnPageChangeCallback
+    var profileViewPagerAdapter: ProfileViewPagerAdapter? = null
     var lastPageIndex = 0
     private var currentPagePosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragments()
-        profileViewPagerAdapter = ProfileViewPagerAdapter(this, listFragment)
     }
 
     private fun initFragments() {
@@ -63,7 +61,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         if(!GlobalFunc.isLogin(requireContext())) findNavController().popBackStack()
         else checkUsername()
-
+        profileViewPagerAdapter = ProfileViewPagerAdapter(this, listFragment)
         binding.viewPager.adapter = profileViewPagerAdapter
         binding.viewPager.offscreenPageLimit = 1
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -119,6 +117,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         generalViewModel.getUser(requireContext(), userId).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
+                    binding.tvTotalMemes.text = it.data?.total_memes.toString()
                     binding.tvFollowers.text = it.data?.total_follower.toString()
                     binding.tvFollowing.text = it.data?.total_following.toString()
                 }
@@ -272,16 +271,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        binding.viewPager.adapter = profileViewPagerAdapter
-        binding.viewPager.offscreenPageLimit = 1
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = getString(R.string.my_memes)
-                1 -> tab.text = getString(R.string.liked)
-                2 -> tab.text = getString(R.string.comments)
-                else -> tab.text = getString(R.string.unknown)
-            }
-        }.attach()
         Handler(Looper.getMainLooper()).postDelayed({
             binding.viewPager.setCurrentItem(lastPageIndex, false)
         }, 100)
@@ -290,7 +279,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onStop() {
         super.onStop()
         lastPageIndex = currentPagePosition
-        binding.viewPager.adapter = null
     }
 
 

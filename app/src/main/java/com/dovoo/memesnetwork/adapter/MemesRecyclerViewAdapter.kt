@@ -199,7 +199,7 @@ class MemesRecyclerViewAdapter(
                     override fun onError(request: FileLoadRequest, t: Throwable) {
                         mLoadingBar?.visibility = View.GONE
                         viewHolder.ivBtnShare.isEnabled = true
-                        Toast.makeText(mContext, "Cannot sharing file asdfsd", Toast.LENGTH_LONG).show()
+                        Toast.makeText(mContext, "Cannot sharing file ", Toast.LENGTH_LONG).show()
                     }
                 })
         })

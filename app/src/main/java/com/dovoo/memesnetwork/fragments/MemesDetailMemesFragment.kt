@@ -134,7 +134,6 @@ class MemesDetailMemesFragment : Fragment() {
             PhotoViewAttacher(binding.cover)
         }
         binding.tvBtnLike.setOnClickListener(likeOnClickListener)
-        binding.linBtnShare.visibility = View.GONE
         binding.linBtnShare.setOnClickListener (View.OnClickListener{
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
@@ -145,6 +144,7 @@ class MemesDetailMemesFragment : Fragment() {
                     .show()
                 return@OnClickListener
             }
+            binding.loading.loadingBar.visibility = View.VISIBLE
             binding.tvBtnShare.isEnabled = false
 
             val isVideo = videoItem.getmDirectUrl() != null
@@ -154,7 +154,7 @@ class MemesDetailMemesFragment : Fragment() {
             }
             FileLoader.with(requireContext())
                 .load(theUrl) //2nd parameter is optioal, pass true to force load from network
-                .fromDirectory("memesnetwork", FileLoader.DIR_EXTERNAL_PUBLIC)
+                .fromDirectory("memesnetwork", FileLoader.DIR_INTERNAL)
                 .asFile(object : FileRequestListener<File?> {
                     override fun onLoad(request: FileLoadRequest, response: FileResponse<File?>) {
                         val loadedFile = response.body
@@ -187,10 +187,14 @@ class MemesDetailMemesFragment : Fragment() {
                         startActivity(Intent.createChooser(share, "Share :"))
 
                         binding.tvBtnShare.isEnabled = true
+                        binding.loading.loadingBar.visibility = View.GONE
+
                     }
 
                     override fun onError(request: FileLoadRequest, t: Throwable) {
                         binding.tvBtnShare.isEnabled = true
+                        binding.loading.loadingBar.visibility = View.GONE
+
                         Toast.makeText(requireContext(), "Cannot sharing file", Toast.LENGTH_LONG).show()
                     }
                 })
