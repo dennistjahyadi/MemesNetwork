@@ -75,7 +75,9 @@ class UserFollowingsFragment : Fragment() {
     }
 
     private fun fetchData(offset: Int) {
-        if (offset == 0) listData.clear()
+        if (offset == 0) {listData.clear()
+        binding.loadingBar.visibility = View.VISIBLE
+        }
         if (isFollowing == true) {
             generalViewModel.fetchFollowings(offset, userId!!).observe(viewLifecycleOwner, {
                 when (it.status) {
@@ -84,8 +86,12 @@ class UserFollowingsFragment : Fragment() {
                             listData.addAll(it)
                         }
                         adapter.notifyDataSetChanged()
+                        binding.loadingBar.visibility = View.GONE
+
                     }
                     Status.ERROR -> {
+                        binding.loadingBar.visibility = View.GONE
+
                         Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG)
                             .show()
                     }

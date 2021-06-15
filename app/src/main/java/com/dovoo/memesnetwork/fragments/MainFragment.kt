@@ -158,7 +158,7 @@ class MainFragment : Fragment() {
         generalViewModel.memesHome.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.loadingBar.visibility = View.GONE
+                    binding.memeLoading.visibility = View.GONE
 
                     // do anything with response
                     try {
@@ -176,7 +176,7 @@ class MainFragment : Fragment() {
 
                 }
                 Status.ERROR -> {
-                    binding.loadingBar.visibility = View.GONE
+                    binding.memeLoading.visibility = View.GONE
                     Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
                 }
                 else -> {
@@ -270,7 +270,7 @@ class MainFragment : Fragment() {
 
     private fun fetchData(offset: Int) {
         if (offset == 0) {
-            binding.loadingBar.visibility = View.VISIBLE
+            binding.memeLoading.visibility = View.VISIBLE
             directLinkItemTestList.clear()
         }
         val userId = getPrefs(requireContext()).getInt(SharedPreferenceUtils.PREFERENCES_USER_ID, 0)

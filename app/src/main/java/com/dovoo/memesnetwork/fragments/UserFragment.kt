@@ -57,10 +57,14 @@ class UserFragment : Fragment(), View.OnClickListener {
     ): View {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         if(GlobalFunc.isLogin(requireContext())){
-            binding.linBtnFollow.visibility = View.VISIBLE
+            if (userId == GlobalFunc.getLoggedInUserId(requireContext())) binding.linBtnFollow.visibility =
+                View.GONE
+            else binding.linBtnFollow.visibility = View.VISIBLE
         }else{
             binding.linBtnFollow.visibility = View.GONE
         }
+
+
         binding.linBtnBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -86,9 +90,7 @@ class UserFragment : Fragment(), View.OnClickListener {
             follow()
         }
 
-        if (userId == GlobalFunc.getLoggedInUserId(requireContext())) binding.linBtnFollow.visibility =
-            View.GONE
-        else binding.linBtnFollow.visibility = View.VISIBLE
+
 
         generalViewModel.userMemes.observe(viewLifecycleOwner, {
             when (it.status) {
