@@ -11,7 +11,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -24,7 +23,6 @@ import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.utils.AdUtils
 import com.github.chrisbanes.photoview.PhotoViewAttacher
 import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
 import com.krishna.fileloader.FileLoader
 import com.krishna.fileloader.listener.FileRequestListener
 import com.krishna.fileloader.pojo.FileResponse
@@ -152,6 +150,7 @@ class MemesRecyclerViewAdapter(
                     .show()
                 return@OnClickListener
             }
+            deleteCache(mContext)
             viewHolder.ivBtnShare.isEnabled = false
             mLoadingBar?.visibility = View.VISIBLE
             val isVideo = directLinkVideoItem.getmDirectUrl() != null
@@ -161,7 +160,7 @@ class MemesRecyclerViewAdapter(
             }
             FileLoader.with(mContext)
                 .load(theUrl) //2nd parameter is optioal, pass true to force load from network
-                .fromDirectory("memesnetwork", FileLoader.DIR_EXTERNAL_PRIVATE)
+                .fromDirectory("memesnetwork", FileLoader.DIR_CACHE)
                 .asFile(object : FileRequestListener<File?> {
                     override fun onLoad(request: FileLoadRequest, response: FileResponse<File?>) {
                         val loadedFile = response.body
@@ -211,7 +210,38 @@ class MemesRecyclerViewAdapter(
         viewHolder.tvUsername.setOnClickListener(profileOnClickListener)
         viewHolder.bind(directLinkVideoItem)
     }
-
+    fun deleteRecursive(fileOrDirectory: File) {
+        if (fileOrDirectory.isDirectory) {
+            for (child in fileOrDirectory.listFiles()) {
+                deleteRecursive(child)
+            }
+        }
+        fileOrDirectory.delete()
+    }
+    fun deleteCache(context: Context) {
+        try {
+            val dir = context.cacheDir
+            deleteDir(dir)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+    fun deleteDir(dir: File?): Boolean {
+        return if (dir != null && dir.isDirectory) {
+            val children = dir.list()
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+            dir.delete()
+        } else if (dir != null && dir.isFile) {
+            dir.delete()
+        } else {
+            false
+        }
+    }
     override fun getItemCount(): Int {
         return directLinkItemTestList.size
     }
