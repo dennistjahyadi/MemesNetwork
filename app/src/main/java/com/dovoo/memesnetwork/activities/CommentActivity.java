@@ -68,7 +68,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
-                    if (!SharedPreferenceUtils.getPrefs(getApplicationContext()).getBoolean(SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN, false)) {
+                    if (!GlobalFunc.isLogin(getApplicationContext())) {
 //                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
 //                        startActivity(i);
                     }

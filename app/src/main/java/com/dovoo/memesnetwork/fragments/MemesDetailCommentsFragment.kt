@@ -72,11 +72,7 @@ class MemesDetailCommentFragment : Fragment() {
         _binding = FragmentMemesDetailCommentsBinding.inflate(inflater, container, false)
         binding.etComment.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                if (!SharedPreferenceUtils.getPrefs(requireContext()).getBoolean(
-                        SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
-                        false
-                    )
-                ) {
+                if (!GlobalFunc.isLogin(requireContext())) {
                     findNavController().navigate(R.id.action_memesDetailFragment_to_loginFragment)
                 }
             }

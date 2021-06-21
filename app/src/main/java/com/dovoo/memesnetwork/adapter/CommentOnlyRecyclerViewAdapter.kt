@@ -92,6 +92,7 @@ class CommentOnlyRecyclerViewAdapter(
             Glide.with(context).load(obj.user.photo_url).centerCrop().into(holder.ivPicture)
         }
         obj.subcomments = obj.subcomments?.asReversed()
+        holder.linSubcomments.removeAllViews()
         obj.subcomments?.forEach { subcomment ->
             val view = LayoutInflater.from(context).inflate(R.layout.row_subcomment, null)
             val ivPicture: ImageView = view.findViewById(R.id.ivPicture)

@@ -161,7 +161,7 @@ class MemesRecyclerViewAdapter(
             }
             FileLoader.with(mContext)
                 .load(theUrl) //2nd parameter is optioal, pass true to force load from network
-                .fromDirectory("memesnetwork", FileLoader.DIR_INTERNAL)
+                .fromDirectory("memesnetwork", FileLoader.DIR_EXTERNAL_PRIVATE)
                 .asFile(object : FileRequestListener<File?> {
                     override fun onLoad(request: FileLoadRequest, response: FileResponse<File?>) {
                         val loadedFile = response.body

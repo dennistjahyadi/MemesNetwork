@@ -61,8 +61,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_edit"
-        ads:layout_constraintBottom_toBottomOf="@id/ivProfile"
-        ads:layout_constraintRight_toRightOf="@id/ivProfile" />
+        app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+        app:layout_constraintRight_toRightOf="@id/ivProfile" />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -78,10 +78,10 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/ic_edit"
-        ads:layout_constraintBottom_toBottomOf="@id/tvUsername"
-        ads:layout_constraintTop_toTopOf="@id/tvUsername"
+        app:layout_constraintBottom_toBottomOf="@id/tvUsername"
+        app:layout_constraintTop_toTopOf="@id/tvUsername"
         android:layout_marginLeft="@dimen/dimen_8"
-        ads:layout_constraintLeft_toRightOf="@id/tvUsername" />
+        app:layout_constraintLeft_toRightOf="@id/tvUsername" />
     <TextView
         android:id="@+id/lbl_total_memes"
         android:layout_width="wrap_content"
@@ -89,9 +89,9 @@
         android:layout_marginTop="@dimen/dimen_16"
         android:text="@string/memes"
         android:textColor="@color/white"
-        ads:layout_constraintLeft_toLeftOf="parent"
-        ads:layout_constraintRight_toLeftOf="@id/lbl_following"
-        ads:layout_constraintTop_toBottomOf="@id/tvUsername" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/lbl_following"
+        app:layout_constraintTop_toBottomOf="@id/tvUsername" />
     <TextView
         android:id="@+id/lbl_following"
         android:layout_width="wrap_content"
@@ -99,9 +99,9 @@
         android:layout_marginTop="@dimen/dimen_16"
         android:text="@string/followings"
         android:textColor="@color/white"
-        ads:layout_constraintLeft_toRightOf="@id/lbl_total_memes"
-        ads:layout_constraintRight_toLeftOf="@id/lbl_followers"
-        ads:layout_constraintTop_toBottomOf="@id/tvUsername" />
+        app:layout_constraintLeft_toRightOf="@id/lbl_total_memes"
+        app:layout_constraintRight_toLeftOf="@id/lbl_followers"
+        app:layout_constraintTop_toBottomOf="@id/tvUsername" />
 
     <TextView
         android:id="@+id/lbl_followers"
@@ -110,9 +110,9 @@
         android:layout_marginTop="@dimen/dimen_16"
         android:text="@string/followers"
         android:textColor="@color/white"
-        ads:layout_constraintLeft_toRightOf="@id/lbl_following"
-        ads:layout_constraintRight_toRightOf="parent"
-        ads:layout_constraintTop_toBottomOf="@id/tvUsername" />
+        app:layout_constraintLeft_toRightOf="@id/lbl_following"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUsername" />
     <TextView
         android:id="@+id/tv_total_memes"
         android:layout_width="wrap_content"
@@ -120,9 +120,9 @@
         android:text="0"
         android:textColor="@color/white"
         android:textStyle="bold"
-        ads:layout_constraintLeft_toLeftOf="@id/lbl_total_memes"
-        ads:layout_constraintRight_toRightOf="@id/lbl_total_memes"
-        ads:layout_constraintTop_toBottomOf="@id/lbl_total_memes" />
+        app:layout_constraintLeft_toLeftOf="@id/lbl_total_memes"
+        app:layout_constraintRight_toRightOf="@id/lbl_total_memes"
+        app:layout_constraintTop_toBottomOf="@id/lbl_total_memes" />
     <TextView
         android:id="@+id/tv_following"
         android:layout_width="wrap_content"
@@ -130,9 +130,9 @@
         android:text="0"
         android:textColor="@color/white"
         android:textStyle="bold"
-        ads:layout_constraintLeft_toLeftOf="@id/lbl_following"
-        ads:layout_constraintRight_toRightOf="@id/lbl_following"
-        ads:layout_constraintTop_toBottomOf="@id/lbl_following" />
+        app:layout_constraintLeft_toLeftOf="@id/lbl_following"
+        app:layout_constraintRight_toRightOf="@id/lbl_following"
+        app:layout_constraintTop_toBottomOf="@id/lbl_following" />
 
     <TextView
         android:id="@+id/tv_followers"
@@ -141,9 +141,9 @@
         android:text="0"
         android:textColor="@color/white"
         android:textStyle="bold"
-        ads:layout_constraintLeft_toLeftOf="@id/lbl_followers"
-        ads:layout_constraintRight_toRightOf="@id/lbl_followers"
-        ads:layout_constraintTop_toBottomOf="@id/lbl_followers" />
+        app:layout_constraintLeft_toLeftOf="@id/lbl_followers"
+        app:layout_constraintRight_toRightOf="@id/lbl_followers"
+        app:layout_constraintTop_toBottomOf="@id/lbl_followers" />
 
     <View
         android:id="@+id/separator1"
@@ -151,13 +151,13 @@
         android:layout_height="2dp"
         android:layout_marginTop="@dimen/dimen_8"
         android:background="@color/white"
-        ads:layout_constraintTop_toBottomOf="@id/tv_following" />
+        app:layout_constraintTop_toBottomOf="@id/tv_following" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        ads:layout_constraintTop_toBottomOf="@id/separator1"
+        app:layout_constraintTop_toBottomOf="@id/separator1"
         app:tabSelectedTextColor="@color/white"
         app:tabTextColor="@color/grey700" />
 
@@ -165,8 +165,8 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        ads:layout_constraintBottom_toBottomOf="parent"
-        ads:layout_constraintTop_toBottomOf="@id/tab_layout" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tab_layout" />
 
     <LinearLayout
         android:id="@+id/loading_upload"
@@ -178,7 +178,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        ads:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kit"

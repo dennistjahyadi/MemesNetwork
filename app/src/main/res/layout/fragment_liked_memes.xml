@@ -30,7 +30,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        ads:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kit"

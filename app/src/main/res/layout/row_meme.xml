@@ -17,8 +17,8 @@
         android:background="@color/backgroundMain"
         ads:adSize="BANNER"
         ads:adUnitId="@string/admob_banner_ad_unit_id"
-        ads:layout_constraintBottom_toTopOf="@id/linTop"
-        ads:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/linTop"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/linTop"

@@ -19,6 +19,7 @@ import com.dovoo.memesnetwork.components.EndlessRecyclerViewScrollListener
 import com.dovoo.memesnetwork.components.MyLinearLayoutManager
 import com.dovoo.memesnetwork.databinding.FragmentFollowingMemesBinding
 import com.dovoo.memesnetwork.model.Status
+import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import im.ene.toro.widget.PressablePlayerSelector
@@ -36,10 +37,7 @@ class FollowingMemesFragment : Fragment() {
 
     val likeOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MemesViewHolder
-        if (SharedPreferenceUtils.getPrefs(requireContext()).getBoolean(
-                SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
-                false
-            )
+        if (GlobalFunc.isLogin(requireContext())
         ) {
             doLike(
                 memesViewHolder.data.id,

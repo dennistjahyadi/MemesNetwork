@@ -22,6 +22,7 @@ import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.databinding.FragmentMemesDetailMemesBinding
 import com.dovoo.memesnetwork.model.Status
+import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.github.chrisbanes.photoview.PhotoViewAttacher
@@ -56,10 +57,7 @@ class MemesDetailMemesFragment : Fragment() {
 
 
     val likeOnClickListener = View.OnClickListener {
-        if (!SharedPreferenceUtils.getPrefs(requireContext()).getBoolean(
-                SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
-                false
-            )
+        if (!GlobalFunc.isLogin(requireContext())
         ) {
             findNavController().navigate(R.id.action_memesDetailFragment_to_loginFragment)
         } else {

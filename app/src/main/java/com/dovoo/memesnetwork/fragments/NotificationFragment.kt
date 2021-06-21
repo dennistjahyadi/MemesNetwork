@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.solver.widgets.analyzer.Direct
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -37,25 +36,36 @@ class NotificationFragment : Fragment() {
     val notificationOnClick = View.OnClickListener {
         val viewHolder = it.tag as NotificationAdapter.NotificationViewHolder
         val data = viewHolder.data
-        if(data.type == Notification.TYPE_FOLLOWING){
+        if (data.type == Notification.TYPE_FOLLOWING) {
             val bundle = bundleOf("user_id" to data.user_id_from)
             findNavController().navigate(R.id.action_notificationFragment_to_userFragment, bundle)
-        }else if(data.type == Notification.TYPE_MEME_COMMENT){
+        } else if (data.type == Notification.TYPE_MEME_COMMENT) {
             try {
                 val directLinkItemTest = DirectLinkItemTest(data.meme_obj!!)
                 val bundle = bundleOf("item" to directLinkItemTest)
-                findNavController().navigate(R.id.action_notificationFragment_to_memesDetailFragment, bundle)
-            }catch (ex: Exception){}
-        }else if(data.type == Notification.TYPE_SUB_COMMENT){
+                findNavController().navigate(
+                    R.id.action_notificationFragment_to_memesDetailFragment,
+                    bundle
+                )
+            } catch (ex: Exception) {
+            }
+        } else if (data.type == Notification.TYPE_SUB_COMMENT) {
             val arguments = Bundle()
             arguments.putParcelable("main_comment", data.main_comment_obj)
-            findNavController().navigate(R.id.action_notificationFragment_to_commentDetailsFragment, arguments)
-        }else if(data.type == Notification.TYPE_MEME_LIKED){
+            findNavController().navigate(
+                R.id.action_notificationFragment_to_commentDetailsFragment,
+                arguments
+            )
+        } else if (data.type == Notification.TYPE_MEME_LIKED) {
             try {
                 val directLinkItemTest = DirectLinkItemTest(data.meme_obj!!)
                 val bundle = bundleOf("item" to directLinkItemTest)
-                findNavController().navigate(R.id.action_notificationFragment_to_memesDetailFragment, bundle)
-            }catch (ex: Exception){}
+                findNavController().navigate(
+                    R.id.action_notificationFragment_to_memesDetailFragment,
+                    bundle
+                )
+            } catch (ex: Exception) {
+            }
         }
 
     }
@@ -73,13 +83,23 @@ class NotificationFragment : Fragment() {
         try {
             val directLinkItemTest = DirectLinkItemTest(data.meme_obj!!)
             val bundle = bundleOf("item" to directLinkItemTest)
-            findNavController().navigate(R.id.action_notificationFragment_to_memesDetailFragment, bundle)
-        }catch (ex: Exception){}
+            findNavController().navigate(
+                R.id.action_notificationFragment_to_memesDetailFragment,
+                bundle
+            )
+        } catch (ex: Exception) {
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = NotificationAdapter(requireContext(), listNotification, notificationOnClick, profileOnCLick, contentOnCLick)
+        adapter = NotificationAdapter(
+            requireContext(),
+            listNotification,
+            notificationOnClick,
+            profileOnCLick,
+            contentOnCLick
+        )
     }
 
     override fun onCreateView(
@@ -107,30 +127,41 @@ class NotificationFragment : Fragment() {
     }
 
     private fun fetchData(offset: Int) {
-        if (offset == 0) listNotification.clear()
+        if (offset == 0) {
+            listNotification.clear()
+            binding.loadingBar.visibility = View.VISIBLE
+        }
         val userId = GlobalFunc.getLoggedInUserId(requireContext())
         generalViewModel.fetchNotifications(offset, userId).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
                     val currentDatetime = it.data?.current_datetime
                     it.data?.notifications?.let {
-                        it.forEach {  notif ->
+                        it.forEach { notif ->
                             notif.main_comment_obj?.current_datetime = currentDatetime
                             notif.current_comment_obj?.current_datetime = currentDatetime
                         }
                         listNotification.addAll(it)
                     }
+                    binding.loadingBar.visibility = View.GONE
                     adapter.notifyDataSetChanged()
                     GlobalFunc.clearNotifCount(requireContext())
                 }
                 Status.ERROR -> {
+                    binding.loadingBar.visibility = View.GONE
                     Toast.makeText(requireContext(), it.error?.message, Toast.LENGTH_LONG).show()
                 }
             }
         })
     }
 
-    class NotificationAdapter(val context: Context, val list: ArrayList<Notification>, val itemOnClickListener: View.OnClickListener, val profileOnClickListener: View.OnClickListener, val contentOnClickListener: View.OnClickListener) :
+    class NotificationAdapter(
+        val context: Context,
+        val list: ArrayList<Notification>,
+        val itemOnClickListener: View.OnClickListener,
+        val profileOnClickListener: View.OnClickListener,
+        val contentOnClickListener: View.OnClickListener
+    ) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -192,7 +223,10 @@ class NotificationFragment : Fragment() {
                 holder.ivContent.visibility = View.VISIBLE
                 holder.linBtnFollow.visibility = View.GONE
                 Glide.with(context).load(data.meme_obj?.getCoverUrl()).into(holder.ivContent)
-                if(data.type.equals(Notification.TYPE_MEME_COMMENT) || data.type.equals(Notification.TYPE_SUB_COMMENT)){
+                if (data.type.equals(Notification.TYPE_MEME_COMMENT) || data.type.equals(
+                        Notification.TYPE_SUB_COMMENT
+                    )
+                ) {
                     holder.tvSubMessage.text = data.current_comment_obj?.messages
                 }
             }

@@ -47,10 +47,7 @@ class MainFragment : Fragment() {
 
     val likeOnClickListener = View.OnClickListener {
         val memesViewHolder = it.tag as MemesViewHolder
-        if (!getPrefs(requireContext()).getBoolean(
-                SharedPreferenceUtils.PREFERENCES_USER_IS_LOGIN,
-                false
-            )
+        if (!GlobalFunc.isLogin(requireContext())
         ) {
             findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
         } else {
@@ -197,7 +194,10 @@ class MainFragment : Fragment() {
             findNavController().navigate(R.id.action_mainFragment_to_filterFragment)
         }
         binding.includeToolbar.conNotification.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_notificationFragment)
+            if (!GlobalFunc.isLogin(requireContext())
+            ) {
+                findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+            }else findNavController().navigate(R.id.action_mainFragment_to_notificationFragment)
         }
         binding.tvMenuFollowing.setOnClickListener {
             if (GlobalFunc.isLogin(requireContext())) findNavController().navigate(R.id.action_mainFragment_to_followingMemesFragment)
