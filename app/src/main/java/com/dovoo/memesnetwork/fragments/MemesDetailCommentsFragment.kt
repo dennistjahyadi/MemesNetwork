@@ -94,6 +94,9 @@ class MemesDetailCommentFragment : Fragment() {
         }
         binding.rvComment.removeOnScrollListener(onLoad)
         binding.rvComment.addOnScrollListener(onLoad)
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            fetchComments(0)
+        }
         binding.ivReplyToClose.setOnClickListener {
             replyToData = null
             binding.linReplyTo.visibility = View.GONE
@@ -109,6 +112,7 @@ class MemesDetailCommentFragment : Fragment() {
     }
 
     private fun fetchComments(offset: Int) {
+        binding.swipeRefreshLayout.isRefreshing=true
         if (offset == 0) commentList.clear()
         generalViewModel.fetchMainComments(offset, null, currentVideoItem!!.id, null, "desc")
             .observe(viewLifecycleOwner, {
@@ -122,13 +126,14 @@ class MemesDetailCommentFragment : Fragment() {
                                 }
                             }
                             commentList.addAll(comments)
-
+                            binding.swipeRefreshLayout.isRefreshing=false
                             commentRecyclerViewAdapter.notifyDataSetChanged()
                             if (offset == 0) linearLayoutManager?.scrollToPositionWithOffset(0, 0);
                         }
                     }
                     Status.ERROR -> {
                         println("bbbbb")
+                        binding.swipeRefreshLayout.isRefreshing=false
                     }
                 }
             })

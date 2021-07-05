@@ -5,14 +5,21 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvComment"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -27,8 +34,8 @@
             android:layout_height="wrap_content"
             android:background="@color/grey900"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:padding="@dimen/dimen_8">
+            android:padding="@dimen/dimen_8"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tvLblReply"
