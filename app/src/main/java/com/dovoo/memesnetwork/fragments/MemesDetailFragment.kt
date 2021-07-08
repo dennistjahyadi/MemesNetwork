@@ -16,6 +16,7 @@ import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.databinding.FragmentMemesDetailsBinding
 import com.dovoo.memesnetwork.utils.AdUtils.loadAds
+import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
@@ -64,9 +65,22 @@ class MemesDetailFragment : Fragment() {
         binding.linBtnBack.setOnClickListener { findNavController().popBackStack() }
         binding.viewPager.offscreenPageLimit = 2
 
+        if(GlobalFunc.isLogin(requireContext()) && currentVideoItem?.user?.id == GlobalFunc.getLoggedInUserId(requireContext())){
+            binding.tvDelete.visibility = View.VISIBLE
+        }else{
+            binding.tvDelete.visibility = View.GONE
+        }
+        binding.tvDelete.setOnClickListener {
+
+        }
+
         onResult()
 
         return binding.root
+    }
+
+    private fun deleteMemes(){
+
     }
 
     override fun onStart() {
