@@ -39,6 +39,7 @@ import com.dovoo.memesnetwork.databinding.FragmentAddMemeBinding
 import com.dovoo.memesnetwork.model.Memes
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.GlobalFunc
+import com.dovoo.memesnetwork.utils.Utils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.github.javiersantos.bottomdialogs.BottomDialog
 import com.google.android.exoplayer2.ExoPlayerFactory
@@ -85,10 +86,7 @@ class AddMemeFragment : Fragment() {
 
         binding.linAddContent.setOnClickListener {
 
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
+            if (!Utils.checkPermissionStorage(requireContext())
             ) {
                 AlertDialog.Builder(context)
                     .setTitle(getString(R.string.storage_access))
@@ -98,7 +96,7 @@ class AddMemeFragment : Fragment() {
                         // Continue with delete operation
                         ActivityCompat.requestPermissions(
                             requireActivity(),
-                            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),
                             1123
                         )
 //                        val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
@@ -199,7 +197,7 @@ class AddMemeFragment : Fragment() {
         // Create a storage reference from our app
         val storageRef = (activity as DefaultActivity).storage.reference
         val userId = GlobalFunc.getLoggedInUserId(requireContext())
-        val memesRef = storageRef.child("memes/${userId}/${System.currentTimeMillis()}")
+        val memesRef = storageRef.child("memes/${userId}/${System.currentTimeMillis()}.jpg")
         lateinit var uploadTask: UploadTask
         if (bitmap != null) {
             val baos = ByteArrayOutputStream()
@@ -442,10 +440,7 @@ class AddMemeFragment : Fragment() {
     }
 
     private fun setReadStoragePermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            ) != PackageManager.PERMISSION_GRANTED
+        if (!Utils.checkPermissionStorage(requireContext())
         ) {
 
             if (!ActivityCompat.shouldShowRequestPermissionRationale(
@@ -455,7 +450,7 @@ class AddMemeFragment : Fragment() {
             ) {
                 ActivityCompat.requestPermissions(
                     requireActivity(),
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),
                     1
                 )
             }

@@ -1,6 +1,5 @@
 package com.dovoo.memesnetwork.fragments
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,17 +16,16 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.dovoo.memesnetwork.BuildConfig
 import com.dovoo.memesnetwork.R
-import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.databinding.FragmentMemesDetailMemesBinding
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.GlobalFunc
 import com.dovoo.memesnetwork.utils.SharedPreferenceUtils
+import com.dovoo.memesnetwork.utils.Utils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.github.chrisbanes.photoview.PhotoViewAttacher
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
@@ -132,13 +129,14 @@ class MemesDetailMemesFragment : Fragment() {
             PhotoViewAttacher(binding.cover)
         }
         binding.tvBtnLike.setOnClickListener(likeOnClickListener)
-        binding.linBtnShare.setOnClickListener (View.OnClickListener{
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
+        binding.linBtnShare.setOnClickListener(View.OnClickListener {
+            if (!Utils.checkPermissionStorage(requireContext())
             ) {
-                Toast.makeText(requireContext(), "Please allow storage permission", Toast.LENGTH_LONG)
+                Toast.makeText(
+                    requireContext(),
+                    "Please allow storage permission",
+                    Toast.LENGTH_LONG
+                )
                     .show()
                 return@OnClickListener
             }
@@ -152,13 +150,13 @@ class MemesDetailMemesFragment : Fragment() {
             }
             FileLoader.with(requireContext())
                 .load(theUrl) //2nd parameter is optioal, pass true to force load from network
-                .fromDirectory("memesnetwork", FileLoader.DIR_INTERNAL)
+                .fromDirectory("memesnetwork", FileLoader.DIR_CACHE)
                 .asFile(object : FileRequestListener<File?> {
                     override fun onLoad(request: FileLoadRequest, response: FileResponse<File?>) {
                         val loadedFile = response.body
                         val share = Intent(Intent.ACTION_SEND)
                         if (!isVideo) {
-                            share.type = "image/*"
+                            share.type = "image/jpg"
                         } else {
                             share.type = "video/*"
                         }
@@ -181,7 +179,8 @@ class MemesDetailMemesFragment : Fragment() {
                             """.trimIndent()
                         share.putExtra(Intent.EXTRA_TEXT, shareMessage)
                         share.putExtra(Intent.EXTRA_STREAM, uri)
-                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        share.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION  or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
                         startActivity(Intent.createChooser(share, "Share :"))
 
                         binding.tvBtnShare.isEnabled = true
@@ -193,7 +192,8 @@ class MemesDetailMemesFragment : Fragment() {
                         binding.tvBtnShare.isEnabled = true
                         binding.loading.loadingBar.visibility = View.GONE
 
-                        Toast.makeText(requireContext(), "Cannot sharing file", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), "Cannot sharing file", Toast.LENGTH_LONG)
+                            .show()
                     }
                 })
         })

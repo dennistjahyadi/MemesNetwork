@@ -1,18 +1,19 @@
 package com.dovoo.memesnetwork.utils
 
+import android.Manifest
 import android.R
-import kotlin.Throws
-import org.json.JSONException
-import org.json.JSONObject
-import org.json.JSONArray
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.text.format.DateUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 object Utils {
     val sdfDateTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -78,7 +79,7 @@ object Utils {
         }
     }
 
-    fun convertToTimeText(created_at: String, current_datetime: String): String{
+    fun convertToTimeText(created_at: String, current_datetime: String): String {
         val createdAtDate = sdfDateTime.parse(created_at)
         val currentDate = sdfDateTime.parse(current_datetime)
         val createAtMiliseconds = createdAtDate.time
@@ -89,5 +90,17 @@ object Utils {
             DateUtils.MINUTE_IN_MILLIS
         )
         return thedate.toString()
+    }
+
+    @JvmStatic
+    fun checkPermissionStorage(context: Context): Boolean {
+        return ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
     }
 }

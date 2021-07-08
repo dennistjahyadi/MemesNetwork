@@ -1,5 +1,6 @@
 package com.dovoo.memesnetwork.fragments
 
+import android.os.Binder.getCallingUid
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -117,6 +118,11 @@ class MainFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(

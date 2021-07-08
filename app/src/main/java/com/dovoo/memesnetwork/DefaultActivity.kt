@@ -15,6 +15,7 @@ import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.model.Notification
 import com.dovoo.memesnetwork.model.Status
 import com.dovoo.memesnetwork.utils.GlobalFunc
+import com.dovoo.memesnetwork.utils.Utils
 import com.dovoo.memesnetwork.viewmodel.GeneralViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
@@ -46,14 +47,11 @@ class DefaultActivity : AppCompatActivity() {
         storage = Firebase.storage("gs://memes-network-1554020980788.appspot.com")
 //        storage = FirebaseStorage.getInstance()
 
-        if (ContextCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
+        if (!Utils.checkPermissionStorage(applicationContext)
         ) {
             ActivityCompat.requestPermissions(
                 this@DefaultActivity,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
                 1123
             )
         }

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Binder
 import android.os.Build
 import android.text.Html
 import android.text.TextUtils
@@ -21,6 +22,7 @@ import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
 import com.dovoo.memesnetwork.adapter.items.DirectLinkItemTest
 import com.dovoo.memesnetwork.utils.AdUtils
+import com.dovoo.memesnetwork.utils.Utils
 import com.github.chrisbanes.photoview.PhotoViewAttacher
 import com.google.android.gms.ads.AdListener
 import com.krishna.fileloader.FileLoader
@@ -141,10 +143,8 @@ class MemesRecyclerViewAdapter(
 
 
         viewHolder.ivBtnShare.setOnClickListener(View.OnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    mContext,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
+            if (!Utils.checkPermissionStorage(mContext)
+
             ) {
                 Toast.makeText(mContext, "Please allow storage permission", Toast.LENGTH_LONG)
                     .show()
@@ -166,12 +166,11 @@ class MemesRecyclerViewAdapter(
                         val loadedFile = response.body
                         val share = Intent(Intent.ACTION_SEND)
                         if (!isVideo) {
-                            share.type = "image/*"
+                            share.type = "image/jpg"
                         } else {
                             share.type = "video/*"
                         }
-                        val uri: Uri
-                        uri = if (Build.VERSION.SDK_INT <= 24) {
+                        val uri: Uri = if (Build.VERSION.SDK_INT <= 24) {
                             Uri.fromFile(loadedFile)
                         } else {
                             FileProvider.getUriForFile(
@@ -189,7 +188,8 @@ class MemesRecyclerViewAdapter(
                             """.trimIndent()
                         share.putExtra(Intent.EXTRA_TEXT, shareMessage)
                         share.putExtra(Intent.EXTRA_STREAM, uri)
-                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        share.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION  or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
                         mContext.startActivity(Intent.createChooser(share, "Share :"))
                         mLoadingBar?.visibility = View.GONE
                         viewHolder.ivBtnShare.isEnabled = true
