@@ -1,5 +1,6 @@
 package com.dovoo.memesnetwork.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -140,6 +141,7 @@ class MemesDetailMemesFragment : Fragment() {
                     .show()
                 return@OnClickListener
             }
+            deleteCache(requireContext())
             binding.loading.loadingBar.visibility = View.VISIBLE
             binding.tvBtnShare.isEnabled = false
 
@@ -260,7 +262,30 @@ class MemesDetailMemesFragment : Fragment() {
         super.onStop()
         player.stop(true)
     }
-
+    fun deleteCache(context: Context) {
+        try {
+            val dir = context.cacheDir
+            deleteDir(dir)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+    fun deleteDir(dir: File?): Boolean {
+        return if (dir != null && dir.isDirectory) {
+            val children = dir.list()
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+            dir.delete()
+        } else if (dir != null && dir.isFile) {
+            dir.delete()
+        } else {
+            false
+        }
+    }
     companion object {
         fun newInstance(currentVideoItem: DirectLinkItemTest): MemesDetailMemesFragment {
             val args = Bundle()
