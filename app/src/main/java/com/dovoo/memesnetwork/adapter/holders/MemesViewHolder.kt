@@ -6,10 +6,7 @@ import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.dovoo.memesnetwork.R
@@ -37,6 +34,7 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
     var relativeLayout: RelativeLayout
     var linBtnLike: LinearLayout
     var linBtnComment: LinearLayout
+    var linMiddle: ConstraintLayout
     var mCover: ImageView
     var tvCategory: TextView
     var ivIconSound: ImageView
@@ -153,6 +151,7 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
     init {
         playerView = itemView.findViewById(R.id.playerView)
         relativeLayout = itemView.findViewById(R.id.relativeLayout)
+        relativeLayout.tag=this
         tvTotalLike = itemView.findViewById(R.id.tvTotalLike)
         tvTotalComment = itemView.findViewById(R.id.tvTotalComment)
         ivBtnLike = itemView.findViewById(R.id.tvBtnLike)
@@ -170,6 +169,9 @@ class MemesViewHolder(itemView: View, selector: PressablePlayerSelector?) :
         tvCategory = itemView.findViewById(R.id.tvCategory)
         tvLabelNoAudio = itemView.findViewById(R.id.tvLabelNoAudio)
         mCover = itemView.findViewById(R.id.cover)
+        mCover.tag = this
+        linMiddle = itemView.findViewById(R.id.linMiddle)
+        linMiddle.tag = this
         ivIconSound = itemView.findViewById(R.id.ivIconSound)
         tvUsername.tag = this
         ivProfilePic.tag = this

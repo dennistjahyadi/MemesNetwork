@@ -63,7 +63,7 @@ class MemesDetailFragment : Fragment() {
         }.attach()
         binding.linBtnBack.setOnClickListener { findNavController().popBackStack() }
         binding.viewPager.offscreenPageLimit = 2
-
+        binding.viewPager.isUserInputEnabled = false
         onResult()
 
         return binding.root

@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toTopOf="@id/linTop"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/linTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,20 +111,20 @@
                 android:padding="8dp"
                 android:text="title"
                 android:textColor="@color/white"
-                android:textIsSelectable="true"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-    </FrameLayout>
+    </RelativeLayout>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linMiddle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:visibility="visible"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linTop">
@@ -132,6 +132,7 @@
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -150,12 +151,13 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/aaa"
+                android:id="@+id/linCover"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clickable="true"
                 android:orientation="vertical">
                 <!-- Top Player-->
-                <com.github.chrisbanes.photoview.PhotoView
+                <ImageView
                     android:id="@+id/cover"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -188,11 +190,15 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:alpha="0.85"
             app:SpinKit_Color="@color/white" />
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -285,7 +291,7 @@
 
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"

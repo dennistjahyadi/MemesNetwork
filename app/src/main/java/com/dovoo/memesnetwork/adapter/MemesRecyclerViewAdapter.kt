@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Binder
 import android.os.Build
@@ -13,10 +14,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.dovoo.memesnetwork.BuildConfig
 import com.dovoo.memesnetwork.R
 import com.dovoo.memesnetwork.adapter.holders.MemesViewHolder
@@ -61,7 +67,7 @@ class MemesRecyclerViewAdapter(
         val directLinkVideoItem = directLinkItemTestList[position]
         viewHolder.data = directLinkVideoItem
 
-        if ((0..10).random() > 7) {
+        if (position%10==0) {
             AdUtils.loadAds(mContext, viewHolder.adView)
             viewHolder.adView.adListener = object : AdListener() {
                 override fun onAdLoaded() {
@@ -109,9 +115,8 @@ class MemesRecyclerViewAdapter(
         viewHolder.tvCategory.text = directLinkVideoItem.getmCategory()
         viewHolder.mCover.visibility = View.VISIBLE
         Glide.with(mContext).load(directLinkVideoItem.getmCoverUrl()).into(viewHolder.mCover)
-//        directLinkVideoItem.getmImageLoader().load(directLinkVideoItem.getmCoverUrl())
-//            .into(viewHolder.mCover)
-        PhotoViewAttacher(viewHolder.mCover)
+
+        //PhotoViewAttacher(viewHolder.mCover)
         val totalLike = directLinkVideoItem.totalLike
         val totalComment = directLinkVideoItem.totalComment
         if (directLinkVideoItem.isVideo == true) {
@@ -123,10 +128,16 @@ class MemesRecyclerViewAdapter(
                 viewHolder.tvLabelNoAudio.visibility = View.VISIBLE
                 viewHolder.ivIconSound.visibility = View.GONE
             }
+            viewHolder.playerView.visibility = View.VISIBLE
+            viewHolder.mCover.setOnClickListener(null)
+
         } else {
             //photo
             viewHolder.tvLabelNoAudio.visibility = View.GONE
             viewHolder.ivIconSound.visibility = View.GONE
+            viewHolder.playerView.visibility = View.GONE
+            viewHolder.mCover.bringToFront()
+            viewHolder.mCover.setOnClickListener(onItemClickListener)
         }
         viewHolder.tvTotalLike.text = totalLike.toString()
         viewHolder.tvTotalComment.text = totalComment.toString()
@@ -183,8 +194,6 @@ class MemesRecyclerViewAdapter(
                             "\nWith MemesNetwork everything is laughable, download here\n\n"
                         shareMessage = """
                             ${shareMessage}https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}
-                            
-                            
                             """.trimIndent()
                         share.putExtra(Intent.EXTRA_TEXT, shareMessage)
                         share.putExtra(Intent.EXTRA_STREAM, uri)
@@ -202,7 +211,7 @@ class MemesRecyclerViewAdapter(
                     }
                 })
         })
-
+        viewHolder.mCover.setOnClickListener(onItemClickListener)
         viewHolder.tvTitle.setOnClickListener(onItemClickListener)
         viewHolder.linBtnComment.setOnClickListener(onItemClickListener)
         viewHolder.linBtnLike.setOnClickListener(likeOnClickListener)
